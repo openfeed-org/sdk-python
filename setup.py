@@ -4,6 +4,7 @@ from setuptools import setup, find_packages
 
 install_requires = [
     'websocket-client>=0.40.0',
+    'protobuf'
 ]
 
 tests_require = [
