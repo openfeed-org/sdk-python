@@ -29,6 +29,8 @@ of_client.add_symbol_subscription("AAPL", callback=on_message)
 
 # sub to markets by exchange
 of_client.add_exchange_subscription("NYSE", callback=on_message)
+
+of_client.start()
 ```
 
 ### Expected Output

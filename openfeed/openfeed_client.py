@@ -18,7 +18,6 @@ class OpenfeedClient(object):
         self.password = password
         self.debug = debug
         self.ws = websocket.WebSocket()
-        self.stop = True
         self.token = None
 
         self.instrument_definitions = {}
@@ -27,18 +26,22 @@ class OpenfeedClient(object):
         self.exchange_handlers = {}
         self.heartbeat_handlers = []
 
-        self.login_req = openfeed_api_pb2.OpenfeedGatewayRequest(
-            loginRequest=openfeed_api_pb2.LoginRequest(
-                username=username, password=password))
-
         self.on_connected = None
         self.on_disconnected = None
         self.on_error = None
 
         websocket.enableTrace(self.debug)
 
-    def start(self):
-        self.__connect()
+    def start(self, blocking=True):
+        if self.token is None:
+            if blocking is not True:
+                thread.start_new_thread(self.__connect, ())
+            else:
+                self.__connect()
+
+    def stop(self):
+        if self.token is not None:
+            self.__reset()
 
     def add_heartbeat_subscription(self, callback):
         self.heartbeat_handlers.append(callback)
@@ -70,8 +73,12 @@ class OpenfeedClient(object):
     def _send_message(self, msg):
         self.ws.send(msg.SerializeToString(), websocket.ABNF.OPCODE_BINARY)
 
+    def __reset(self):
+        self.ws.close()
+        self.token = None
+        self.ws = websocket.WebSocket()
+
     def __connect(self):
-        self.stop = False
 
         def handleLogin(msg):
 
@@ -148,19 +155,21 @@ class OpenfeedClient(object):
         def on_error(ws, error):
             if self.debug:
                 print("WS Error: ", error)
+
             self.__callback(self.on_error, error)
 
         def on_close(ws):
             if self.debug:
                 print("WS Close")
+
+            self.__reset()
             self.__callback(self.on_disconnected, ws)
 
         def on_open(ws):
             if self.debug:
                 print("WS Open")
 
-            self._send_message(self.login_req)
-
+            self._send_message(self.__create_login_request())
             self.__callback(self.on_connected, ws)
 
         self.ws = websocket.WebSocketApp("ws://" + self.server + "/ws",
@@ -223,6 +232,11 @@ class OpenfeedClient(object):
 
         return of_req
 
+    def __create_login_request(self):
+        return openfeed_api_pb2.OpenfeedGatewayRequest(
+            loginRequest=openfeed_api_pb2.LoginRequest(
+                username=self.username, password=self.password))
+
     def __callback(self, callback, *args):
         try:
             if callback is not None:
@@ -251,13 +265,7 @@ if __name__ == "__main__":
     of_client.on_connected = lambda x: print("of-client: connected")
 
     # blocking mode
-
-    of_client.start()
-
-    # non-blocking mode
-    # thread.start_new_thread(of_client.start, ())
-
-    # print("Started Openfeed Client")
+    of_client.start(blocking=True)
 
     # while True:
-    #   time.sleep(1000)
+    #    time.sleep(3)

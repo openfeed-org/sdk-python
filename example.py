@@ -22,15 +22,17 @@ if __name__ == "__main__":
     # blocking mode
     of_client.start()
 
+    #
     # non-blocking mode
-    # thread.start_new_thread(of_client.start, ())
+    #
+    # of_client.start(blocking=False)
 
     # print("Started Openfeed Client")
 
     # add additional market data subscriptions
 
-    of_client.add_symbol_subscription("NEM", callback=on_message)
+    # of_client.add_symbol_subscription("NEM", callback=on_message)
 
-    # simulate block
+    # simulate block to keep app alive
     # while True:
     #   time.sleep(1000)
