@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "openfeed"
+version = "1.0.2"
+description = "Python SDK for Openfeed"
+authors = ["Barchart <mike@barchart.com>"]
+
+[tool.poetry.dependencies]
+python = "*"
+websocket-client = "^0.40.0"
+protobuf = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.4"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
