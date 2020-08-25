@@ -3,6 +3,7 @@ name = "openfeed"
 version = "1.0.2"
 description = "Python SDK for Openfeed"
 authors = ["Barchart <mike@barchart.com>"]
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "*"
@@ -13,5 +14,5 @@ protobuf = "*"
 pytest = "^3.4"
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["setuptools>=41.0", "setuptools-scm", "wheel"]
+build-backend = "setuptools.build_meta"
