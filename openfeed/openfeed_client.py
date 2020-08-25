@@ -22,6 +22,7 @@ class OpenfeedClient(object):
 
         self.instrument_definitions = {}
         self.instruments_by_symbol = {}
+
         self.symbol_handlers = {}
         self.exchange_handlers = {}
         self.heartbeat_handlers = []
@@ -106,50 +107,61 @@ class OpenfeedClient(object):
             if msg.subscriptionResponse.status.result > 1:
                 raise Exception("Subscription has failed", msg)
 
-            self.__notify_symbol_listeners(
-                msg.subscriptionResponse.symbol, msg)
+            if len(msg.subscriptionResponse.symbol) > 0:
+                self.__notify_symbol_listeners(
+                    msg.subscriptionResponse.symbol, msg)
+            else:
+                self.__notify_exchange_listeners(
+                    msg.subscriptionResponse.exchange, msg)
+
             return msg
 
         def handleInstrumentDefinition(msg):
             self.instrument_definitions[msg.instrumentDefinition.marketId] = msg
             self.instruments_by_symbol[msg.instrumentDefinition.symbol] = msg
+
             return msg
 
         def handleMarketUpdate(msg):
-            symbol = self.instrument_definitions[msg.marketUpdate.marketId].instrumentDefinition.symbol
+            inst = self.instrument_definitions[msg.marketUpdate.marketId].instrumentDefinition
 
-            self.__notify_symbol_listeners(symbol, msg)
+            self.__notify_exchange_listeners(inst.barchartExchangeCode, msg)
+            self.__notify_symbol_listeners(inst.symbol, msg)
 
             return msg
 
         def handleMarketSnapshot(msg):
-            symbol = self.instrument_definitions[msg.marketSnapshot.marketId].instrumentDefinition.symbol
+            inst = self.instrument_definitions[msg.marketSnapshot.marketId].instrumentDefinition
 
-            self.__notify_symbol_listeners(symbol, msg)
+            self.__notify_exchange_listeners(inst.barchartExchangeCode, msg)
+            self.__notify_symbol_listeners(inst.symbol, msg)
+
             return msg
+
+        handlers = {
+            "loginResponse": handleLogin,
+            "heartBeat": handleHeartbeat,
+            "subscriptionResponse": handleSubscriptionResponse,
+            "instrumentDefinition": handleInstrumentDefinition,
+            "marketSnapshot": handleMarketSnapshot,
+            "marketUpdate": handleMarketUpdate,
+        }
 
         def on_message(ws, message):
 
             msg = openfeed_api_pb2.OpenfeedGatewayMessage()
             msg.ParseFromString(message)
 
-            handlers = {
-                "loginResponse": handleLogin,
-                "heartBeat": handleHeartbeat,
-                "subscriptionResponse": handleSubscriptionResponse,
-                "instrumentDefinition": handleInstrumentDefinition,
-                "marketSnapshot": handleMarketSnapshot,
-                "marketUpdate": handleMarketUpdate,
-            }
+            msg_type = msg.WhichOneof("data")
 
-            handler = handlers.get(msg.WhichOneof(
-                "data"), lambda x: print("Unhandled Message: ", x))
+            handler = handlers.get(
+                msg_type, lambda x: print("Unhandled Message: ", x))
 
             try:
                 handler(msg)
             except Exception as e:
                 if self.debug:
-                    print("Failed to handling incoming message:", e)
+                    print("Failed handling incoming message:", msg_type, e)
                 self.__callback(self.on_error, e)
 
         def on_error(ws, error):
@@ -181,12 +193,27 @@ class OpenfeedClient(object):
         self.ws.run_forever()
 
     def __notify_symbol_listeners(self, symbol, msg):
+        if symbol not in self.symbol_handlers:
+            return
+
         for cb in self.symbol_handlers[symbol]:
             try:
                 cb(msg)
             except Exception as e:
                 if self.debug:
                     print("Failed to notify `symbol` callback", e)
+                self.__callback(self.on_error, e)
+
+    def __notify_exchange_listeners(self, exchange, msg):
+        if exchange not in self.exchange_handlers:
+            return
+
+        for cb in self.exchange_handlers[exchange]:
+            try:
+                cb(msg)
+            except Exception as e:
+                if self.debug:
+                    print("Failed to notify `exchange` callback", e)
                 self.__callback(self.on_error, e)
 
     def __notify_heartbeat_listeners(self, msg):
@@ -256,8 +283,8 @@ if __name__ == "__main__":
     of_client = OpenfeedClient("username", "password", debug=False)
 
     of_client.add_symbol_subscription(symbol="AAPL", callback=handle_message)
-    # of_client.add_exchange_subscription(
-    #    exchange="NYSE", callback=handle_message)
+    of_client.add_exchange_subscription(
+        exchange="FOREX", callback=handle_message)
     of_client.add_heartbeat_subscription(callback=handle_heartbeat)
 
     of_client.on_error = lambda x: print("of-client: something went wrong:", x)
