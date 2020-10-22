@@ -2,7 +2,9 @@
 
 This SDK encapuslates the openfeed proto objects and faciliates client connections to openfeed servers.
 
-![PyPI and TestPyPI](https://github.com/openfeed-org/sdk-python/workflows/PyPI%20and%20TestPyPI/badge.svg)
+![Build](https://github.com/openfeed-org/sdk-python/workflows/PyPI%20and%20TestPyPI/badge.svg)
+
+![PyPI](https://img.shields.io/pypi/v/openfeed?label=PyPI%20)
 
 ## Installation
 
