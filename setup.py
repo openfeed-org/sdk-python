@@ -10,7 +10,7 @@ install_requires = [
 tests_require = [
     'pytest',
     'python-dateutil>=2.7.5',
-    ]
+]
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -27,6 +27,7 @@ setup(
     tests_require=tests_require,
     extras_require={
         'test': tests_require,
+        'publish': ['wheel']
     },
     description='Barchart Openfeed Example Client for Python',
     long_description=long_description,
