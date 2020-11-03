@@ -1,14 +1,18 @@
+from typing import Union
+from generated import openfeed_api_pb2
+from generated import openfeed_pb2
+from generated import openfeed_instrument_pb2
+import time
 import traceback
 import sys
 import inspect
-from generated import openfeed_api_pb2
-from generated import openfeed_pb2
+import collections
 import websocket
+import random
 try:
     import thread
 except ImportError:
     import _thread as thread
-import time
 
 
 class OpenfeedClient(object):
@@ -23,10 +27,12 @@ class OpenfeedClient(object):
 
         self.instrument_definitions = {}
         self.instruments_by_symbol = {}
+        self.snapshots = {}
 
         self.symbol_handlers = {}
         self.exchange_handlers = {}
         self.heartbeat_handlers = []
+        self.request_id_handlers = {}
 
         self.on_connected = None
         self.on_disconnected = None
@@ -35,6 +41,10 @@ class OpenfeedClient(object):
         websocket.enableTrace(self.debug)
 
     def start(self, blocking=True):
+        """Starts the Openfeed client and underlying WebSocket connection
+
+        Set blocking to False to disable blocking the calling thread.
+        """
         if self.token is None:
             if blocking is not True:
                 thread.start_new_thread(self.__connect, ())
@@ -46,35 +56,111 @@ class OpenfeedClient(object):
             self.__reset()
 
     def add_heartbeat_subscription(self, callback):
+        """Subscribe to [Heartbeat] messages (keep alive)
+
+        [Heartbeat]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        """
         self.heartbeat_handlers.append(callback)
 
-    def add_symbol_subscription(self, symbol, callback):
-        if symbol not in self.symbol_handlers:
-            self.symbol_handlers[symbol] = []
+        return self
 
-            if self.token is not None:
-                self._send_message(
-                    self.__create_subscription_request(None, [symbol]))
+    def add_symbol_subscription(self, symbol: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"]):
+        """Subscribe to [Market Data] by Barchart Symbols
 
-        self.symbol_handlers[symbol].append(callback)
+        Complete list of [SubscriptionTypes]. [Market]
 
-    def add_exchange_subscription(self, exchange, callback):
-        if exchange not in self.exchange_handlers:
-            self.exchange_handlers[exchange] = []
+        Parameters
+        ----------
+        service: str, optional
+            Default is `REAL_TIME` for delayed market data, set it to `DELAYED`
+        callback: Callable
+            Your callback function for Market Data messages
+        subscription_type: list, optional
+            Default is ['QUOTE']. Can contain any of: 'ALL', 'QUOTE', 'QUOTE_PARTICIPANT', 'DEPTH_PRICE', 'DEPTH_ORDER', 'TRADES', 'OHLC'
 
-            if self.token is not None:
-                self._send_message(
-                    self.__create_subscription_request([exchange], None))
+        [Market Data]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        [SubscriptionTypes]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        """
+        symbols = []
 
-        self.exchange_handlers[exchange].append(callback)
+        if isinstance(symbol, list) == False:
+            symbols = [symbol]
+        else:
+            symbols = symbol
+
+        for sym in symbols:
+            if sym not in self.symbol_handlers:
+                self.symbol_handlers[sym] = []
+
+            self.symbol_handlers[sym].append(
+                Listener(symbol=sym, callback=callback, service=service, subscription_type=subscription_type))
+
+        if self.token is not None:
+            self._send_message(
+                self.__create_subscription_request(symbols=symbols, service=service, subscription_type=subscription_type))
+
+        return self
+
+    def add_exchange_subscription(self, exchange: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"]):
+        """Subscribe to [Market Data] by Barchart Exchange code(s)
+
+        Note: your credentials must have the correct service level (FEED) for this operation.
+
+        [Market Data]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        """
+        exchanges = []
+
+        if isinstance(exchange, list) == False:
+            exchanges = [exchange]
+        else:
+            exchanges = exchange
+
+        for exch in exchanges:
+            if exch not in self.exchange_handlers:
+                self.exchange_handlers[exch] = []
+
+            self.exchange_handlers[exch].append(Listener(
+                exchange=exch, callback=callback, service=service, subscription_type=subscription_type))
+
+        if self.token is not None:
+            self._send_message(
+                self.__create_subscription_request(exchanges=exchanges, service=service, subscription_type=subscription_type))
+
+        return self
+
+    def request_available_exchanges(self, callback):
+        """Request a list of available [Exchanges] for subscription.
+
+        [Exchanges]: https://github.com/openfeed-org/proto/blob/master/openfeed_api.proto#L159-L173
+        """
+        rid = random.getrandbits(32)
+        req = self.__create_exchange_request(rid)
+
+        self.request_id_handlers[rid] = Request(callback, req)
+
+        if self.token is not None:
+            self._send_message(req)
 
     def get_instrument_definitions(self):
+        """Returns a dict of Openfeed [Instrument Definitions] keyed by MarketID
+
+        [Instrument Definitions]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        """
         return self.instrument_definitions
 
     def get_instrument_definition(self, id):
+        """Returns an [Instrument Definition] for a Market ID
+
+        [Instrument Definition]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        """
         return self.instrument_definitions[id]
 
     def get_instrument_definition_by_symbol(self, symbol):
+        """Returns an [Instrument Definition] for a [Symbol] string
+
+        [Instrument Definition]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        [Symbol]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        """
         return self.instruments_by_symbol[symbol]
 
     def _send_message(self, msg):
@@ -92,28 +178,35 @@ class OpenfeedClient(object):
         def handleLogin(msg):
 
             if msg.loginResponse.status.result > 1:
-                raise Exception("Login has failed", msg)
+                raise Exception("Login has failed: ", msg)
 
             self.token = msg.loginResponse.token
+            self.__send_existing_interest()
 
-            # sub to all existing interest
-            self._send_message(self.__create_subscription_request(
-                self.exchange_handlers.keys(), self.symbol_handlers.keys()))
-                
             return msg
 
         def handleHeartbeat(msg):
             self.__notify_heartbeat_listeners(msg)
             return msg
 
+        def handleExchangeRequest(msg):
+            rid = msg.exchangeResponse.correlationId
+
+            if rid not in self.request_id_handlers:
+                return msg
+
+            self.request_id_handlers[rid].callback(msg)
+
+            return msg
+
         def handleSubscriptionResponse(msg):
 
             if msg.subscriptionResponse.status.result > 1:
-                raise Exception("Subscription has failed", msg)
+                raise Exception("Subscription has failed: ", msg)
 
             if len(msg.subscriptionResponse.symbol) > 0:
                 self.__notify_symbol_listeners(
-                    msg.subscriptionResponse.symbol, msg)
+                    self.__create_instrument(msg.subscriptionResponse.symbol), msg)
             else:
                 self.__notify_exchange_listeners(
                     msg.subscriptionResponse.exchange, msg)
@@ -122,7 +215,13 @@ class OpenfeedClient(object):
 
         def handleInstrumentDefinition(msg):
             self.instrument_definitions[msg.instrumentDefinition.marketId] = msg
-            self.instruments_by_symbol[msg.instrumentDefinition.symbol] = msg
+
+            for symbol in msg.instrumentDefinition.symbols:
+                self.instruments_by_symbol[symbol.symbol] = msg
+
+            self.__notify_exchange_listeners(
+                msg.instrumentDefinition.barchartExchangeCode, msg)
+            self.__notify_symbol_listeners(msg.instrumentDefinition, msg)
 
             return msg
 
@@ -130,31 +229,40 @@ class OpenfeedClient(object):
             inst = self.instrument_definitions[msg.marketUpdate.marketId].instrumentDefinition
 
             self.__notify_exchange_listeners(inst.barchartExchangeCode, msg)
-            self.__notify_symbol_listeners(inst.symbol, msg)
+            self.__notify_symbol_listeners(inst, msg)
 
             return msg
 
         def handleMarketSnapshot(msg):
             inst = self.instrument_definitions[msg.marketSnapshot.marketId].instrumentDefinition
 
-            self.__notify_exchange_listeners(inst.barchartExchangeCode, msg)
+            self.snapshots[inst.marketId] = msg
 
-            # TODO review symbology handling, subbing by one and keying off the other can create unexpected results
-            # for example subscribing to "ZCYAIA40.CM" will come back with OF symbol (less the suffix) in `instrument.symbol`
-            self.__notify_symbol_listeners(inst.symbols[0].symbol, msg)
+            self.__notify_exchange_listeners(inst.barchartExchangeCode, msg)
+            self.__notify_symbol_listeners(inst, msg)
+
+            return msg
+
+        def handleOHLC(msg):
+            inst = self.instrument_definitions[msg.ohlc.marketId].instrumentDefinition
+
+            self.__notify_exchange_listeners(inst.barchartExchangeCode, msg)
+            self.__notify_symbol_listeners(inst, msg)
 
             return msg
 
         handlers = {
             "loginResponse": handleLogin,
             "heartBeat": handleHeartbeat,
+            "exchangeResponse": handleExchangeRequest,
             "subscriptionResponse": handleSubscriptionResponse,
             "instrumentDefinition": handleInstrumentDefinition,
             "marketSnapshot": handleMarketSnapshot,
             "marketUpdate": handleMarketUpdate,
+            "ohlc": handleOHLC
         }
 
-        def on_message(ws, message):
+        def on_message(ws: websocket.WebSocketApp, message):
 
             msg = openfeed_api_pb2.OpenfeedGatewayMessage()
             msg.ParseFromString(message)
@@ -162,13 +270,14 @@ class OpenfeedClient(object):
             msg_type = msg.WhichOneof("data")
 
             handler = handlers.get(
-                msg_type, lambda x: print("Unhandled Message: ", x))
+                msg_type, lambda x: print("Unhandled Message:", x))
 
             try:
                 handler(msg)
             except Exception as e:
                 if self.debug:
                     print("Failed handling incoming message:", msg_type, e)
+                    traceback.print_exc()
                 self.__callback(self.on_error, e)
 
         def on_error(ws, error):
@@ -199,17 +308,23 @@ class OpenfeedClient(object):
 
         self.ws.run_forever()
 
-    def __notify_symbol_listeners(self, symbol, msg):
-        if symbol not in self.symbol_handlers:
-            return
+    def __notify_symbol_listeners(self, instrument, msg):
 
-        for cb in self.symbol_handlers[symbol]:
-            try:
-                cb(msg)
-            except Exception as e:
-                if self.debug:
-                    print("Failed to notify `symbol` callback", e)
-                self.__callback(self.on_error, e)
+        # TODO review symbology handling, subbing by one and keying off the other can create unexpected results
+        # for example subscribing to "ZCYAIA40.CM" will come back with OF symbol (less the suffix) in `instrument.symbol`
+        # given the below, if the instrument contains duplicate `instrument.symbols`, the listeners will get duplicate callbacks
+
+        for s in instrument.symbols:
+            if s.symbol not in self.symbol_handlers:
+                return
+
+            for cb in self.symbol_handlers[s.symbol]:
+                try:
+                    cb.callback(msg)
+                except Exception as e:
+                    if self.debug:
+                        print("Failed to notify `symbol` callback:", s, e)
+                    self.__callback(self.on_error, e)
 
     def __notify_exchange_listeners(self, exchange, msg):
         if exchange not in self.exchange_handlers:
@@ -217,10 +332,10 @@ class OpenfeedClient(object):
 
         for cb in self.exchange_handlers[exchange]:
             try:
-                cb(msg)
+                cb.callback(msg)
             except Exception as e:
                 if self.debug:
-                    print("Failed to notify `exchange` callback", e)
+                    print("Failed to notify `exchange` callback:", exchange, e)
                 self.__callback(self.on_error, e)
 
     def __notify_heartbeat_listeners(self, msg):
@@ -229,34 +344,87 @@ class OpenfeedClient(object):
                 cb(msg)
             except Exception as e:
                 if self.debug:
-                    print("Failed to notify `heartbeat` callback", e)
+                    print("Failed to notify `heartbeat` callback:", e)
                 self.__callback(self.on_error, e)
 
-    def __create_subscription_request(self, exchanges, symbols):
+    def __send_existing_interest(self):
+        all_listeners = list(self.symbol_handlers.values()) + \
+            list(self.exchange_handlers.values())
+
+        interest = {}
+
+        # group symbols / exchanges by service and subscription_type
+        for listeners in all_listeners:
+            for l in listeners:
+                if l.service not in interest:
+                    interest[l.service] = {}
+                listeners_by_service = interest[l.service]
+                if l.key() not in listeners_by_service:
+                    listeners_by_service[l.key()] = Listener(
+                        symbol=l.symbol, exchange=l.exchange, service=l.service, subscription_type=l.subscription_type)
+                else:
+                    existing = listeners_by_service[l.key()]
+                    existing.subscription_type = list(set(
+                        existing.subscription_type + l.subscription_type))
+
+        # send subscriptions
+        for service in interest.keys():
+            for i in interest[service].values():
+                self._send_message(
+                    self.__create_subscription_request(exchanges=i.exchanges(), symbols=i.symbols(), service=service, subscription_type=i.subscription_type))
+
+        # send other rpc requests
+        for req in self.request_id_handlers.values():
+            req.send(self)
+
+    def __create_subscription_request(self, exchanges=[], symbols=[], service="REAL_TIME", subscription_type=["QUOTE"]):
         requests = []
 
         if len(exchanges) > 0:
             for exch in exchanges:
                 requests.append(openfeed_api_pb2.SubscriptionRequest.Request(
                     exchange=exch,
-                    subscriptionType=[
-                        openfeed_api_pb2.SubscriptionType.Value("QUOTE")]
+                    subscriptionType=[openfeed_api_pb2.SubscriptionType.Value(
+                        t) for t in subscription_type],
+                    snapshotIntervalSeconds=60
                 ))
 
         if len(symbols) > 0:
             for sym in symbols:
                 requests.append(openfeed_api_pb2.SubscriptionRequest.Request(
                     symbol=sym,
+                    subscriptionType=[openfeed_api_pb2.SubscriptionType.Value(
+                        t) for t in subscription_type],
+                    snapshotIntervalSeconds=60
                 ))
 
         of_req = openfeed_api_pb2.OpenfeedGatewayRequest(
             subscriptionRequest=openfeed_api_pb2.SubscriptionRequest(
                 token=self.token,
-                service=openfeed_pb2.Service.Value("REAL_TIME"),
+                service=openfeed_pb2.Service.Value(service),
                 requests=requests
             ))
 
         return of_req
+
+    def __create_exchange_request(self, correlation_id):
+        return openfeed_api_pb2.OpenfeedGatewayRequest(
+            exchangeRequest=openfeed_api_pb2.ExchangeRequest(
+                correlationId=correlation_id,
+                token=self.token
+            )
+        )
+
+    def __create_instrument(self, symbol):
+        return openfeed_instrument_pb2.InstrumentDefinition(
+            symbol=symbol,
+            symbols=[
+                openfeed_instrument_pb2.InstrumentDefinition.Symbol(
+                    vendor="Barchart",
+                    symbol=symbol
+                )
+            ]
+        )
 
     def __create_login_request(self):
         return openfeed_api_pb2.OpenfeedGatewayRequest(
@@ -269,6 +437,50 @@ class OpenfeedClient(object):
                 callback(*args)
         except Exception as e:
             print("Failed to call callback", e)
+
+
+class Listener(object):
+    def __init__(self, symbol="", exchange="", callback=None, service="REAL_TIME", subscription_type=["QUOTE"]):
+        self.symbol = symbol
+        self.exchange = exchange
+        self.callback = callback
+        self.service = service
+        self.subscription_type = subscription_type
+
+    def key(self):
+        if len(self.exchange) > 0:
+            return self.exchange
+        return self.symbol
+
+    def symbols(self):
+        if len(self.symbol) > 0:
+            return [self.symbol]
+        return []
+
+    def exchanges(self):
+        if len(self.exchange) > 0:
+            return [self.exchange]
+        return []
+
+    def has_same_interest(self, other):
+        return collections.Counter(self.subscription_type) == collections.Counter(other.subscription_type)
+
+    def send_interest(self, of_client: OpenfeedClient):
+        pass
+
+
+class Request(object):
+    def __init__(self, callback, req):
+        self.callback = callback
+        self.request = req
+
+    def send(self, of_client):
+        request_type = self.request.WhichOneof("data")
+
+        if request_type == "exchangeRequest":
+            self.request.exchangeRequest.token = of_client.token
+
+        of_client._send_message(self.request)
 
 
 if __name__ == "__main__":
@@ -293,5 +505,6 @@ if __name__ == "__main__":
     of_client.start(blocking=False)
 
     while True:
-        print("Number of Instruments:", len(of_client.get_instrument_definitions()))
+        print("Number of Instruments:", len(
+            of_client.get_instrument_definitions()))
         time.sleep(10)

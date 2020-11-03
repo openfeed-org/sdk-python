@@ -17,17 +17,17 @@ with open("README.md", "r") as fh:
 
 setup(
     name='openfeed',
-    version='1.0.5',
+    version='1.0.7',
     author='Barchart',
     author_email='mike@barchart.com',
     license='MIT',
     url='https://github.com/openfeed-org/sdk-python',
+    include_package_data=True,
     packages=find_packages(),
     install_requires=install_requires,
     tests_require=tests_require,
     extras_require={
-        'test': tests_require,
-        'publish': ['wheel']
+        'test': tests_require
     },
     description='Barchart Openfeed Example Client for Python',
     long_description=long_description,

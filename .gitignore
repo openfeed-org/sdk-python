@@ -140,3 +140,7 @@ cython_debug/
 .vscode/
 
 protos/*.proto
+
+*.csv
+*.txt
+test.py
