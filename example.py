@@ -16,6 +16,11 @@ if __name__ == "__main__":
 
     of_client.add_symbol_subscription("AAPL", callback=on_message)
 
+    # list exchanges
+
+    of_client.request_available_exchanges(
+        lambda x: print("Openfeed Exchanges:", x))
+
     # sub to markets by exchange
     of_client.add_exchange_subscription("NYSE", callback=on_message)
 
