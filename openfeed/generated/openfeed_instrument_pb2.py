@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='openfeed_instrument.proto',
   package='org.openfeed',
   syntax='proto3',
-  serialized_pb=_b('\n\x19openfeed_instrument.proto\x12\x0corg.openfeed\"\xde\x19\n\x14InstrumentDefinition\x12\x10\n\x08marketId\x18\x01 \x01(\x12\x12I\n\x0einstrumentType\x18\x02 \x01(\x0e\x32\x31.org.openfeed.InstrumentDefinition.InstrumentType\x12\x45\n\x10supportBookTypes\x18\x03 \x03(\x0e\x32+.org.openfeed.InstrumentDefinition.BookType\x12\x11\n\tbookDepth\x18\x04 \x01(\x11\x12\x10\n\x08vendorId\x18\x05 \x01(\t\x12\x0e\n\x06symbol\x18\x06 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x07 \x01(\t\x12\x0f\n\x07\x63\x66iCode\x18\x08 \x01(\t\x12\x14\n\x0c\x63urrencyCode\x18\t \x01(\t\x12\x14\n\x0c\x65xchangeCode\x18\n \x01(\t\x12\x1d\n\x15minimumPriceIncrement\x18\x0b \x01(\x02\x12\x1a\n\x12\x63ontractPointValue\x18\x0c \x01(\x02\x12=\n\x08schedule\x18\r \x01(\x0b\x32+.org.openfeed.InstrumentDefinition.Schedule\x12=\n\x08\x63\x61lendar\x18\x0e \x01(\x0b\x32+.org.openfeed.InstrumentDefinition.Calendar\x12\x18\n\x10recordCreateTime\x18\x0f \x01(\x12\x12\x18\n\x10recordUpdateTime\x18\x10 \x01(\x12\x12\x14\n\x0ctimeZoneName\x18\x11 \x01(\t\x12\x17\n\x0finstrumentGroup\x18\x12 \x01(\t\x12I\n\x10symbolExpiration\x18\x13 \x01(\x0b\x32/.org.openfeed.InstrumentDefinition.MaturityDate\x12\x37\n\x05state\x18\x14 \x01(\x0e\x32(.org.openfeed.InstrumentDefinition.State\x12\x0f\n\x07\x63hannel\x18\x15 \x01(\x11\x12\x1a\n\x12underlyingMarketId\x18\x16 \x01(\x12\x12\x43\n\x0bpriceFormat\x18\x17 \x01(\x0b\x32..org.openfeed.InstrumentDefinition.PriceFormat\x12O\n\x17optionStrikePriceFormat\x18\x18 \x01(\x0b\x32..org.openfeed.InstrumentDefinition.PriceFormat\x12\x18\n\x10priceDenominator\x18\x1c \x01(\x11\x12\x1b\n\x13quantityDenominator\x18\x1d \x01(\x11\x12\x12\n\nisTradable\x18\x1e \x01(\x08\x12\x17\n\x0ftransactionTime\x18\x32 \x01(\x12\x12\x15\n\rauxiliaryData\x18\x63 \x01(\x0c\x12:\n\x07symbols\x18\x64 \x03(\x0b\x32).org.openfeed.InstrumentDefinition.Symbol\x12\x15\n\x0coptionStrike\x18\xc8\x01 \x01(\x12\x12\x42\n\noptionType\x18\xca\x01 \x01(\x0e\x32-.org.openfeed.InstrumentDefinition.OptionType\x12\x44\n\x0boptionStyle\x18\xcb\x01 \x01(\x0e\x32..org.openfeed.InstrumentDefinition.OptionStyle\x12 \n\x17optionStrikeDenominator\x18\xcc\x01 \x01(\x11\x12\x13\n\nspreadCode\x18\xd2\x01 \x01(\t\x12@\n\tspreadLeg\x18\xd3\x01 \x03(\x0b\x32,.org.openfeed.InstrumentDefinition.SpreadLeg\x12\x1a\n\x11userDefinedSpread\x18\xd4\x01 \x01(\x08\x12\x13\n\nmarketTier\x18\xd5\x01 \x01(\t\x12!\n\x18\x66inancialStatusIndicator\x18\xd6\x01 \x01(\t\x12\r\n\x04isin\x18\xd7\x01 \x01(\t\x12\x46\n\x0c\x63urrencyPair\x18\xd8\x01 \x01(\x0b\x32/.org.openfeed.InstrumentDefinition.CurrencyPair\x12\x1c\n\x13\x65xchangeSendsVolume\x18\xd9\x01 \x01(\x08\x12\x1a\n\x11\x65xchangeSendsHigh\x18\xda\x01 \x01(\x08\x12\x19\n\x10\x65xchangeSendsLow\x18\xdb\x01 \x01(\x08\x12\x1a\n\x11\x65xchangeSendsOpen\x18\xdc\x01 \x01(\x08\x12#\n\x1a\x63onsolidatedFeedInstrument\x18\xdd\x01 \x01(\x08\x12\x1d\n\x14openOutcryInstrument\x18\xde\x01 \x01(\x08\x12*\n!syntheticAmericanOptionInstrument\x18\xdf\x01 \x01(\x08\x12\x1d\n\x14\x62\x61rchartExchangeCode\x18\xe0\x01 \x01(\t\x12\x19\n\x10\x62\x61rchartBaseCode\x18\xe1\x01 \x01(\t\x1aI\n\x08Schedule\x12=\n\x08sessions\x18\x01 \x03(\x0b\x32+.org.openfeed.InstrumentDefinition.TimeSpan\x1a\x31\n\x08TimeSpan\x12\x11\n\ttimeStart\x18\x01 \x01(\x12\x12\x12\n\ntimeFinish\x18\x02 \x01(\x12\x1a\x44\n\x08\x43\x61lendar\x12\x38\n\x06\x65vents\x18\x01 \x03(\x0b\x32(.org.openfeed.InstrumentDefinition.Event\x1aQ\n\x05\x45vent\x12:\n\x04type\x18\x01 \x01(\x0e\x32,.org.openfeed.InstrumentDefinition.EventType\x12\x0c\n\x04\x64\x61te\x18\x02 \x01(\x12\x1a<\n\tSpreadLeg\x12\x10\n\x08marketId\x18\x01 \x01(\x12\x12\r\n\x05ratio\x18\x02 \x01(\x11\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x1a\x38\n\x0cMaturityDate\x12\x0c\n\x04year\x18\x01 \x01(\x11\x12\r\n\x05month\x18\x02 \x01(\x11\x12\x0b\n\x03\x64\x61y\x18\x03 \x01(\x11\x1a(\n\x06Symbol\x12\x0e\n\x06vendor\x18\x01 \x01(\t\x12\x0e\n\x06symbol\x18\x02 \x01(\t\x1a\xd1\x01\n\x0bPriceFormat\x12\x14\n\x0cisFractional\x18\x01 \x01(\x08\x12\x13\n\x0b\x64\x65nominator\x18\x02 \x01(\x11\x12\x16\n\x0esubDenominator\x18\x04 \x01(\x11\x12K\n\tsubFormat\x18\x06 \x01(\x0e\x32\x38.org.openfeed.InstrumentDefinition.PriceFormat.SubFormat\"2\n\tSubFormat\x12\x08\n\x04\x46LAT\x10\x00\x12\x0e\n\nFRACTIONAL\x10\x01\x12\x0b\n\x07\x44\x45\x43IMAL\x10\x02\x1a\x34\n\x0c\x43urrencyPair\x12\x11\n\tcurrency1\x18\x01 \x01(\t\x12\x11\n\tcurrency2\x18\x02 \x01(\t\"\x9b\x01\n\x0eInstrumentType\x12\x1b\n\x17UNKNOWN_INSTRUMENT_TYPE\x10\x00\x12\t\n\x05\x46OREX\x10\x01\x12\t\n\x05INDEX\x10\x02\x12\n\n\x06\x45QUITY\x10\x03\x12\n\n\x06\x46UTURE\x10\x04\x12\n\n\x06OPTION\x10\x05\x12\n\n\x06SPREAD\x10\x06\x12\x0f\n\x0bMUTUAL_FUND\x10\x07\x12\x15\n\x11MONEY_MARKET_FUND\x10\x08\"Z\n\x08\x42ookType\x12\x15\n\x11UNKNOWN_BOOK_TYPE\x10\x00\x12\x0f\n\x0bTOP_OF_BOOK\x10\x01\x12\x15\n\x11PRICE_LEVEL_DEPTH\x10\x02\x12\x0f\n\x0bORDER_DEPTH\x10\x03\"8\n\nOptionType\x12\x17\n\x13UNKNOWN_OPTION_TYPE\x10\x00\x12\x08\n\x04\x43\x41LL\x10\x01\x12\x07\n\x03PUT\x10\x02\"Q\n\x0bOptionStyle\x12\x19\n\x15UNKNOWN_OPTIONS_STYLE\x10\x00\x12\x0b\n\x07\x44\x45\x46\x41ULT\x10\x01\x12\x0c\n\x08\x41MERICAN\x10\x02\x12\x0c\n\x08\x45UROPEAN\x10\x03\"3\n\x05State\x12\x11\n\rUNKNOWN_STATE\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0b\n\x07PASSIVE\x10\x02\"\xa1\x02\n\tEventType\x12\x16\n\x12UNKNOWN_EVENT_TYPE\x10\x00\x12\x14\n\x10\x46IRST_TRADE_DATE\x10\x01\x12\x13\n\x0fLAST_TRADE_DATE\x10\x02\x12\x13\n\x0fSETTLEMENT_DATE\x10\n\x12\x17\n\x13\x46IRST_DELIVERY_DATE\x10\x0b\x12\x16\n\x12LAST_DELIVERY_DATE\x10\x0c\x12\x15\n\x11\x46IRST_NOTICE_DATE\x10\r\x12\x14\n\x10LAST_NOTICE_DATE\x10\x0e\x12\x16\n\x12\x46IRST_HOLDING_DATE\x10\x0f\x12\x15\n\x11LAST_HOLDING_DATE\x10\x10\x12\x17\n\x13\x46IRST_POSITION_DATE\x10\x11\x12\x16\n\x12LAST_POSITION_DATE\x10\x12\x42\x11H\x01P\x01Z\x08openfeed\xa0\x01\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x19openfeed_instrument.proto\x12\x0corg.openfeed\"\xa0\x1a\n\x14InstrumentDefinition\x12\x10\n\x08marketId\x18\x01 \x01(\x12\x12I\n\x0einstrumentType\x18\x02 \x01(\x0e\x32\x31.org.openfeed.InstrumentDefinition.InstrumentType\x12\x45\n\x10supportBookTypes\x18\x03 \x03(\x0e\x32+.org.openfeed.InstrumentDefinition.BookType\x12\x11\n\tbookDepth\x18\x04 \x01(\x11\x12\x10\n\x08vendorId\x18\x05 \x01(\t\x12\x0e\n\x06symbol\x18\x06 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x07 \x01(\t\x12\x0f\n\x07\x63\x66iCode\x18\x08 \x01(\t\x12\x14\n\x0c\x63urrencyCode\x18\t \x01(\t\x12\x14\n\x0c\x65xchangeCode\x18\n \x01(\t\x12\x1d\n\x15minimumPriceIncrement\x18\x0b \x01(\x02\x12\x1a\n\x12\x63ontractPointValue\x18\x0c \x01(\x02\x12=\n\x08schedule\x18\r \x01(\x0b\x32+.org.openfeed.InstrumentDefinition.Schedule\x12=\n\x08\x63\x61lendar\x18\x0e \x01(\x0b\x32+.org.openfeed.InstrumentDefinition.Calendar\x12\x18\n\x10recordCreateTime\x18\x0f \x01(\x12\x12\x18\n\x10recordUpdateTime\x18\x10 \x01(\x12\x12\x14\n\x0ctimeZoneName\x18\x11 \x01(\t\x12\x17\n\x0finstrumentGroup\x18\x12 \x01(\t\x12I\n\x10symbolExpiration\x18\x13 \x01(\x0b\x32/.org.openfeed.InstrumentDefinition.MaturityDate\x12\x37\n\x05state\x18\x14 \x01(\x0e\x32(.org.openfeed.InstrumentDefinition.State\x12\x0f\n\x07\x63hannel\x18\x15 \x01(\x11\x12\x1a\n\x12underlyingMarketId\x18\x16 \x01(\x12\x12\x43\n\x0bpriceFormat\x18\x17 \x01(\x0b\x32..org.openfeed.InstrumentDefinition.PriceFormat\x12O\n\x17optionStrikePriceFormat\x18\x18 \x01(\x0b\x32..org.openfeed.InstrumentDefinition.PriceFormat\x12\x18\n\x10priceDenominator\x18\x1c \x01(\x11\x12\x1b\n\x13quantityDenominator\x18\x1d \x01(\x11\x12\x12\n\nisTradable\x18\x1e \x01(\x08\x12\x17\n\x0ftransactionTime\x18\x32 \x01(\x12\x12\x15\n\rauxiliaryData\x18\x63 \x01(\x0c\x12:\n\x07symbols\x18\x64 \x03(\x0b\x32).org.openfeed.InstrumentDefinition.Symbol\x12\x15\n\x0coptionStrike\x18\xc8\x01 \x01(\x12\x12\x42\n\noptionType\x18\xca\x01 \x01(\x0e\x32-.org.openfeed.InstrumentDefinition.OptionType\x12\x44\n\x0boptionStyle\x18\xcb\x01 \x01(\x0e\x32..org.openfeed.InstrumentDefinition.OptionStyle\x12 \n\x17optionStrikeDenominator\x18\xcc\x01 \x01(\x11\x12\x13\n\nspreadCode\x18\xd2\x01 \x01(\t\x12@\n\tspreadLeg\x18\xd3\x01 \x03(\x0b\x32,.org.openfeed.InstrumentDefinition.SpreadLeg\x12\x1a\n\x11userDefinedSpread\x18\xd4\x01 \x01(\x08\x12\x13\n\nmarketTier\x18\xd5\x01 \x01(\t\x12!\n\x18\x66inancialStatusIndicator\x18\xd6\x01 \x01(\t\x12\r\n\x04isin\x18\xd7\x01 \x01(\t\x12\x46\n\x0c\x63urrencyPair\x18\xd8\x01 \x01(\x0b\x32/.org.openfeed.InstrumentDefinition.CurrencyPair\x12\x1c\n\x13\x65xchangeSendsVolume\x18\xd9\x01 \x01(\x08\x12\x1a\n\x11\x65xchangeSendsHigh\x18\xda\x01 \x01(\x08\x12\x19\n\x10\x65xchangeSendsLow\x18\xdb\x01 \x01(\x08\x12\x1a\n\x11\x65xchangeSendsOpen\x18\xdc\x01 \x01(\x08\x12#\n\x1a\x63onsolidatedFeedInstrument\x18\xdd\x01 \x01(\x08\x12\x1d\n\x14openOutcryInstrument\x18\xde\x01 \x01(\x08\x12*\n!syntheticAmericanOptionInstrument\x18\xdf\x01 \x01(\x08\x12\x1d\n\x14\x62\x61rchartExchangeCode\x18\xe0\x01 \x01(\t\x12\x19\n\x10\x62\x61rchartBaseCode\x18\xe1\x01 \x01(\t\x12\x1a\n\x11volumeDenominator\x18\xe2\x01 \x01(\x11\x12$\n\x1b\x62idOfferQuantityDenominator\x18\xe3\x01 \x01(\x11\x1aI\n\x08Schedule\x12=\n\x08sessions\x18\x01 \x03(\x0b\x32+.org.openfeed.InstrumentDefinition.TimeSpan\x1a\x31\n\x08TimeSpan\x12\x11\n\ttimeStart\x18\x01 \x01(\x12\x12\x12\n\ntimeFinish\x18\x02 \x01(\x12\x1a\x44\n\x08\x43\x61lendar\x12\x38\n\x06\x65vents\x18\x01 \x03(\x0b\x32(.org.openfeed.InstrumentDefinition.Event\x1aQ\n\x05\x45vent\x12:\n\x04type\x18\x01 \x01(\x0e\x32,.org.openfeed.InstrumentDefinition.EventType\x12\x0c\n\x04\x64\x61te\x18\x02 \x01(\x12\x1a<\n\tSpreadLeg\x12\x10\n\x08marketId\x18\x01 \x01(\x12\x12\r\n\x05ratio\x18\x02 \x01(\x11\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x1a\x38\n\x0cMaturityDate\x12\x0c\n\x04year\x18\x01 \x01(\x11\x12\r\n\x05month\x18\x02 \x01(\x11\x12\x0b\n\x03\x64\x61y\x18\x03 \x01(\x11\x1a(\n\x06Symbol\x12\x0e\n\x06vendor\x18\x01 \x01(\t\x12\x0e\n\x06symbol\x18\x02 \x01(\t\x1a\xd1\x01\n\x0bPriceFormat\x12\x14\n\x0cisFractional\x18\x01 \x01(\x08\x12\x13\n\x0b\x64\x65nominator\x18\x02 \x01(\x11\x12\x16\n\x0esubDenominator\x18\x04 \x01(\x11\x12K\n\tsubFormat\x18\x06 \x01(\x0e\x32\x38.org.openfeed.InstrumentDefinition.PriceFormat.SubFormat\"2\n\tSubFormat\x12\x08\n\x04\x46LAT\x10\x00\x12\x0e\n\nFRACTIONAL\x10\x01\x12\x0b\n\x07\x44\x45\x43IMAL\x10\x02\x1a\x34\n\x0c\x43urrencyPair\x12\x11\n\tcurrency1\x18\x01 \x01(\t\x12\x11\n\tcurrency2\x18\x02 \x01(\t\"\x9b\x01\n\x0eInstrumentType\x12\x1b\n\x17UNKNOWN_INSTRUMENT_TYPE\x10\x00\x12\t\n\x05\x46OREX\x10\x01\x12\t\n\x05INDEX\x10\x02\x12\n\n\x06\x45QUITY\x10\x03\x12\n\n\x06\x46UTURE\x10\x04\x12\n\n\x06OPTION\x10\x05\x12\n\n\x06SPREAD\x10\x06\x12\x0f\n\x0bMUTUAL_FUND\x10\x07\x12\x15\n\x11MONEY_MARKET_FUND\x10\x08\"Z\n\x08\x42ookType\x12\x15\n\x11UNKNOWN_BOOK_TYPE\x10\x00\x12\x0f\n\x0bTOP_OF_BOOK\x10\x01\x12\x15\n\x11PRICE_LEVEL_DEPTH\x10\x02\x12\x0f\n\x0bORDER_DEPTH\x10\x03\"8\n\nOptionType\x12\x17\n\x13UNKNOWN_OPTION_TYPE\x10\x00\x12\x08\n\x04\x43\x41LL\x10\x01\x12\x07\n\x03PUT\x10\x02\"Q\n\x0bOptionStyle\x12\x19\n\x15UNKNOWN_OPTIONS_STYLE\x10\x00\x12\x0b\n\x07\x44\x45\x46\x41ULT\x10\x01\x12\x0c\n\x08\x41MERICAN\x10\x02\x12\x0c\n\x08\x45UROPEAN\x10\x03\"3\n\x05State\x12\x11\n\rUNKNOWN_STATE\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0b\n\x07PASSIVE\x10\x02\"\xa1\x02\n\tEventType\x12\x16\n\x12UNKNOWN_EVENT_TYPE\x10\x00\x12\x14\n\x10\x46IRST_TRADE_DATE\x10\x01\x12\x13\n\x0fLAST_TRADE_DATE\x10\x02\x12\x13\n\x0fSETTLEMENT_DATE\x10\n\x12\x17\n\x13\x46IRST_DELIVERY_DATE\x10\x0b\x12\x16\n\x12LAST_DELIVERY_DATE\x10\x0c\x12\x15\n\x11\x46IRST_NOTICE_DATE\x10\r\x12\x14\n\x10LAST_NOTICE_DATE\x10\x0e\x12\x16\n\x12\x46IRST_HOLDING_DATE\x10\x0f\x12\x15\n\x11LAST_HOLDING_DATE\x10\x10\x12\x17\n\x13\x46IRST_POSITION_DATE\x10\x11\x12\x16\n\x12LAST_POSITION_DATE\x10\x12\x42\x07H\x01P\x01\xa0\x01\x01\x62\x06proto3')
 )
 
 
@@ -45,8 +45,8 @@ _INSTRUMENTDEFINITION_PRICEFORMAT_SUBFORMAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2498,
-  serialized_end=2548,
+  serialized_start=2564,
+  serialized_end=2614,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_PRICEFORMAT_SUBFORMAT)
 
@@ -95,8 +95,8 @@ _INSTRUMENTDEFINITION_INSTRUMENTTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2605,
-  serialized_end=2760,
+  serialized_start=2671,
+  serialized_end=2826,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_INSTRUMENTTYPE)
 
@@ -125,8 +125,8 @@ _INSTRUMENTDEFINITION_BOOKTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2762,
-  serialized_end=2852,
+  serialized_start=2828,
+  serialized_end=2918,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_BOOKTYPE)
 
@@ -151,8 +151,8 @@ _INSTRUMENTDEFINITION_OPTIONTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2854,
-  serialized_end=2910,
+  serialized_start=2920,
+  serialized_end=2976,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_OPTIONTYPE)
 
@@ -181,8 +181,8 @@ _INSTRUMENTDEFINITION_OPTIONSTYLE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2912,
-  serialized_end=2993,
+  serialized_start=2978,
+  serialized_end=3059,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_OPTIONSTYLE)
 
@@ -207,8 +207,8 @@ _INSTRUMENTDEFINITION_STATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2995,
-  serialized_end=3046,
+  serialized_start=3061,
+  serialized_end=3112,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_STATE)
 
@@ -269,8 +269,8 @@ _INSTRUMENTDEFINITION_EVENTTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=3049,
-  serialized_end=3338,
+  serialized_start=3115,
+  serialized_end=3404,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_EVENTTYPE)
 
@@ -301,8 +301,8 @@ _INSTRUMENTDEFINITION_SCHEDULE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1897,
-  serialized_end=1970,
+  serialized_start=1963,
+  serialized_end=2036,
 )
 
 _INSTRUMENTDEFINITION_TIMESPAN = _descriptor.Descriptor(
@@ -338,8 +338,8 @@ _INSTRUMENTDEFINITION_TIMESPAN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1972,
-  serialized_end=2021,
+  serialized_start=2038,
+  serialized_end=2087,
 )
 
 _INSTRUMENTDEFINITION_CALENDAR = _descriptor.Descriptor(
@@ -368,8 +368,8 @@ _INSTRUMENTDEFINITION_CALENDAR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2023,
-  serialized_end=2091,
+  serialized_start=2089,
+  serialized_end=2157,
 )
 
 _INSTRUMENTDEFINITION_EVENT = _descriptor.Descriptor(
@@ -405,8 +405,8 @@ _INSTRUMENTDEFINITION_EVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2093,
-  serialized_end=2174,
+  serialized_start=2159,
+  serialized_end=2240,
 )
 
 _INSTRUMENTDEFINITION_SPREADLEG = _descriptor.Descriptor(
@@ -449,8 +449,8 @@ _INSTRUMENTDEFINITION_SPREADLEG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2176,
-  serialized_end=2236,
+  serialized_start=2242,
+  serialized_end=2302,
 )
 
 _INSTRUMENTDEFINITION_MATURITYDATE = _descriptor.Descriptor(
@@ -493,8 +493,8 @@ _INSTRUMENTDEFINITION_MATURITYDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2238,
-  serialized_end=2294,
+  serialized_start=2304,
+  serialized_end=2360,
 )
 
 _INSTRUMENTDEFINITION_SYMBOL = _descriptor.Descriptor(
@@ -530,8 +530,8 @@ _INSTRUMENTDEFINITION_SYMBOL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2296,
-  serialized_end=2336,
+  serialized_start=2362,
+  serialized_end=2402,
 )
 
 _INSTRUMENTDEFINITION_PRICEFORMAT = _descriptor.Descriptor(
@@ -582,8 +582,8 @@ _INSTRUMENTDEFINITION_PRICEFORMAT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2339,
-  serialized_end=2548,
+  serialized_start=2405,
+  serialized_end=2614,
 )
 
 _INSTRUMENTDEFINITION_CURRENCYPAIR = _descriptor.Descriptor(
@@ -619,8 +619,8 @@ _INSTRUMENTDEFINITION_CURRENCYPAIR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2550,
-  serialized_end=2602,
+  serialized_start=2616,
+  serialized_end=2668,
 )
 
 _INSTRUMENTDEFINITION = _descriptor.Descriptor(
@@ -980,6 +980,20 @@ _INSTRUMENTDEFINITION = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='volumeDenominator', full_name='org.openfeed.InstrumentDefinition.volumeDenominator', index=50,
+      number=226, type=17, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='bidOfferQuantityDenominator', full_name='org.openfeed.InstrumentDefinition.bidOfferQuantityDenominator', index=51,
+      number=227, type=17, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -999,7 +1013,7 @@ _INSTRUMENTDEFINITION = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=44,
-  serialized_end=3338,
+  serialized_end=3404,
 )
 
 _INSTRUMENTDEFINITION_SCHEDULE.fields_by_name['sessions'].message_type = _INSTRUMENTDEFINITION_TIMESPAN
@@ -1119,5 +1133,5 @@ _sym_db.RegisterMessage(InstrumentDefinition.CurrencyPair)
 
 
 DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('H\001P\001Z\010openfeed\240\001\001'))
+DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('H\001P\001\240\001\001'))
 # @@protoc_insertion_point(module_scope)
