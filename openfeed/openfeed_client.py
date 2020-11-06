@@ -67,7 +67,7 @@ class OpenfeedClient(object):
     def add_symbol_subscription(self, symbol: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"]):
         """Subscribe to [Market Data] by Barchart Symbols
 
-        Complete list of [SubscriptionTypes]. [Market]
+        Complete list of [SubscriptionTypes].
 
         Parameters
         ----------
@@ -153,7 +153,7 @@ class OpenfeedClient(object):
 
         [Instrument Definition]: https://openfeed-org.github.io/documentation/Message%20Specification/
         """
-        return self.instrument_definitions[id]
+        return self.instrument_definitions[id].instrumentDefinition
 
     def get_instrument_definition_by_symbol(self, symbol):
         """Returns an [Instrument Definition] for a [Symbol] string
@@ -161,7 +161,7 @@ class OpenfeedClient(object):
         [Instrument Definition]: https://openfeed-org.github.io/documentation/Message%20Specification/
         [Symbol]: https://openfeed-org.github.io/documentation/Message%20Specification/
         """
-        return self.instruments_by_symbol[symbol]
+        return self.instruments_by_symbol[symbol].instrumentDefinition
 
     def _send_message(self, msg):
         if self.debug:
@@ -394,8 +394,7 @@ class OpenfeedClient(object):
                 requests.append(openfeed_api_pb2.SubscriptionRequest.Request(
                     symbol=sym,
                     subscriptionType=[openfeed_api_pb2.SubscriptionType.Value(
-                        t) for t in subscription_type],
-                    snapshotIntervalSeconds=60
+                        t) for t in subscription_type]
                 ))
 
         of_req = openfeed_api_pb2.OpenfeedGatewayRequest(
