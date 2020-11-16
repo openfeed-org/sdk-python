@@ -61,7 +61,7 @@ of_client = openfeed.OpenfeedClient("username", "password")
 of_client.add_exchange_subscription(["NYSE"], callback=on_message, subscription_type=["OHLC"])
 ```
 
-```json
+```
 {
   marketId: 5389879102616877808
   symbol: "AAPL"
