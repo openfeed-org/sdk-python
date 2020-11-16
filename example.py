@@ -1,9 +1,15 @@
 import openfeed
+import argparse
 
 if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-u', help='Username')
+    parser.add_argument('-p', help='Password')
+    args = parser.parse_args()
+
     # new client with credentials
-    of_client = openfeed.OpenfeedClient("username", "password")
+    of_client = openfeed.OpenfeedClient(args.u, args.p)
 
     # app state handlers
     of_client.on_error = lambda x: print("Error:", x)
@@ -14,15 +20,15 @@ if __name__ == "__main__":
     def on_message(msg):
         print("Market Data Message: ", msg)
 
-    of_client.add_symbol_subscription("AAPL", callback=on_message)
+    of_client.add_symbol_subscription("AAPL", callback=on_message, subscription_type=["OHLC"])
 
     # list exchanges
 
-    of_client.request_available_exchanges(
-        lambda x: print("Openfeed Exchanges:", x))
+    # of_client.request_available_exchanges(
+    #    lambda x: print("Openfeed Exchanges:", x))
 
     # sub to markets by exchange
-    of_client.add_exchange_subscription("NYSE", callback=on_message)
+    # of_client.add_exchange_subscription("NYSE", callback=on_message)
 
     # blocking mode
     of_client.start()
