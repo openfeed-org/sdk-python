@@ -47,6 +47,42 @@ of-client: Market Data:  marketUpdate
 of-client: Market Data:  marketUpdate
 ```
 
-## Known Issues
+## Subscribtion Types
 
-* https://github.com/protocolbuffers/protobuf/issues/1491
+Openfeed supports many levels of [subscription types](https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.SubscriptionType).
+
+### OHLC
+
+```python
+import openfeed
+
+of_client = openfeed.OpenfeedClient("username", "password")
+
+of_client.add_exchange_subscription(["NYSE"], callback=on_message, subscription_type=["OHLC"])
+```
+
+```json
+{
+  marketId: 5389879102616877808
+  symbol: "AAPL"
+  open {
+    price: 1205600
+  }
+  high {
+    price: 1205600
+  }
+  low {
+    price: 1205247
+  }
+  close {
+    price: 1205490
+  }
+  volume: 43635
+  priceVolume: 5259897.1422
+  numberTrades: 224
+  tradeDate: 20201116
+  transactionTime: 1605547921000000000
+  openStartTime: 1605547885850000000
+  closeEndTime: 1605547920964000000
+}
+```
