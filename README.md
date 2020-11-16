@@ -47,7 +47,7 @@ of-client: Market Data:  marketUpdate
 of-client: Market Data:  marketUpdate
 ```
 
-## Subscribtion Types
+## Subscription Types
 
 Openfeed supports many levels of [subscription types](https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.SubscriptionType).
 
