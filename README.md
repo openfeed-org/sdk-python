@@ -47,21 +47,17 @@ of-client: Market Data:  marketUpdate
 of-client: Market Data:  marketUpdate
 ```
 
-## Subscribtion Types
+## Subscription Types
 
 Openfeed supports many levels of [subscription types](https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.SubscriptionType).
 
 ### OHLC
 
 ```python
-import openfeed
-
-of_client = openfeed.OpenfeedClient("username", "password")
-
 of_client.add_exchange_subscription(["NYSE"], callback=on_message, subscription_type=["OHLC"])
 ```
 
-```json
+```
 {
   marketId: 5389879102616877808
   symbol: "AAPL"
