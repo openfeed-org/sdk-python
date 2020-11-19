@@ -214,6 +214,9 @@ class OpenfeedClient(object):
         def handleInstrumentReferenceResponse(msg):
             rid = msg.instrumentReferenceResponse.correlationId
 
+            self.instrument_definitions[msg.instrumentReferenceResponse.marketId] = msg
+            self.instruments_by_symbol[msg.instrumentReferenceResponse.symbol] = msg
+
             if rid not in self.request_id_handlers:
                 return msg
 
