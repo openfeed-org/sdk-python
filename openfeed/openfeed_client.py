@@ -141,6 +141,18 @@ class OpenfeedClient(object):
         if self.token is not None:
             self._send_message(req)
 
+    def request_instruments_for_exchange(self, exchange, callback):
+        """Request a list of instruments actively trading trading on an exchange.
+        """
+
+        rid = random.getrandbits(32)
+        req = self.__create_instrument_reference_request(rid, exchange)
+
+        self.request_id_handlers[rid] = Request(callback, req)
+
+        if self.token is not None:
+            self._send_message(req)
+
     def get_instrument_definitions(self):
         """Returns a dict of Openfeed [Instrument Definitions] keyed by MarketID
 
@@ -199,6 +211,16 @@ class OpenfeedClient(object):
 
             return msg
 
+        def handleInstrumentReferenceResponse(msg):
+            rid = msg.instrumentReferenceResponse.correlationId
+
+            if rid not in self.request_id_handlers:
+                return msg
+
+            self.request_id_handlers[rid].callback(msg)
+
+            return msg     
+
         def handleSubscriptionResponse(msg):
 
             if msg.subscriptionResponse.status.result > 1:
@@ -256,6 +278,7 @@ class OpenfeedClient(object):
             "heartBeat": handleHeartbeat,
             "exchangeResponse": handleExchangeRequest,
             "subscriptionResponse": handleSubscriptionResponse,
+            "instrumentReferenceResponse": handleInstrumentReferenceResponse,
             "instrumentDefinition": handleInstrumentDefinition,
             "marketSnapshot": handleMarketSnapshot,
             "marketUpdate": handleMarketUpdate,
@@ -414,6 +437,15 @@ class OpenfeedClient(object):
             )
         )
 
+    def __create_instrument_reference_request(self, correlation_id, exchange):
+        return openfeed_api_pb2.OpenfeedGatewayRequest(
+            instrumentReferenceRequest=openfeed_api_pb2.InstrumentReferenceRequest(
+                correlationId=correlation_id,
+                token=self.token,
+                exchange=exchange
+            )
+        )
+
     def __create_instrument(self, symbol):
         return openfeed_instrument_pb2.InstrumentDefinition(
             symbol=symbol,
@@ -478,6 +510,8 @@ class Request(object):
 
         if request_type == "exchangeRequest":
             self.request.exchangeRequest.token = of_client.token
+        elif request_type == "instrumentReferenceRequest":
+            self.request.instrumentReferenceRequest.token = of_client.token    
 
         of_client._send_message(self.request)
 
