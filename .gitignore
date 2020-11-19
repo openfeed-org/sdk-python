@@ -144,3 +144,4 @@ protos/*.proto
 *.csv
 *.txt
 test.py
+temp/*
