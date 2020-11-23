@@ -222,7 +222,7 @@ class OpenfeedClient(object):
 
             self.request_id_handlers[rid].callback(msg)
 
-            return msg     
+            return msg
 
         def handleSubscriptionResponse(msg):
 
@@ -341,7 +341,7 @@ class OpenfeedClient(object):
         # given the below, if the instrument contains duplicate `instrument.symbols`, the listeners will get duplicate callbacks
 
         for s in instrument.symbols:
-            if s.symbol not in self.symbol_handlers:
+            if s.symbol not in self.symbol_handlers or s.vendor != "Barchart":
                 return
 
             for cb in self.symbol_handlers[s.symbol]:
@@ -514,7 +514,7 @@ class Request(object):
         if request_type == "exchangeRequest":
             self.request.exchangeRequest.token = of_client.token
         elif request_type == "instrumentReferenceRequest":
-            self.request.instrumentReferenceRequest.token = of_client.token    
+            self.request.instrumentReferenceRequest.token = of_client.token
 
         of_client._send_message(self.request)
 
