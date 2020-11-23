@@ -17,7 +17,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='openfeed',
-    version='1.0.7',
+    version='1.0.9',
     author='Barchart',
     author_email='mike@barchart.com',
     license='MIT',
@@ -31,7 +31,7 @@ setup(
     },
     description='Barchart Openfeed Example Client for Python',
     long_description=long_description,
-    long_description_content_type="text/markdown",
+    long_description_content_type='text/markdown',
     download_url='https://github.com/openfeed-org/sdk-python/archive/master.zip',
     keywords=[]
 )

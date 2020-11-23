@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='openfeed_api.proto',
   package='org.openfeed',
   syntax='proto3',
-  serialized_pb=_b('\n\x12openfeed_api.proto\x12\x0corg.openfeed\x1a\x19openfeed_instrument.proto\x1a\x0eopenfeed.proto\"\x94\x03\n\x16OpenfeedGatewayRequest\x12\x32\n\x0cloginRequest\x18\x01 \x01(\x0b\x32\x1a.org.openfeed.LoginRequestH\x00\x12\x34\n\rlogoutRequest\x18\x02 \x01(\x0b\x32\x1b.org.openfeed.LogoutRequestH\x00\x12@\n\x13subscriptionRequest\x18\x03 \x01(\x0b\x32!.org.openfeed.SubscriptionRequestH\x00\x12<\n\x11instrumentRequest\x18\x04 \x01(\x0b\x32\x1f.org.openfeed.InstrumentRequestH\x00\x12N\n\x1ainstrumentReferenceRequest\x18\x05 \x01(\x0b\x32(.org.openfeed.InstrumentReferenceRequestH\x00\x12\x38\n\x0f\x65xchangeRequest\x18\x06 \x01(\x0b\x32\x1d.org.openfeed.ExchangeRequestH\x00\x42\x06\n\x04\x64\x61ta\"\xc8\x06\n\x16OpenfeedGatewayMessage\x12\x34\n\rloginResponse\x18\x01 \x01(\x0b\x32\x1b.org.openfeed.LoginResponseH\x00\x12\x36\n\x0elogoutResponse\x18\x02 \x01(\x0b\x32\x1c.org.openfeed.LogoutResponseH\x00\x12>\n\x12instrumentResponse\x18\x03 \x01(\x0b\x32 .org.openfeed.InstrumentResponseH\x00\x12P\n\x1binstrumentReferenceResponse\x18\x04 \x01(\x0b\x32).org.openfeed.InstrumentReferenceResponseH\x00\x12\x42\n\x14subscriptionResponse\x18\x05 \x01(\x0b\x32\".org.openfeed.SubscriptionResponseH\x00\x12\x32\n\x0cmarketStatus\x18\x06 \x01(\x0b\x32\x1a.org.openfeed.MarketStatusH\x00\x12,\n\theartBeat\x18\x07 \x01(\x0b\x32\x17.org.openfeed.HeartBeatH\x00\x12\x42\n\x14instrumentDefinition\x18\x08 \x01(\x0b\x32\".org.openfeed.InstrumentDefinitionH\x00\x12\x36\n\x0emarketSnapshot\x18\t \x01(\x0b\x32\x1c.org.openfeed.MarketSnapshotH\x00\x12\x32\n\x0cmarketUpdate\x18\n \x01(\x0b\x32\x1a.org.openfeed.MarketUpdateH\x00\x12\x34\n\rvolumeAtPrice\x18\x0b \x01(\x0b\x32\x1b.org.openfeed.VolumeAtPriceH\x00\x12\"\n\x04ohlc\x18\x0c \x01(\x0b\x32\x12.org.openfeed.OhlcH\x00\x12:\n\x10\x65xchangeResponse\x18\r \x01(\x0b\x32\x1e.org.openfeed.ExchangeResponseH\x00\x12:\n\x10instrumentAction\x18\x0e \x01(\x0b\x32\x1e.org.openfeed.InstrumentActionH\x00\x42\x06\n\x04\x64\x61ta\"g\n\x06Status\x12$\n\x06result\x18\x01 \x01(\x0e\x32\x14.org.openfeed.Result\x12\x0f\n\x07message\x18\x02 \x01(\t\x12&\n\x07service\x18\x03 \x01(\x0e\x32\x15.org.openfeed.Service\"I\n\x0cLoginRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"[\n\rLoginResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\x12\r\n\x05token\x18\x03 \x01(\t\"5\n\rLogoutRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\r\n\x05token\x18\x03 \x01(\t\"M\n\x0eLogoutResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\"\x93\x01\n\x11InstrumentRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\r\n\x05token\x18\x02 \x01(\t\x12\x10\n\x06symbol\x18\n \x01(\tH\x00\x12\x12\n\x08marketId\x18\x0b \x01(\x12H\x00\x12\x12\n\x08\x65xchange\x18\x0c \x01(\tH\x00\x12\x13\n\tchannelId\x18\r \x01(\x11H\x00\x42\t\n\x07request\"n\n\x12InstrumentResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\x12\x1b\n\x13numberOfDefinitions\x18\x03 \x01(\x11\"\x9c\x01\n\x1aInstrumentReferenceRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\r\n\x05token\x18\x02 \x01(\t\x12\x10\n\x06symbol\x18\n \x01(\tH\x00\x12\x12\n\x08marketId\x18\x0b \x01(\x12H\x00\x12\x12\n\x08\x65xchange\x18\x0c \x01(\tH\x00\x12\x13\n\tchannelId\x18\r \x01(\x11H\x00\x42\t\n\x07request\"\xfb\x01\n\x1bInstrumentReferenceResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\x12\x1b\n\x13numberOfDefinitions\x18\x03 \x01(\x11\x12\x11\n\tchannelId\x18\x04 \x01(\x11\x12\x10\n\x08marketId\x18\x05 \x01(\x12\x12\x0e\n\x06symbol\x18\x06 \x01(\t\x12\x10\n\x08\x65xchange\x18\x07 \x01(\t\x12\x11\n\tddfSymbol\x18\x08 \x01(\t\x12\x13\n\x0b\x64\x64\x66\x45xchange\x18\t \x01(\t\x12\x13\n\x0b\x64\x64\x66\x42\x61seCode\x18\n \x01(\t\"7\n\x0f\x45xchangeRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\r\n\x05token\x18\x02 \x01(\t\"\xcb\x01\n\x10\x45xchangeResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\x12:\n\texchanges\x18\x03 \x03(\x0b\x32\'.org.openfeed.ExchangeResponse.Exchange\x1a>\n\x08\x45xchange\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0f\n\x07\x61liases\x18\x03 \x03(\t\"\xf3\x02\n\x13SubscriptionRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\r\n\x05token\x18\x02 \x01(\t\x12&\n\x07service\x18\x03 \x01(\x0e\x32\x15.org.openfeed.Service\x12\x13\n\x0bunsubscribe\x18\x04 \x01(\x08\x12;\n\x08requests\x18\x05 \x03(\x0b\x32).org.openfeed.SubscriptionRequest.Request\x1a\xbb\x01\n\x07Request\x12\x10\n\x06symbol\x18\x01 \x01(\tH\x00\x12\x12\n\x08marketId\x18\x02 \x01(\x12H\x00\x12\x12\n\x08\x65xchange\x18\x03 \x01(\tH\x00\x12\x13\n\tchannelId\x18\x04 \x01(\x11H\x00\x12\x38\n\x10subscriptionType\x18\n \x03(\x0e\x32\x1e.org.openfeed.SubscriptionType\x12\x1f\n\x17snapshotIntervalSeconds\x18\x0b \x01(\x11\x42\x06\n\x04\x64\x61ta\"\xf1\x01\n\x14SubscriptionResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x12\x10\n\x08marketId\x18\x04 \x01(\x12\x12\x10\n\x08\x65xchange\x18\x05 \x01(\t\x12\x11\n\tchannelId\x18\x06 \x01(\x11\x12\x1b\n\x13numberOfDefinitions\x18\x07 \x01(\x11\x12\x38\n\x10subscriptionType\x18\x08 \x01(\x0e\x32\x1e.org.openfeed.SubscriptionType*\xc9\x02\n\x06Result\x12\x12\n\x0eUNKNOWN_RESULT\x10\x00\x12\x0b\n\x07SUCCESS\x10\x01\x12\x12\n\x0eINVALID_SYMBOL\x10t\x12\x15\n\x11INVALID_MARKET_ID\x10u\x12\x14\n\x10INVALID_EXCHANGE\x10v\x12\x16\n\x12INVALID_CHANNEL_ID\x10w\x12\x15\n\x11MALFORMED_MESSAGE\x10x\x12\x16\n\x12UNEXPECTED_MESSAGE\x10y\x12\x12\n\x0eNOT_SUBSCRIBED\x10z\x12\x1a\n\x16\x44UPLICATE_SUBSCRIPTION\x10{\x12\x17\n\x13INVALID_CREDENTIALS\x10|\x12\x1b\n\x17INSUFFICIENT_PRIVILEGES\x10}\x12\x1b\n\x17\x41UTHENTICATION_REQUIRED\x10~\x12\x13\n\x0fGENERIC_FAILURE\x10\x7f*\x8b\x01\n\x10SubscriptionType\x12\x07\n\x03\x41LL\x10\x00\x12\t\n\x05QUOTE\x10\x01\x12\x15\n\x11QUOTE_PARTICIPANT\x10\x02\x12\x0f\n\x0b\x44\x45PTH_PRICE\x10\x03\x12\x0f\n\x0b\x44\x45PTH_ORDER\x10\x04\x12\n\n\x06TRADES\x10\x05\x12\x14\n\x10\x43UMLATIVE_VOLUME\x10\x06\x12\x08\n\x04OHLC\x10\x07\x42\x07H\x01P\x01\xa0\x01\x01\x62\x06proto3')
+  serialized_pb=_b('\n\x12openfeed_api.proto\x12\x0corg.openfeed\x1a\x19openfeed_instrument.proto\x1a\x0eopenfeed.proto\"\x94\x03\n\x16OpenfeedGatewayRequest\x12\x32\n\x0cloginRequest\x18\x01 \x01(\x0b\x32\x1a.org.openfeed.LoginRequestH\x00\x12\x34\n\rlogoutRequest\x18\x02 \x01(\x0b\x32\x1b.org.openfeed.LogoutRequestH\x00\x12@\n\x13subscriptionRequest\x18\x03 \x01(\x0b\x32!.org.openfeed.SubscriptionRequestH\x00\x12<\n\x11instrumentRequest\x18\x04 \x01(\x0b\x32\x1f.org.openfeed.InstrumentRequestH\x00\x12N\n\x1ainstrumentReferenceRequest\x18\x05 \x01(\x0b\x32(.org.openfeed.InstrumentReferenceRequestH\x00\x12\x38\n\x0f\x65xchangeRequest\x18\x06 \x01(\x0b\x32\x1d.org.openfeed.ExchangeRequestH\x00\x42\x06\n\x04\x64\x61ta\"\xc8\x06\n\x16OpenfeedGatewayMessage\x12\x34\n\rloginResponse\x18\x01 \x01(\x0b\x32\x1b.org.openfeed.LoginResponseH\x00\x12\x36\n\x0elogoutResponse\x18\x02 \x01(\x0b\x32\x1c.org.openfeed.LogoutResponseH\x00\x12>\n\x12instrumentResponse\x18\x03 \x01(\x0b\x32 .org.openfeed.InstrumentResponseH\x00\x12P\n\x1binstrumentReferenceResponse\x18\x04 \x01(\x0b\x32).org.openfeed.InstrumentReferenceResponseH\x00\x12\x42\n\x14subscriptionResponse\x18\x05 \x01(\x0b\x32\".org.openfeed.SubscriptionResponseH\x00\x12\x32\n\x0cmarketStatus\x18\x06 \x01(\x0b\x32\x1a.org.openfeed.MarketStatusH\x00\x12,\n\theartBeat\x18\x07 \x01(\x0b\x32\x17.org.openfeed.HeartBeatH\x00\x12\x42\n\x14instrumentDefinition\x18\x08 \x01(\x0b\x32\".org.openfeed.InstrumentDefinitionH\x00\x12\x36\n\x0emarketSnapshot\x18\t \x01(\x0b\x32\x1c.org.openfeed.MarketSnapshotH\x00\x12\x32\n\x0cmarketUpdate\x18\n \x01(\x0b\x32\x1a.org.openfeed.MarketUpdateH\x00\x12\x34\n\rvolumeAtPrice\x18\x0b \x01(\x0b\x32\x1b.org.openfeed.VolumeAtPriceH\x00\x12\"\n\x04ohlc\x18\x0c \x01(\x0b\x32\x12.org.openfeed.OhlcH\x00\x12:\n\x10\x65xchangeResponse\x18\r \x01(\x0b\x32\x1e.org.openfeed.ExchangeResponseH\x00\x12:\n\x10instrumentAction\x18\x0e \x01(\x0b\x32\x1e.org.openfeed.InstrumentActionH\x00\x42\x06\n\x04\x64\x61ta\"g\n\x06Status\x12$\n\x06result\x18\x01 \x01(\x0e\x32\x14.org.openfeed.Result\x12\x0f\n\x07message\x18\x02 \x01(\t\x12&\n\x07service\x18\x03 \x01(\x0e\x32\x15.org.openfeed.Service\"I\n\x0cLoginRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"[\n\rLoginResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\x12\r\n\x05token\x18\x03 \x01(\t\"5\n\rLogoutRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\r\n\x05token\x18\x03 \x01(\t\"M\n\x0eLogoutResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\"\x93\x01\n\x11InstrumentRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\r\n\x05token\x18\x02 \x01(\t\x12\x10\n\x06symbol\x18\n \x01(\tH\x00\x12\x12\n\x08marketId\x18\x0b \x01(\x12H\x00\x12\x12\n\x08\x65xchange\x18\x0c \x01(\tH\x00\x12\x13\n\tchannelId\x18\r \x01(\x11H\x00\x42\t\n\x07request\"n\n\x12InstrumentResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\x12\x1b\n\x13numberOfDefinitions\x18\x03 \x01(\x11\"\x9c\x01\n\x1aInstrumentReferenceRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\r\n\x05token\x18\x02 \x01(\t\x12\x10\n\x06symbol\x18\n \x01(\tH\x00\x12\x12\n\x08marketId\x18\x0b \x01(\x12H\x00\x12\x12\n\x08\x65xchange\x18\x0c \x01(\tH\x00\x12\x13\n\tchannelId\x18\r \x01(\x11H\x00\x42\t\n\x07request\"\x93\x02\n\x1bInstrumentReferenceResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\x12\x1b\n\x13numberOfDefinitions\x18\x03 \x01(\x11\x12\x11\n\tchannelId\x18\x04 \x01(\x11\x12\x10\n\x08marketId\x18\x05 \x01(\x12\x12\x0e\n\x06symbol\x18\x06 \x01(\t\x12\x10\n\x08\x65xchange\x18\x07 \x01(\t\x12\x11\n\tddfSymbol\x18\x08 \x01(\t\x12\x13\n\x0b\x64\x64\x66\x45xchange\x18\t \x01(\t\x12\x13\n\x0b\x64\x64\x66\x42\x61seCode\x18\n \x01(\t\x12\x16\n\x0e\x65xchangeSymbol\x18\x0b \x01(\t\"7\n\x0f\x45xchangeRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\r\n\x05token\x18\x02 \x01(\t\"\xcb\x01\n\x10\x45xchangeResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\x12:\n\texchanges\x18\x03 \x03(\x0b\x32\'.org.openfeed.ExchangeResponse.Exchange\x1a>\n\x08\x45xchange\x12\x0c\n\x04\x63ode\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x0f\n\x07\x61liases\x18\x03 \x03(\t\"\xf3\x02\n\x13SubscriptionRequest\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12\r\n\x05token\x18\x02 \x01(\t\x12&\n\x07service\x18\x03 \x01(\x0e\x32\x15.org.openfeed.Service\x12\x13\n\x0bunsubscribe\x18\x04 \x01(\x08\x12;\n\x08requests\x18\x05 \x03(\x0b\x32).org.openfeed.SubscriptionRequest.Request\x1a\xbb\x01\n\x07Request\x12\x10\n\x06symbol\x18\x01 \x01(\tH\x00\x12\x12\n\x08marketId\x18\x02 \x01(\x12H\x00\x12\x12\n\x08\x65xchange\x18\x03 \x01(\tH\x00\x12\x13\n\tchannelId\x18\x04 \x01(\x11H\x00\x12\x38\n\x10subscriptionType\x18\n \x03(\x0e\x32\x1e.org.openfeed.SubscriptionType\x12\x1f\n\x17snapshotIntervalSeconds\x18\x0b \x01(\x11\x42\x06\n\x04\x64\x61ta\"\xf1\x01\n\x14SubscriptionResponse\x12\x15\n\rcorrelationId\x18\x01 \x01(\x12\x12$\n\x06status\x18\x02 \x01(\x0b\x32\x14.org.openfeed.Status\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x12\x10\n\x08marketId\x18\x04 \x01(\x12\x12\x10\n\x08\x65xchange\x18\x05 \x01(\t\x12\x11\n\tchannelId\x18\x06 \x01(\x11\x12\x1b\n\x13numberOfDefinitions\x18\x07 \x01(\x11\x12\x38\n\x10subscriptionType\x18\x08 \x01(\x0e\x32\x1e.org.openfeed.SubscriptionType*\xc9\x02\n\x06Result\x12\x12\n\x0eUNKNOWN_RESULT\x10\x00\x12\x0b\n\x07SUCCESS\x10\x01\x12\x12\n\x0eINVALID_SYMBOL\x10t\x12\x15\n\x11INVALID_MARKET_ID\x10u\x12\x14\n\x10INVALID_EXCHANGE\x10v\x12\x16\n\x12INVALID_CHANNEL_ID\x10w\x12\x15\n\x11MALFORMED_MESSAGE\x10x\x12\x16\n\x12UNEXPECTED_MESSAGE\x10y\x12\x12\n\x0eNOT_SUBSCRIBED\x10z\x12\x1a\n\x16\x44UPLICATE_SUBSCRIPTION\x10{\x12\x17\n\x13INVALID_CREDENTIALS\x10|\x12\x1b\n\x17INSUFFICIENT_PRIVILEGES\x10}\x12\x1b\n\x17\x41UTHENTICATION_REQUIRED\x10~\x12\x13\n\x0fGENERIC_FAILURE\x10\x7f*\xa1\x01\n\x10SubscriptionType\x12\x07\n\x03\x41LL\x10\x00\x12\t\n\x05QUOTE\x10\x01\x12\x15\n\x11QUOTE_PARTICIPANT\x10\x02\x12\x0f\n\x0b\x44\x45PTH_PRICE\x10\x03\x12\x0f\n\x0b\x44\x45PTH_ORDER\x10\x04\x12\n\n\x06TRADES\x10\x05\x12\x14\n\x10\x43UMLATIVE_VOLUME\x10\x06\x12\x08\n\x04OHLC\x10\x07\x12\x14\n\x10OHLC_NON_REGULAR\x10\x08\x42\x07H\x01P\x01\xa0\x01\x01\x62\x06proto3')
   ,
   dependencies=[openfeed__instrument__pb2.DESCRIPTOR,openfeed__pb2.DESCRIPTOR,])
 
@@ -91,8 +91,8 @@ _RESULT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=3293,
-  serialized_end=3622,
+  serialized_start=3317,
+  serialized_end=3646,
 )
 _sym_db.RegisterEnumDescriptor(_RESULT)
 
@@ -135,11 +135,15 @@ _SUBSCRIPTIONTYPE = _descriptor.EnumDescriptor(
       name='OHLC', index=7, number=7,
       options=None,
       type=None),
+    _descriptor.EnumValueDescriptor(
+      name='OHLC_NON_REGULAR', index=8, number=8,
+      options=None,
+      type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=3625,
-  serialized_end=3764,
+  serialized_start=3649,
+  serialized_end=3810,
 )
 _sym_db.RegisterEnumDescriptor(_SUBSCRIPTIONTYPE)
 
@@ -166,6 +170,7 @@ DEPTH_ORDER = 4
 TRADES = 5
 CUMLATIVE_VOLUME = 6
 OHLC = 7
+OHLC_NON_REGULAR = 8
 
 
 
@@ -834,6 +839,13 @@ _INSTRUMENTREFERENCERESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='exchangeSymbol', full_name='org.openfeed.InstrumentReferenceResponse.exchangeSymbol', index=10,
+      number=11, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -847,7 +859,7 @@ _INSTRUMENTREFERENCERESPONSE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=2158,
-  serialized_end=2409,
+  serialized_end=2433,
 )
 
 
@@ -884,8 +896,8 @@ _EXCHANGEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2411,
-  serialized_end=2466,
+  serialized_start=2435,
+  serialized_end=2490,
 )
 
 
@@ -929,8 +941,8 @@ _EXCHANGERESPONSE_EXCHANGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2610,
-  serialized_end=2672,
+  serialized_start=2634,
+  serialized_end=2696,
 )
 
 _EXCHANGERESPONSE = _descriptor.Descriptor(
@@ -973,8 +985,8 @@ _EXCHANGERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2469,
-  serialized_end=2672,
+  serialized_start=2493,
+  serialized_end=2696,
 )
 
 
@@ -1042,8 +1054,8 @@ _SUBSCRIPTIONREQUEST_REQUEST = _descriptor.Descriptor(
       name='data', full_name='org.openfeed.SubscriptionRequest.Request.data',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2859,
-  serialized_end=3046,
+  serialized_start=2883,
+  serialized_end=3070,
 )
 
 _SUBSCRIPTIONREQUEST = _descriptor.Descriptor(
@@ -1100,8 +1112,8 @@ _SUBSCRIPTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2675,
-  serialized_end=3046,
+  serialized_start=2699,
+  serialized_end=3070,
 )
 
 
@@ -1180,8 +1192,8 @@ _SUBSCRIPTIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3049,
-  serialized_end=3290,
+  serialized_start=3073,
+  serialized_end=3314,
 )
 
 _OPENFEEDGATEWAYREQUEST.fields_by_name['loginRequest'].message_type = _LOGINREQUEST
