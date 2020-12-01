@@ -142,11 +142,31 @@ class OpenfeedClient(object):
             self._send_message(req)
 
     def request_instruments_for_exchange(self, exchange, callback):
-        """Request a list of instruments actively trading trading on an exchange.
+        """Request a list of [Instrument Definitions] actively trading trading on an exchange.
+
+        [Instrument Definitions]: https://openfeed-org.github.io/documentation/Message%20Specification/#openfeed_instrumentproto
         """
 
         rid = random.getrandbits(32)
-        req = self.__create_instrument_reference_request(rid, exchange)
+        req = self.__create_instrument_request(rid, exchange=exchange)
+
+        self.request_id_handlers[rid] = Request(callback, req)
+
+        if self.token is not None:
+            self._send_message(req)
+
+    def request_instruments(self, callback, symbol=None, market_id=None, exchange=None):
+        """Request [Instrument Definitions] by `symbol`, `market_id`, or `exchange` 
+
+        See [Instrument Request]
+
+        [Instrument Definitions]: https://openfeed-org.github.io/documentation/Message%20Specification/#openfeed_instrumentproto
+        [Instrument Request]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.InstrumentRequest
+        """
+
+        rid = random.getrandbits(32)
+        req = self.__create_instrument_request(
+            rid, market_id=market_id, symbol=symbol, exchange=exchange)
 
         self.request_id_handlers[rid] = Request(callback, req)
 
@@ -203,6 +223,16 @@ class OpenfeedClient(object):
 
         def handleExchangeRequest(msg):
             rid = msg.exchangeResponse.correlationId
+
+            if rid not in self.request_id_handlers:
+                return msg
+
+            self.request_id_handlers[rid].callback(msg)
+
+            return msg
+
+        def handleInstrumentResponse(msg):
+            rid = msg.instrumentResponse.correlationId
 
             if rid not in self.request_id_handlers:
                 return msg
@@ -281,6 +311,7 @@ class OpenfeedClient(object):
             "heartBeat": handleHeartbeat,
             "exchangeResponse": handleExchangeRequest,
             "subscriptionResponse": handleSubscriptionResponse,
+            "instrumentResponse": handleInstrumentResponse,
             "instrumentReferenceResponse": handleInstrumentReferenceResponse,
             "instrumentDefinition": handleInstrumentDefinition,
             "marketSnapshot": handleMarketSnapshot,
@@ -449,6 +480,24 @@ class OpenfeedClient(object):
             )
         )
 
+    def __create_instrument_request(self, correlation_id, symbol=None, market_id=None, exchange=None):
+        ir = openfeed_api_pb2.InstrumentRequest(
+            correlationId=correlation_id,
+            token=self.token,
+            marketId=market_id
+        )
+
+        if symbol is not None:
+            ir.symbol = symbol
+        if market_id is not None:
+            ir.marketId = market_id
+        if exchange is not None:
+            ir.exchange = exchange
+
+        return openfeed_api_pb2.OpenfeedGatewayRequest(
+            instrumentRequest=ir
+        )
+
     def __create_instrument(self, symbol):
         return openfeed_instrument_pb2.InstrumentDefinition(
             symbol=symbol,
@@ -515,6 +564,8 @@ class Request(object):
             self.request.exchangeRequest.token = of_client.token
         elif request_type == "instrumentReferenceRequest":
             self.request.instrumentReferenceRequest.token = of_client.token
+        elif request_type == "instrumentRequest":
+            self.request.instrumentRequest.token = of_client.token
 
         of_client._send_message(self.request)
 

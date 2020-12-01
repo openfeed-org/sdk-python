@@ -8,4 +8,4 @@ sys.path.append(str(Path(__file__).parent))
 
 from .openfeed_client import OpenfeedClient
 
-VERSION = '1.0.9'
+VERSION = '1.1.0'
