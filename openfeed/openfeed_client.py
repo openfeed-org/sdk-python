@@ -51,9 +51,13 @@ class OpenfeedClient(object):
             else:
                 self.__connect()
 
+        return self
+
     def stop(self):
         if self.token is not None:
             self.__reset()
+
+        return self
 
     def add_heartbeat_subscription(self, callback):
         """Subscribe to [Heartbeat] messages (keep alive)
@@ -141,6 +145,8 @@ class OpenfeedClient(object):
         if self.token is not None:
             self._send_message(req)
 
+        return self
+
     def request_instruments_for_exchange(self, exchange, callback):
         """Request a list of [Instrument Definitions] actively trading trading on an exchange.
 
@@ -154,6 +160,8 @@ class OpenfeedClient(object):
 
         if self.token is not None:
             self._send_message(req)
+
+        return self
 
     def request_instruments(self, callback, symbol=None, market_id=None, exchange=None):
         """Request [Instrument Definitions] by `symbol`, `market_id`, or `exchange` 
@@ -172,6 +180,8 @@ class OpenfeedClient(object):
 
         if self.token is not None:
             self._send_message(req)
+
+        return self
 
     def get_instrument_definitions(self):
         """Returns a dict of Openfeed [Instrument Definitions] keyed by MarketID
@@ -201,7 +211,7 @@ class OpenfeedClient(object):
         self.ws.send(msg.SerializeToString(), websocket.ABNF.OPCODE_BINARY)
 
     def __reset(self):
-        self.ws.close()
+        self.ws.shutdown()
         self.token = None
         self.ws = websocket.WebSocket()
 
