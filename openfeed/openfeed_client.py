@@ -62,7 +62,7 @@ class OpenfeedClient(object):
     def add_heartbeat_subscription(self, callback):
         """Subscribe to [Heartbeat] messages (keep alive)
 
-        [Heartbeat]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        [Heartbeat]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.HeartBeat
         """
         self.heartbeat_handlers.append(callback)
 
@@ -82,8 +82,8 @@ class OpenfeedClient(object):
         subscription_type: list, optional
             Default is ['QUOTE']. Can contain any of: 'ALL', 'QUOTE', 'QUOTE_PARTICIPANT', 'DEPTH_PRICE', 'DEPTH_ORDER', 'TRADES', 'OHLC'
 
-        [Market Data]: https://openfeed-org.github.io/documentation/Message%20Specification/
-        [SubscriptionTypes]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        [Market Data]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.MarketUpdate
+        [SubscriptionTypes]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.SubscriptionType
         """
         symbols = []
 
@@ -110,7 +110,7 @@ class OpenfeedClient(object):
 
         Note: your credentials must have the correct service level (FEED) for this operation.
 
-        [Market Data]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        [Market Data]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.MarketUpdate
         """
         exchanges = []
 
@@ -168,7 +168,7 @@ class OpenfeedClient(object):
 
         See [Instrument Request]
 
-        [Instrument Definitions]: https://openfeed-org.github.io/documentation/Message%20Specification/#openfeed_instrumentproto
+        [Instrument Definitions]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.InstrumentDefinition
         [Instrument Request]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.InstrumentRequest
         """
 
@@ -186,22 +186,22 @@ class OpenfeedClient(object):
     def get_instrument_definitions(self):
         """Returns a dict of Openfeed [Instrument Definitions] keyed by MarketID
 
-        [Instrument Definitions]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        [Instrument Definitions]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.InstrumentDefinition
         """
         return self.instrument_definitions
 
     def get_instrument_definition(self, id):
         """Returns an [Instrument Definition] for a Market ID
 
-        [Instrument Definition]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        [Instrument Definition]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.InstrumentDefinition
         """
         return self.instrument_definitions[id].instrumentDefinition
 
     def get_instrument_definition_by_symbol(self, symbol):
         """Returns an [Instrument Definition] for a [Symbol] string
 
-        [Instrument Definition]: https://openfeed-org.github.io/documentation/Message%20Specification/
-        [Symbol]: https://openfeed-org.github.io/documentation/Message%20Specification/
+        [Instrument Definition]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.InstrumentDefinition
+        [Symbol]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.InstrumentDefinition.Symbol
         """
         return self.instruments_by_symbol[symbol].instrumentDefinition
 
