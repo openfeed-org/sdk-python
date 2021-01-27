@@ -68,15 +68,15 @@ class OpenfeedClient(object):
 
         return self
 
-    def add_symbol_subscription(self, symbol: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"]):
+    def add_symbol_subscription(self, symbol: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"], snapshot_interval_seconds=60):
         """Subscribe to [Market Data] by Barchart Symbols
 
-        Complete list of [SubscriptionTypes].
+        Complete list of [SubscriptionTypes]. List of [Service] types.
 
         Parameters
         ----------
         service: str, optional
-            Default is `REAL_TIME` for delayed market data, set it to `DELAYED`
+            Default is `REAL_TIME` for delayed market data, set it to `DELAYED`, or for snapshots set it as one of `REAL_TIME_SNAPSHOT` or `DELAYED_SNAPSHOT'
         callback: Callable
             Your callback function for Market Data messages
         subscription_type: list, optional
@@ -84,6 +84,7 @@ class OpenfeedClient(object):
 
         [Market Data]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.MarketUpdate
         [SubscriptionTypes]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.SubscriptionType
+        [Service]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.Service
         """
         symbols = []
 
@@ -97,20 +98,24 @@ class OpenfeedClient(object):
                 self.symbol_handlers[sym] = []
 
             self.symbol_handlers[sym].append(
-                Listener(symbol=sym, callback=callback, service=service, subscription_type=subscription_type))
+                Listener(symbol=sym, callback=callback, service=service, subscription_type=subscription_type, snapshot_interval_seconds=snapshot_interval_seconds))
 
         if self.token is not None:
             self._send_message(
-                self.__create_subscription_request(symbols=symbols, service=service, subscription_type=subscription_type))
+                self.__create_subscription_request(symbols=symbols, service=service, subscription_type=subscription_type, snapshot_interval_seconds=snapshot_interval_seconds))
 
         return self
 
-    def add_exchange_subscription(self, exchange: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"]):
-        """Subscribe to [Market Data] by Barchart Exchange code(s)
+    def add_exchange_subscription(self, exchange: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"], snapshot_interval_seconds=60):
+        """Subscribe to [Market Data] by Barchart Exchange code(s).
+
+        Complete list of [SubscriptionTypes]. List of [Service] types.
 
         Note: your credentials must have the correct service level (FEED) for this operation.
 
         [Market Data]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.MarketUpdate
+        [SubscriptionTypes]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.SubscriptionType
+        [Service]: https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.Service
         """
         exchanges = []
 
@@ -124,11 +129,11 @@ class OpenfeedClient(object):
                 self.exchange_handlers[exch] = []
 
             self.exchange_handlers[exch].append(Listener(
-                exchange=exch, callback=callback, service=service, subscription_type=subscription_type))
+                exchange=exch, callback=callback, service=service, subscription_type=subscription_type, snapshot_interval_seconds=snapshot_interval_seconds))
 
         if self.token is not None:
             self._send_message(
-                self.__create_subscription_request(exchanges=exchanges, service=service, subscription_type=subscription_type))
+                self.__create_subscription_request(exchanges=exchanges, service=service, subscription_type=subscription_type, snapshot_interval_seconds=snapshot_interval_seconds))
 
         return self
 
@@ -428,7 +433,7 @@ class OpenfeedClient(object):
                 listeners_by_service = interest[l.service]
                 if l.key() not in listeners_by_service:
                     listeners_by_service[l.key()] = Listener(
-                        symbol=l.symbol, exchange=l.exchange, service=l.service, subscription_type=l.subscription_type)
+                        symbol=l.symbol, exchange=l.exchange, service=l.service, subscription_type=l.subscription_type, snapshot_interval_seconds=l.snapshot_interval_seconds)
                 else:
                     existing = listeners_by_service[l.key()]
                     existing.subscription_type = list(set(
@@ -438,13 +443,13 @@ class OpenfeedClient(object):
         for service in interest.keys():
             for i in interest[service].values():
                 self._send_message(
-                    self.__create_subscription_request(exchanges=i.exchanges(), symbols=i.symbols(), service=service, subscription_type=i.subscription_type))
+                    self.__create_subscription_request(exchanges=i.exchanges(), symbols=i.symbols(), service=service, subscription_type=i.subscription_type, snapshot_interval_seconds=i.snapshot_interval_seconds))
 
         # send other rpc requests
         for req in self.request_id_handlers.values():
             req.send(self)
 
-    def __create_subscription_request(self, exchanges=[], symbols=[], service="REAL_TIME", subscription_type=["QUOTE"]):
+    def __create_subscription_request(self, exchanges=[], symbols=[], service="REAL_TIME", subscription_type=["QUOTE"], snapshot_interval_seconds=60):
         requests = []
 
         if len(exchanges) > 0:
@@ -453,7 +458,7 @@ class OpenfeedClient(object):
                     exchange=exch,
                     subscriptionType=[openfeed_api_pb2.SubscriptionType.Value(
                         t) for t in subscription_type],
-                    snapshotIntervalSeconds=60
+                    snapshotIntervalSeconds=snapshot_interval_seconds
                 ))
 
         if len(symbols) > 0:
@@ -461,7 +466,8 @@ class OpenfeedClient(object):
                 requests.append(openfeed_api_pb2.SubscriptionRequest.Request(
                     symbol=sym,
                     subscriptionType=[openfeed_api_pb2.SubscriptionType.Value(
-                        t) for t in subscription_type]
+                        t) for t in subscription_type],
+                    snapshotIntervalSeconds=snapshot_interval_seconds
                 ))
 
         of_req = openfeed_api_pb2.OpenfeedGatewayRequest(
@@ -533,12 +539,13 @@ class OpenfeedClient(object):
 
 
 class Listener(object):
-    def __init__(self, symbol="", exchange="", callback=None, service="REAL_TIME", subscription_type=["QUOTE"]):
+    def __init__(self, symbol="", exchange="", callback=None, service="REAL_TIME", subscription_type=["QUOTE"], snapshot_interval_seconds=60):
         self.symbol = symbol
         self.exchange = exchange
         self.callback = callback
         self.service = service
         self.subscription_type = subscription_type
+        self.snapshot_interval_seconds = snapshot_interval_seconds
 
     def key(self):
         if len(self.exchange) > 0:
