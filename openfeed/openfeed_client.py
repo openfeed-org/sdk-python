@@ -216,7 +216,7 @@ class OpenfeedClient(object):
         self.ws.send(msg.SerializeToString(), websocket.ABNF.OPCODE_BINARY)
 
     def __reset(self):
-        self.ws.shutdown()
+        self.ws.close()
         self.token = None
         self.ws = websocket.WebSocket()
 
@@ -388,7 +388,7 @@ class OpenfeedClient(object):
 
         for s in instrument.symbols:
             if s.symbol not in self.symbol_handlers or s.vendor != "Barchart":
-                return
+                continue
 
             for cb in self.symbol_handlers[s.symbol]:
                 try:
