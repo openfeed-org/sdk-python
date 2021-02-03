@@ -216,7 +216,7 @@ class OpenfeedClient(object):
         self.ws.send(msg.SerializeToString(), websocket.ABNF.OPCODE_BINARY)
 
     def __reset(self):
-        self.ws.shutdown()
+        self.ws.close()
         self.token = None
         self.ws = websocket.WebSocket()
 
@@ -290,7 +290,7 @@ class OpenfeedClient(object):
                 self.instruments_by_symbol[symbol.symbol] = msg
 
             self.__notify_exchange_listeners(
-                msg.instrumentDefinition.barchartExchangeCode, msg)
+                msg.instrumentDefinition.exchangeCode, msg)
             self.__notify_symbol_listeners(msg.instrumentDefinition, msg)
 
             return msg
@@ -298,7 +298,7 @@ class OpenfeedClient(object):
         def handleMarketUpdate(msg):
             inst = self.instrument_definitions[msg.marketUpdate.marketId].instrumentDefinition
 
-            self.__notify_exchange_listeners(inst.barchartExchangeCode, msg)
+            self.__notify_exchange_listeners(inst.exchangeCode, msg)
             self.__notify_symbol_listeners(inst, msg)
 
             return msg
@@ -308,7 +308,7 @@ class OpenfeedClient(object):
 
             self.snapshots[inst.marketId] = msg
 
-            self.__notify_exchange_listeners(inst.barchartExchangeCode, msg)
+            self.__notify_exchange_listeners(inst.exchangeCode, msg)
             self.__notify_symbol_listeners(inst, msg)
 
             return msg
@@ -316,7 +316,7 @@ class OpenfeedClient(object):
         def handleOHLC(msg):
             inst = self.instrument_definitions[msg.ohlc.marketId].instrumentDefinition
 
-            self.__notify_exchange_listeners(inst.barchartExchangeCode, msg)
+            self.__notify_exchange_listeners(inst.exchangeCode, msg)
             self.__notify_symbol_listeners(inst, msg)
 
             return msg
@@ -354,20 +354,20 @@ class OpenfeedClient(object):
 
         def on_error(ws, error):
             if self.debug:
-                print("WS Error: ", error)
+                print("WebSocket Error: ", error)
                 traceback.print_exc()
             self.__callback(self.on_error, error)
 
         def on_close(ws):
             if self.debug:
-                print("WS Close")
+                print("WebSocket Close")
 
             self.__reset()
             self.__callback(self.on_disconnected, ws)
 
         def on_open(ws):
             if self.debug:
-                print("WS Open")
+                print("WebSocket Open")
 
             self._send_message(self.__create_login_request())
             self.__callback(self.on_connected, ws)
@@ -388,7 +388,7 @@ class OpenfeedClient(object):
 
         for s in instrument.symbols:
             if s.symbol not in self.symbol_handlers or s.vendor != "Barchart":
-                return
+                continue
 
             for cb in self.symbol_handlers[s.symbol]:
                 try:
