@@ -27,6 +27,7 @@ class OpenfeedClient(object):
 
         self.instrument_definitions = {}
         self.instruments_by_symbol = {}
+        self.subscription_symbol_by_marketid = {}
         self.snapshots = {}
 
         self.symbol_handlers = {}
@@ -275,6 +276,7 @@ class OpenfeedClient(object):
                 raise Exception("Subscription has failed: ", msg)
 
             if len(msg.subscriptionResponse.symbol) > 0:
+                self.subscription_symbol_by_marketid[msg.subscriptionResponse.marketId] = msg.subscriptionResponse.symbol
                 self.__notify_symbol_listeners(
                     self.__create_instrument(msg.subscriptionResponse.symbol), msg)
             else:
@@ -382,21 +384,26 @@ class OpenfeedClient(object):
 
     def __notify_symbol_listeners(self, instrument, msg):
 
-        # TODO review symbology handling, subbing by one and keying off the other can create unexpected results
-        # for example subscribing to "ZCYAIA40.CM" will come back with OF symbol (less the suffix) in `instrument.symbol`
-        # given the below, if the instrument contains duplicate `instrument.symbols`, the listeners will get duplicate callbacks
+        symbol_key = ""
+
+        if instrument.marketId in self.subscription_symbol_by_marketid:
+            symbol_key = self.subscription_symbol_by_marketid[instrument.marketId]
 
         for s in instrument.symbols:
             if s.symbol not in self.symbol_handlers or s.vendor != "Barchart":
                 continue
+            symbol_key = s.symbol
 
-            for cb in self.symbol_handlers[s.symbol]:
+        if symbol_key != "":
+            for cb in self.symbol_handlers[symbol_key]:
                 try:
                     cb.callback(msg)
                 except Exception as e:
                     if self.debug:
-                        print("Failed to notify `symbol` callback:", s, e)
+                        print("Failed to notify `symbol` callback:", symbol_key, e)
                     self.__callback(self.on_error, e)
+        else:
+            print("got a message but have no handlers", instrument, msg)
 
     def __notify_exchange_listeners(self, exchange, msg):
         if exchange not in self.exchange_handlers:

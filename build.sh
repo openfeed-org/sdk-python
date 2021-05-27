@@ -1,7 +1,7 @@
 # build.sh
 tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
 
-git clone git@github.com:openfeed-org/proto $tmp_dir
+git clone https://github.com/openfeed-org/proto.git $tmp_dir
 mv $tmp_dir/*.proto protos -f
 
 rm -rf $temp

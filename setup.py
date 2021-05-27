@@ -17,7 +17,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='openfeed',
-    version='1.1.5',
+    version='1.1.6',
     author='Barchart',
     author_email='mike@barchart.com',
     license='MIT',

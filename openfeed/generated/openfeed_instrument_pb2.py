@@ -7,7 +7,6 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
-from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
@@ -19,7 +18,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='openfeed_instrument.proto',
   package='org.openfeed',
   syntax='proto3',
-  serialized_pb=_b('\n\x19openfeed_instrument.proto\x12\x0corg.openfeed\"\xcc\x1a\n\x14InstrumentDefinition\x12\x10\n\x08marketId\x18\x01 \x01(\x12\x12I\n\x0einstrumentType\x18\x02 \x01(\x0e\x32\x31.org.openfeed.InstrumentDefinition.InstrumentType\x12\x45\n\x10supportBookTypes\x18\x03 \x03(\x0e\x32+.org.openfeed.InstrumentDefinition.BookType\x12\x11\n\tbookDepth\x18\x04 \x01(\x11\x12\x10\n\x08vendorId\x18\x05 \x01(\t\x12\x0e\n\x06symbol\x18\x06 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x07 \x01(\t\x12\x0f\n\x07\x63\x66iCode\x18\x08 \x01(\t\x12\x14\n\x0c\x63urrencyCode\x18\t \x01(\t\x12\x14\n\x0c\x65xchangeCode\x18\n \x01(\t\x12\x1d\n\x15minimumPriceIncrement\x18\x0b \x01(\x02\x12\x1a\n\x12\x63ontractPointValue\x18\x0c \x01(\x02\x12=\n\x08schedule\x18\r \x01(\x0b\x32+.org.openfeed.InstrumentDefinition.Schedule\x12=\n\x08\x63\x61lendar\x18\x0e \x01(\x0b\x32+.org.openfeed.InstrumentDefinition.Calendar\x12\x18\n\x10recordCreateTime\x18\x0f \x01(\x12\x12\x18\n\x10recordUpdateTime\x18\x10 \x01(\x12\x12\x14\n\x0ctimeZoneName\x18\x11 \x01(\t\x12\x17\n\x0finstrumentGroup\x18\x12 \x01(\t\x12I\n\x10symbolExpiration\x18\x13 \x01(\x0b\x32/.org.openfeed.InstrumentDefinition.MaturityDate\x12\x37\n\x05state\x18\x14 \x01(\x0e\x32(.org.openfeed.InstrumentDefinition.State\x12\x0f\n\x07\x63hannel\x18\x15 \x01(\x11\x12\x1a\n\x12underlyingMarketId\x18\x16 \x01(\x12\x12\x43\n\x0bpriceFormat\x18\x17 \x01(\x0b\x32..org.openfeed.InstrumentDefinition.PriceFormat\x12O\n\x17optionStrikePriceFormat\x18\x18 \x01(\x0b\x32..org.openfeed.InstrumentDefinition.PriceFormat\x12\x18\n\x10priceDenominator\x18\x1c \x01(\x11\x12\x1b\n\x13quantityDenominator\x18\x1d \x01(\x11\x12\x12\n\nisTradable\x18\x1e \x01(\x08\x12\x17\n\x0ftransactionTime\x18\x32 \x01(\x12\x12\x15\n\rauxiliaryData\x18\x63 \x01(\x0c\x12:\n\x07symbols\x18\x64 \x03(\x0b\x32).org.openfeed.InstrumentDefinition.Symbol\x12\x15\n\x0coptionStrike\x18\xc8\x01 \x01(\x12\x12\x42\n\noptionType\x18\xca\x01 \x01(\x0e\x32-.org.openfeed.InstrumentDefinition.OptionType\x12\x44\n\x0boptionStyle\x18\xcb\x01 \x01(\x0e\x32..org.openfeed.InstrumentDefinition.OptionStyle\x12 \n\x17optionStrikeDenominator\x18\xcc\x01 \x01(\x11\x12\x13\n\nspreadCode\x18\xd2\x01 \x01(\t\x12@\n\tspreadLeg\x18\xd3\x01 \x03(\x0b\x32,.org.openfeed.InstrumentDefinition.SpreadLeg\x12\x1a\n\x11userDefinedSpread\x18\xd4\x01 \x01(\x08\x12\x13\n\nmarketTier\x18\xd5\x01 \x01(\t\x12!\n\x18\x66inancialStatusIndicator\x18\xd6\x01 \x01(\t\x12\r\n\x04isin\x18\xd7\x01 \x01(\t\x12\x46\n\x0c\x63urrencyPair\x18\xd8\x01 \x01(\x0b\x32/.org.openfeed.InstrumentDefinition.CurrencyPair\x12\x1c\n\x13\x65xchangeSendsVolume\x18\xd9\x01 \x01(\x08\x12\x1a\n\x11\x65xchangeSendsHigh\x18\xda\x01 \x01(\x08\x12\x19\n\x10\x65xchangeSendsLow\x18\xdb\x01 \x01(\x08\x12\x1a\n\x11\x65xchangeSendsOpen\x18\xdc\x01 \x01(\x08\x12#\n\x1a\x63onsolidatedFeedInstrument\x18\xdd\x01 \x01(\x08\x12\x1d\n\x14openOutcryInstrument\x18\xde\x01 \x01(\x08\x12*\n!syntheticAmericanOptionInstrument\x18\xdf\x01 \x01(\x08\x12\x1d\n\x14\x62\x61rchartExchangeCode\x18\xe0\x01 \x01(\t\x12\x19\n\x10\x62\x61rchartBaseCode\x18\xe1\x01 \x01(\t\x12\x1a\n\x11volumeDenominator\x18\xe2\x01 \x01(\x11\x12$\n\x1b\x62idOfferQuantityDenominator\x18\xe3\x01 \x01(\x11\x12*\n!primaryListingMarketParticipantId\x18\xe4\x01 \x01(\t\x1aI\n\x08Schedule\x12=\n\x08sessions\x18\x01 \x03(\x0b\x32+.org.openfeed.InstrumentDefinition.TimeSpan\x1a\x31\n\x08TimeSpan\x12\x11\n\ttimeStart\x18\x01 \x01(\x12\x12\x12\n\ntimeFinish\x18\x02 \x01(\x12\x1a\x44\n\x08\x43\x61lendar\x12\x38\n\x06\x65vents\x18\x01 \x03(\x0b\x32(.org.openfeed.InstrumentDefinition.Event\x1aQ\n\x05\x45vent\x12:\n\x04type\x18\x01 \x01(\x0e\x32,.org.openfeed.InstrumentDefinition.EventType\x12\x0c\n\x04\x64\x61te\x18\x02 \x01(\x12\x1a<\n\tSpreadLeg\x12\x10\n\x08marketId\x18\x01 \x01(\x12\x12\r\n\x05ratio\x18\x02 \x01(\x11\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x1a\x38\n\x0cMaturityDate\x12\x0c\n\x04year\x18\x01 \x01(\x11\x12\r\n\x05month\x18\x02 \x01(\x11\x12\x0b\n\x03\x64\x61y\x18\x03 \x01(\x11\x1a(\n\x06Symbol\x12\x0e\n\x06vendor\x18\x01 \x01(\t\x12\x0e\n\x06symbol\x18\x02 \x01(\t\x1a\xd1\x01\n\x0bPriceFormat\x12\x14\n\x0cisFractional\x18\x01 \x01(\x08\x12\x13\n\x0b\x64\x65nominator\x18\x02 \x01(\x11\x12\x16\n\x0esubDenominator\x18\x04 \x01(\x11\x12K\n\tsubFormat\x18\x06 \x01(\x0e\x32\x38.org.openfeed.InstrumentDefinition.PriceFormat.SubFormat\"2\n\tSubFormat\x12\x08\n\x04\x46LAT\x10\x00\x12\x0e\n\nFRACTIONAL\x10\x01\x12\x0b\n\x07\x44\x45\x43IMAL\x10\x02\x1a\x34\n\x0c\x43urrencyPair\x12\x11\n\tcurrency1\x18\x01 \x01(\t\x12\x11\n\tcurrency2\x18\x02 \x01(\t\"\x9b\x01\n\x0eInstrumentType\x12\x1b\n\x17UNKNOWN_INSTRUMENT_TYPE\x10\x00\x12\t\n\x05\x46OREX\x10\x01\x12\t\n\x05INDEX\x10\x02\x12\n\n\x06\x45QUITY\x10\x03\x12\n\n\x06\x46UTURE\x10\x04\x12\n\n\x06OPTION\x10\x05\x12\n\n\x06SPREAD\x10\x06\x12\x0f\n\x0bMUTUAL_FUND\x10\x07\x12\x15\n\x11MONEY_MARKET_FUND\x10\x08\"Z\n\x08\x42ookType\x12\x15\n\x11UNKNOWN_BOOK_TYPE\x10\x00\x12\x0f\n\x0bTOP_OF_BOOK\x10\x01\x12\x15\n\x11PRICE_LEVEL_DEPTH\x10\x02\x12\x0f\n\x0bORDER_DEPTH\x10\x03\"8\n\nOptionType\x12\x17\n\x13UNKNOWN_OPTION_TYPE\x10\x00\x12\x08\n\x04\x43\x41LL\x10\x01\x12\x07\n\x03PUT\x10\x02\"Q\n\x0bOptionStyle\x12\x19\n\x15UNKNOWN_OPTIONS_STYLE\x10\x00\x12\x0b\n\x07\x44\x45\x46\x41ULT\x10\x01\x12\x0c\n\x08\x41MERICAN\x10\x02\x12\x0c\n\x08\x45UROPEAN\x10\x03\"3\n\x05State\x12\x11\n\rUNKNOWN_STATE\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0b\n\x07PASSIVE\x10\x02\"\xa1\x02\n\tEventType\x12\x16\n\x12UNKNOWN_EVENT_TYPE\x10\x00\x12\x14\n\x10\x46IRST_TRADE_DATE\x10\x01\x12\x13\n\x0fLAST_TRADE_DATE\x10\x02\x12\x13\n\x0fSETTLEMENT_DATE\x10\n\x12\x17\n\x13\x46IRST_DELIVERY_DATE\x10\x0b\x12\x16\n\x12LAST_DELIVERY_DATE\x10\x0c\x12\x15\n\x11\x46IRST_NOTICE_DATE\x10\r\x12\x14\n\x10LAST_NOTICE_DATE\x10\x0e\x12\x16\n\x12\x46IRST_HOLDING_DATE\x10\x0f\x12\x15\n\x11LAST_HOLDING_DATE\x10\x10\x12\x17\n\x13\x46IRST_POSITION_DATE\x10\x11\x12\x16\n\x12LAST_POSITION_DATE\x10\x12\x42\x07H\x01P\x01\xa0\x01\x01\x62\x06proto3')
+  serialized_options=_b('H\001P\001\240\001\001'),
+  serialized_pb=_b('\n\x19openfeed_instrument.proto\x12\x0corg.openfeed\"\xe9\x1a\n\x14InstrumentDefinition\x12\x10\n\x08marketId\x18\x01 \x01(\x12\x12I\n\x0einstrumentType\x18\x02 \x01(\x0e\x32\x31.org.openfeed.InstrumentDefinition.InstrumentType\x12\x45\n\x10supportBookTypes\x18\x03 \x03(\x0e\x32+.org.openfeed.InstrumentDefinition.BookType\x12\x11\n\tbookDepth\x18\x04 \x01(\x11\x12\x10\n\x08vendorId\x18\x05 \x01(\t\x12\x0e\n\x06symbol\x18\x06 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x07 \x01(\t\x12\x0f\n\x07\x63\x66iCode\x18\x08 \x01(\t\x12\x14\n\x0c\x63urrencyCode\x18\t \x01(\t\x12\x14\n\x0c\x65xchangeCode\x18\n \x01(\t\x12\x1d\n\x15minimumPriceIncrement\x18\x0b \x01(\x02\x12\x1a\n\x12\x63ontractPointValue\x18\x0c \x01(\x02\x12=\n\x08schedule\x18\r \x01(\x0b\x32+.org.openfeed.InstrumentDefinition.Schedule\x12=\n\x08\x63\x61lendar\x18\x0e \x01(\x0b\x32+.org.openfeed.InstrumentDefinition.Calendar\x12\x18\n\x10recordCreateTime\x18\x0f \x01(\x12\x12\x18\n\x10recordUpdateTime\x18\x10 \x01(\x12\x12\x14\n\x0ctimeZoneName\x18\x11 \x01(\t\x12\x17\n\x0finstrumentGroup\x18\x12 \x01(\t\x12I\n\x10symbolExpiration\x18\x13 \x01(\x0b\x32/.org.openfeed.InstrumentDefinition.MaturityDate\x12\x37\n\x05state\x18\x14 \x01(\x0e\x32(.org.openfeed.InstrumentDefinition.State\x12\x0f\n\x07\x63hannel\x18\x15 \x01(\x11\x12\x1a\n\x12underlyingMarketId\x18\x16 \x01(\x12\x12\x43\n\x0bpriceFormat\x18\x17 \x01(\x0b\x32..org.openfeed.InstrumentDefinition.PriceFormat\x12O\n\x17optionStrikePriceFormat\x18\x18 \x01(\x0b\x32..org.openfeed.InstrumentDefinition.PriceFormat\x12\x18\n\x10priceDenominator\x18\x1c \x01(\x11\x12\x1b\n\x13quantityDenominator\x18\x1d \x01(\x11\x12\x12\n\nisTradable\x18\x1e \x01(\x08\x12\x17\n\x0ftransactionTime\x18\x32 \x01(\x12\x12\x15\n\rauxiliaryData\x18\x63 \x01(\x0c\x12:\n\x07symbols\x18\x64 \x03(\x0b\x32).org.openfeed.InstrumentDefinition.Symbol\x12\x15\n\x0coptionStrike\x18\xc8\x01 \x01(\x12\x12\x42\n\noptionType\x18\xca\x01 \x01(\x0e\x32-.org.openfeed.InstrumentDefinition.OptionType\x12\x44\n\x0boptionStyle\x18\xcb\x01 \x01(\x0e\x32..org.openfeed.InstrumentDefinition.OptionStyle\x12 \n\x17optionStrikeDenominator\x18\xcc\x01 \x01(\x11\x12\x13\n\nspreadCode\x18\xd2\x01 \x01(\t\x12@\n\tspreadLeg\x18\xd3\x01 \x03(\x0b\x32,.org.openfeed.InstrumentDefinition.SpreadLeg\x12\x1a\n\x11userDefinedSpread\x18\xd4\x01 \x01(\x08\x12\x13\n\nmarketTier\x18\xd5\x01 \x01(\t\x12!\n\x18\x66inancialStatusIndicator\x18\xd6\x01 \x01(\t\x12\r\n\x04isin\x18\xd7\x01 \x01(\t\x12\x46\n\x0c\x63urrencyPair\x18\xd8\x01 \x01(\x0b\x32/.org.openfeed.InstrumentDefinition.CurrencyPair\x12\x1c\n\x13\x65xchangeSendsVolume\x18\xd9\x01 \x01(\x08\x12\x1a\n\x11\x65xchangeSendsHigh\x18\xda\x01 \x01(\x08\x12\x19\n\x10\x65xchangeSendsLow\x18\xdb\x01 \x01(\x08\x12\x1a\n\x11\x65xchangeSendsOpen\x18\xdc\x01 \x01(\x08\x12#\n\x1a\x63onsolidatedFeedInstrument\x18\xdd\x01 \x01(\x08\x12\x1d\n\x14openOutcryInstrument\x18\xde\x01 \x01(\x08\x12*\n!syntheticAmericanOptionInstrument\x18\xdf\x01 \x01(\x08\x12\x1d\n\x14\x62\x61rchartExchangeCode\x18\xe0\x01 \x01(\t\x12\x19\n\x10\x62\x61rchartBaseCode\x18\xe1\x01 \x01(\t\x12\x1a\n\x11volumeDenominator\x18\xe2\x01 \x01(\x11\x12$\n\x1b\x62idOfferQuantityDenominator\x18\xe3\x01 \x01(\x11\x12*\n!primaryListingMarketParticipantId\x18\xe4\x01 \x01(\t\x12\x1b\n\x12subscriptionSymbol\x18\xe5\x01 \x01(\t\x1aI\n\x08Schedule\x12=\n\x08sessions\x18\x01 \x03(\x0b\x32+.org.openfeed.InstrumentDefinition.TimeSpan\x1a\x31\n\x08TimeSpan\x12\x11\n\ttimeStart\x18\x01 \x01(\x12\x12\x12\n\ntimeFinish\x18\x02 \x01(\x12\x1a\x44\n\x08\x43\x61lendar\x12\x38\n\x06\x65vents\x18\x01 \x03(\x0b\x32(.org.openfeed.InstrumentDefinition.Event\x1aQ\n\x05\x45vent\x12:\n\x04type\x18\x01 \x01(\x0e\x32,.org.openfeed.InstrumentDefinition.EventType\x12\x0c\n\x04\x64\x61te\x18\x02 \x01(\x12\x1a<\n\tSpreadLeg\x12\x10\n\x08marketId\x18\x01 \x01(\x12\x12\r\n\x05ratio\x18\x02 \x01(\x11\x12\x0e\n\x06symbol\x18\x03 \x01(\t\x1a\x38\n\x0cMaturityDate\x12\x0c\n\x04year\x18\x01 \x01(\x11\x12\r\n\x05month\x18\x02 \x01(\x11\x12\x0b\n\x03\x64\x61y\x18\x03 \x01(\x11\x1a(\n\x06Symbol\x12\x0e\n\x06vendor\x18\x01 \x01(\t\x12\x0e\n\x06symbol\x18\x02 \x01(\t\x1a\xd1\x01\n\x0bPriceFormat\x12\x14\n\x0cisFractional\x18\x01 \x01(\x08\x12\x13\n\x0b\x64\x65nominator\x18\x02 \x01(\x11\x12\x16\n\x0esubDenominator\x18\x04 \x01(\x11\x12K\n\tsubFormat\x18\x06 \x01(\x0e\x32\x38.org.openfeed.InstrumentDefinition.PriceFormat.SubFormat\"2\n\tSubFormat\x12\x08\n\x04\x46LAT\x10\x00\x12\x0e\n\nFRACTIONAL\x10\x01\x12\x0b\n\x07\x44\x45\x43IMAL\x10\x02\x1a\x34\n\x0c\x43urrencyPair\x12\x11\n\tcurrency1\x18\x01 \x01(\t\x12\x11\n\tcurrency2\x18\x02 \x01(\t\"\x9b\x01\n\x0eInstrumentType\x12\x1b\n\x17UNKNOWN_INSTRUMENT_TYPE\x10\x00\x12\t\n\x05\x46OREX\x10\x01\x12\t\n\x05INDEX\x10\x02\x12\n\n\x06\x45QUITY\x10\x03\x12\n\n\x06\x46UTURE\x10\x04\x12\n\n\x06OPTION\x10\x05\x12\n\n\x06SPREAD\x10\x06\x12\x0f\n\x0bMUTUAL_FUND\x10\x07\x12\x15\n\x11MONEY_MARKET_FUND\x10\x08\"Z\n\x08\x42ookType\x12\x15\n\x11UNKNOWN_BOOK_TYPE\x10\x00\x12\x0f\n\x0bTOP_OF_BOOK\x10\x01\x12\x15\n\x11PRICE_LEVEL_DEPTH\x10\x02\x12\x0f\n\x0bORDER_DEPTH\x10\x03\"8\n\nOptionType\x12\x17\n\x13UNKNOWN_OPTION_TYPE\x10\x00\x12\x08\n\x04\x43\x41LL\x10\x01\x12\x07\n\x03PUT\x10\x02\"Q\n\x0bOptionStyle\x12\x19\n\x15UNKNOWN_OPTIONS_STYLE\x10\x00\x12\x0b\n\x07\x44\x45\x46\x41ULT\x10\x01\x12\x0c\n\x08\x41MERICAN\x10\x02\x12\x0c\n\x08\x45UROPEAN\x10\x03\"3\n\x05State\x12\x11\n\rUNKNOWN_STATE\x10\x00\x12\n\n\x06\x41\x43TIVE\x10\x01\x12\x0b\n\x07PASSIVE\x10\x02\"\xa1\x02\n\tEventType\x12\x16\n\x12UNKNOWN_EVENT_TYPE\x10\x00\x12\x14\n\x10\x46IRST_TRADE_DATE\x10\x01\x12\x13\n\x0fLAST_TRADE_DATE\x10\x02\x12\x13\n\x0fSETTLEMENT_DATE\x10\n\x12\x17\n\x13\x46IRST_DELIVERY_DATE\x10\x0b\x12\x16\n\x12LAST_DELIVERY_DATE\x10\x0c\x12\x15\n\x11\x46IRST_NOTICE_DATE\x10\r\x12\x14\n\x10LAST_NOTICE_DATE\x10\x0e\x12\x16\n\x12\x46IRST_HOLDING_DATE\x10\x0f\x12\x15\n\x11LAST_HOLDING_DATE\x10\x10\x12\x17\n\x13\x46IRST_POSITION_DATE\x10\x11\x12\x16\n\x12LAST_POSITION_DATE\x10\x12\x42\x07H\x01P\x01\xa0\x01\x01\x62\x06proto3')
 )
 
 
@@ -32,21 +32,21 @@ _INSTRUMENTDEFINITION_PRICEFORMAT_SUBFORMAT = _descriptor.EnumDescriptor(
   values=[
     _descriptor.EnumValueDescriptor(
       name='FLAT', index=0, number=0,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='FRACTIONAL', index=1, number=1,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='DECIMAL', index=2, number=2,
-      options=None,
+      serialized_options=None,
       type=None),
   ],
   containing_type=None,
-  options=None,
-  serialized_start=2608,
-  serialized_end=2658,
+  serialized_options=None,
+  serialized_start=2637,
+  serialized_end=2687,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_PRICEFORMAT_SUBFORMAT)
 
@@ -58,45 +58,45 @@ _INSTRUMENTDEFINITION_INSTRUMENTTYPE = _descriptor.EnumDescriptor(
   values=[
     _descriptor.EnumValueDescriptor(
       name='UNKNOWN_INSTRUMENT_TYPE', index=0, number=0,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='FOREX', index=1, number=1,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='INDEX', index=2, number=2,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='EQUITY', index=3, number=3,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='FUTURE', index=4, number=4,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='OPTION', index=5, number=5,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='SPREAD', index=6, number=6,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='MUTUAL_FUND', index=7, number=7,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='MONEY_MARKET_FUND', index=8, number=8,
-      options=None,
+      serialized_options=None,
       type=None),
   ],
   containing_type=None,
-  options=None,
-  serialized_start=2715,
-  serialized_end=2870,
+  serialized_options=None,
+  serialized_start=2744,
+  serialized_end=2899,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_INSTRUMENTTYPE)
 
@@ -108,25 +108,25 @@ _INSTRUMENTDEFINITION_BOOKTYPE = _descriptor.EnumDescriptor(
   values=[
     _descriptor.EnumValueDescriptor(
       name='UNKNOWN_BOOK_TYPE', index=0, number=0,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='TOP_OF_BOOK', index=1, number=1,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='PRICE_LEVEL_DEPTH', index=2, number=2,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='ORDER_DEPTH', index=3, number=3,
-      options=None,
+      serialized_options=None,
       type=None),
   ],
   containing_type=None,
-  options=None,
-  serialized_start=2872,
-  serialized_end=2962,
+  serialized_options=None,
+  serialized_start=2901,
+  serialized_end=2991,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_BOOKTYPE)
 
@@ -138,21 +138,21 @@ _INSTRUMENTDEFINITION_OPTIONTYPE = _descriptor.EnumDescriptor(
   values=[
     _descriptor.EnumValueDescriptor(
       name='UNKNOWN_OPTION_TYPE', index=0, number=0,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='CALL', index=1, number=1,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='PUT', index=2, number=2,
-      options=None,
+      serialized_options=None,
       type=None),
   ],
   containing_type=None,
-  options=None,
-  serialized_start=2964,
-  serialized_end=3020,
+  serialized_options=None,
+  serialized_start=2993,
+  serialized_end=3049,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_OPTIONTYPE)
 
@@ -164,25 +164,25 @@ _INSTRUMENTDEFINITION_OPTIONSTYLE = _descriptor.EnumDescriptor(
   values=[
     _descriptor.EnumValueDescriptor(
       name='UNKNOWN_OPTIONS_STYLE', index=0, number=0,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='DEFAULT', index=1, number=1,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='AMERICAN', index=2, number=2,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='EUROPEAN', index=3, number=3,
-      options=None,
+      serialized_options=None,
       type=None),
   ],
   containing_type=None,
-  options=None,
-  serialized_start=3022,
-  serialized_end=3103,
+  serialized_options=None,
+  serialized_start=3051,
+  serialized_end=3132,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_OPTIONSTYLE)
 
@@ -194,21 +194,21 @@ _INSTRUMENTDEFINITION_STATE = _descriptor.EnumDescriptor(
   values=[
     _descriptor.EnumValueDescriptor(
       name='UNKNOWN_STATE', index=0, number=0,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='ACTIVE', index=1, number=1,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='PASSIVE', index=2, number=2,
-      options=None,
+      serialized_options=None,
       type=None),
   ],
   containing_type=None,
-  options=None,
-  serialized_start=3105,
-  serialized_end=3156,
+  serialized_options=None,
+  serialized_start=3134,
+  serialized_end=3185,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_STATE)
 
@@ -220,57 +220,57 @@ _INSTRUMENTDEFINITION_EVENTTYPE = _descriptor.EnumDescriptor(
   values=[
     _descriptor.EnumValueDescriptor(
       name='UNKNOWN_EVENT_TYPE', index=0, number=0,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='FIRST_TRADE_DATE', index=1, number=1,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='LAST_TRADE_DATE', index=2, number=2,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='SETTLEMENT_DATE', index=3, number=10,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='FIRST_DELIVERY_DATE', index=4, number=11,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='LAST_DELIVERY_DATE', index=5, number=12,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='FIRST_NOTICE_DATE', index=6, number=13,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='LAST_NOTICE_DATE', index=7, number=14,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='FIRST_HOLDING_DATE', index=8, number=15,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='LAST_HOLDING_DATE', index=9, number=16,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='FIRST_POSITION_DATE', index=10, number=17,
-      options=None,
+      serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
       name='LAST_POSITION_DATE', index=11, number=18,
-      options=None,
+      serialized_options=None,
       type=None),
   ],
   containing_type=None,
-  options=None,
-  serialized_start=3159,
-  serialized_end=3448,
+  serialized_options=None,
+  serialized_start=3188,
+  serialized_end=3477,
 )
 _sym_db.RegisterEnumDescriptor(_INSTRUMENTDEFINITION_EVENTTYPE)
 
@@ -288,21 +288,21 @@ _INSTRUMENTDEFINITION_SCHEDULE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2007,
-  serialized_end=2080,
+  serialized_start=2036,
+  serialized_end=2109,
 )
 
 _INSTRUMENTDEFINITION_TIMESPAN = _descriptor.Descriptor(
@@ -318,28 +318,28 @@ _INSTRUMENTDEFINITION_TIMESPAN = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='timeFinish', full_name='org.openfeed.InstrumentDefinition.TimeSpan.timeFinish', index=1,
       number=2, type=18, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2082,
-  serialized_end=2131,
+  serialized_start=2111,
+  serialized_end=2160,
 )
 
 _INSTRUMENTDEFINITION_CALENDAR = _descriptor.Descriptor(
@@ -355,21 +355,21 @@ _INSTRUMENTDEFINITION_CALENDAR = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2133,
-  serialized_end=2201,
+  serialized_start=2162,
+  serialized_end=2230,
 )
 
 _INSTRUMENTDEFINITION_EVENT = _descriptor.Descriptor(
@@ -385,28 +385,28 @@ _INSTRUMENTDEFINITION_EVENT = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='date', full_name='org.openfeed.InstrumentDefinition.Event.date', index=1,
       number=2, type=18, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2203,
-  serialized_end=2284,
+  serialized_start=2232,
+  serialized_end=2313,
 )
 
 _INSTRUMENTDEFINITION_SPREADLEG = _descriptor.Descriptor(
@@ -422,35 +422,35 @@ _INSTRUMENTDEFINITION_SPREADLEG = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='ratio', full_name='org.openfeed.InstrumentDefinition.SpreadLeg.ratio', index=1,
       number=2, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='symbol', full_name='org.openfeed.InstrumentDefinition.SpreadLeg.symbol', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2286,
-  serialized_end=2346,
+  serialized_start=2315,
+  serialized_end=2375,
 )
 
 _INSTRUMENTDEFINITION_MATURITYDATE = _descriptor.Descriptor(
@@ -466,35 +466,35 @@ _INSTRUMENTDEFINITION_MATURITYDATE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='month', full_name='org.openfeed.InstrumentDefinition.MaturityDate.month', index=1,
       number=2, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='day', full_name='org.openfeed.InstrumentDefinition.MaturityDate.day', index=2,
       number=3, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2348,
-  serialized_end=2404,
+  serialized_start=2377,
+  serialized_end=2433,
 )
 
 _INSTRUMENTDEFINITION_SYMBOL = _descriptor.Descriptor(
@@ -510,28 +510,28 @@ _INSTRUMENTDEFINITION_SYMBOL = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='symbol', full_name='org.openfeed.InstrumentDefinition.Symbol.symbol', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2406,
-  serialized_end=2446,
+  serialized_start=2435,
+  serialized_end=2475,
 )
 
 _INSTRUMENTDEFINITION_PRICEFORMAT = _descriptor.Descriptor(
@@ -547,28 +547,28 @@ _INSTRUMENTDEFINITION_PRICEFORMAT = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='denominator', full_name='org.openfeed.InstrumentDefinition.PriceFormat.denominator', index=1,
       number=2, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='subDenominator', full_name='org.openfeed.InstrumentDefinition.PriceFormat.subDenominator', index=2,
       number=4, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='subFormat', full_name='org.openfeed.InstrumentDefinition.PriceFormat.subFormat', index=3,
       number=6, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -576,14 +576,14 @@ _INSTRUMENTDEFINITION_PRICEFORMAT = _descriptor.Descriptor(
   enum_types=[
     _INSTRUMENTDEFINITION_PRICEFORMAT_SUBFORMAT,
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2449,
-  serialized_end=2658,
+  serialized_start=2478,
+  serialized_end=2687,
 )
 
 _INSTRUMENTDEFINITION_CURRENCYPAIR = _descriptor.Descriptor(
@@ -599,28 +599,28 @@ _INSTRUMENTDEFINITION_CURRENCYPAIR = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='currency2', full_name='org.openfeed.InstrumentDefinition.CurrencyPair.currency2', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2660,
-  serialized_end=2712,
+  serialized_start=2689,
+  serialized_end=2741,
 )
 
 _INSTRUMENTDEFINITION = _descriptor.Descriptor(
@@ -636,371 +636,378 @@ _INSTRUMENTDEFINITION = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='instrumentType', full_name='org.openfeed.InstrumentDefinition.instrumentType', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='supportBookTypes', full_name='org.openfeed.InstrumentDefinition.supportBookTypes', index=2,
       number=3, type=14, cpp_type=8, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='bookDepth', full_name='org.openfeed.InstrumentDefinition.bookDepth', index=3,
       number=4, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='vendorId', full_name='org.openfeed.InstrumentDefinition.vendorId', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='symbol', full_name='org.openfeed.InstrumentDefinition.symbol', index=5,
       number=6, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='description', full_name='org.openfeed.InstrumentDefinition.description', index=6,
       number=7, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='cfiCode', full_name='org.openfeed.InstrumentDefinition.cfiCode', index=7,
       number=8, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='currencyCode', full_name='org.openfeed.InstrumentDefinition.currencyCode', index=8,
       number=9, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='exchangeCode', full_name='org.openfeed.InstrumentDefinition.exchangeCode', index=9,
       number=10, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='minimumPriceIncrement', full_name='org.openfeed.InstrumentDefinition.minimumPriceIncrement', index=10,
       number=11, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='contractPointValue', full_name='org.openfeed.InstrumentDefinition.contractPointValue', index=11,
       number=12, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='schedule', full_name='org.openfeed.InstrumentDefinition.schedule', index=12,
       number=13, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='calendar', full_name='org.openfeed.InstrumentDefinition.calendar', index=13,
       number=14, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='recordCreateTime', full_name='org.openfeed.InstrumentDefinition.recordCreateTime', index=14,
       number=15, type=18, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='recordUpdateTime', full_name='org.openfeed.InstrumentDefinition.recordUpdateTime', index=15,
       number=16, type=18, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='timeZoneName', full_name='org.openfeed.InstrumentDefinition.timeZoneName', index=16,
       number=17, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='instrumentGroup', full_name='org.openfeed.InstrumentDefinition.instrumentGroup', index=17,
       number=18, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='symbolExpiration', full_name='org.openfeed.InstrumentDefinition.symbolExpiration', index=18,
       number=19, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='state', full_name='org.openfeed.InstrumentDefinition.state', index=19,
       number=20, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='channel', full_name='org.openfeed.InstrumentDefinition.channel', index=20,
       number=21, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='underlyingMarketId', full_name='org.openfeed.InstrumentDefinition.underlyingMarketId', index=21,
       number=22, type=18, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='priceFormat', full_name='org.openfeed.InstrumentDefinition.priceFormat', index=22,
       number=23, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='optionStrikePriceFormat', full_name='org.openfeed.InstrumentDefinition.optionStrikePriceFormat', index=23,
       number=24, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='priceDenominator', full_name='org.openfeed.InstrumentDefinition.priceDenominator', index=24,
       number=28, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='quantityDenominator', full_name='org.openfeed.InstrumentDefinition.quantityDenominator', index=25,
       number=29, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='isTradable', full_name='org.openfeed.InstrumentDefinition.isTradable', index=26,
       number=30, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transactionTime', full_name='org.openfeed.InstrumentDefinition.transactionTime', index=27,
       number=50, type=18, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='auxiliaryData', full_name='org.openfeed.InstrumentDefinition.auxiliaryData', index=28,
       number=99, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='symbols', full_name='org.openfeed.InstrumentDefinition.symbols', index=29,
       number=100, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='optionStrike', full_name='org.openfeed.InstrumentDefinition.optionStrike', index=30,
       number=200, type=18, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='optionType', full_name='org.openfeed.InstrumentDefinition.optionType', index=31,
       number=202, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='optionStyle', full_name='org.openfeed.InstrumentDefinition.optionStyle', index=32,
       number=203, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='optionStrikeDenominator', full_name='org.openfeed.InstrumentDefinition.optionStrikeDenominator', index=33,
       number=204, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='spreadCode', full_name='org.openfeed.InstrumentDefinition.spreadCode', index=34,
       number=210, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='spreadLeg', full_name='org.openfeed.InstrumentDefinition.spreadLeg', index=35,
       number=211, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='userDefinedSpread', full_name='org.openfeed.InstrumentDefinition.userDefinedSpread', index=36,
       number=212, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='marketTier', full_name='org.openfeed.InstrumentDefinition.marketTier', index=37,
       number=213, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='financialStatusIndicator', full_name='org.openfeed.InstrumentDefinition.financialStatusIndicator', index=38,
       number=214, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='isin', full_name='org.openfeed.InstrumentDefinition.isin', index=39,
       number=215, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='currencyPair', full_name='org.openfeed.InstrumentDefinition.currencyPair', index=40,
       number=216, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='exchangeSendsVolume', full_name='org.openfeed.InstrumentDefinition.exchangeSendsVolume', index=41,
       number=217, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='exchangeSendsHigh', full_name='org.openfeed.InstrumentDefinition.exchangeSendsHigh', index=42,
       number=218, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='exchangeSendsLow', full_name='org.openfeed.InstrumentDefinition.exchangeSendsLow', index=43,
       number=219, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='exchangeSendsOpen', full_name='org.openfeed.InstrumentDefinition.exchangeSendsOpen', index=44,
       number=220, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='consolidatedFeedInstrument', full_name='org.openfeed.InstrumentDefinition.consolidatedFeedInstrument', index=45,
       number=221, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='openOutcryInstrument', full_name='org.openfeed.InstrumentDefinition.openOutcryInstrument', index=46,
       number=222, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='syntheticAmericanOptionInstrument', full_name='org.openfeed.InstrumentDefinition.syntheticAmericanOptionInstrument', index=47,
       number=223, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='barchartExchangeCode', full_name='org.openfeed.InstrumentDefinition.barchartExchangeCode', index=48,
       number=224, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='barchartBaseCode', full_name='org.openfeed.InstrumentDefinition.barchartBaseCode', index=49,
       number=225, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='volumeDenominator', full_name='org.openfeed.InstrumentDefinition.volumeDenominator', index=50,
       number=226, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='bidOfferQuantityDenominator', full_name='org.openfeed.InstrumentDefinition.bidOfferQuantityDenominator', index=51,
       number=227, type=17, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='primaryListingMarketParticipantId', full_name='org.openfeed.InstrumentDefinition.primaryListingMarketParticipantId', index=52,
       number=228, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      options=None),
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='subscriptionSymbol', full_name='org.openfeed.InstrumentDefinition.subscriptionSymbol', index=53,
+      number=229, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1013,14 +1020,14 @@ _INSTRUMENTDEFINITION = _descriptor.Descriptor(
     _INSTRUMENTDEFINITION_STATE,
     _INSTRUMENTDEFINITION_EVENTTYPE,
   ],
-  options=None,
+  serialized_options=None,
   is_extendable=False,
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
   serialized_start=44,
-  serialized_end=3448,
+  serialized_end=3477,
 )
 
 _INSTRUMENTDEFINITION_SCHEDULE.fields_by_name['sessions'].message_type = _INSTRUMENTDEFINITION_TIMESPAN
@@ -1139,6 +1146,5 @@ _sym_db.RegisterMessage(InstrumentDefinition.PriceFormat)
 _sym_db.RegisterMessage(InstrumentDefinition.CurrencyPair)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('H\001P\001\240\001\001'))
+DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)
