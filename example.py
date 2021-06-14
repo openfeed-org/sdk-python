@@ -12,15 +12,17 @@ if __name__ == "__main__":
     of_client = openfeed.OpenfeedClient(args.u, args.p)
 
     # app state handlers
-    of_client.on_error = lambda x: print("Error:", x)
-    of_client.on_connected = lambda x: print("Connected")
-    of_client.on_disconnected = lambda x: print("Disconnected")
+    of_client.on_error = lambda x: print("OnError:", x)
+    of_client.on_connected = lambda x: print("OnConnected")
+    of_client.on_disconnected = lambda x: print("OnDisconnected")
+    of_client.on_login = lambda x: print("OnLogin:", x)
+    of_client.on_logout = lambda x: print("OnLogout:", x)
 
     # sub to markets by symbol
     def on_message(msg):
         print("Market Data Message: ", msg)
 
-    of_client.add_symbol_subscription("AAPL", callback=on_message, subscription_type=["OHLC"])
+    of_client.add_symbol_subscription("ADF.WS", callback=on_message, subscription_type=["OHLC"])
 
     # list exchanges
 

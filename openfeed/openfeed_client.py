@@ -38,6 +38,8 @@ class OpenfeedClient(object):
         self.on_connected = None
         self.on_disconnected = None
         self.on_error = None
+        self.on_login = None
+        self.on_logout = None
 
         websocket.enableTrace(self.debug)
 
@@ -229,7 +231,19 @@ class OpenfeedClient(object):
                 raise Exception("Login has failed: ", msg)
 
             self.token = msg.loginResponse.token
+
+            self.__callback(self.on_login, msg)            
             self.__send_existing_interest()
+
+            return msg
+
+        def handleLogout(msg):
+            
+            self.__callback(self.on_logout, msg)
+
+            if msg.logoutResponse.status.result == 115:
+                if self.debug:
+                    print("Logout due to concurrent logins:", msg)
 
             return msg
 
@@ -325,6 +339,7 @@ class OpenfeedClient(object):
 
         handlers = {
             "loginResponse": handleLogin,
+            "logoutResponse": handleLogout,
             "heartBeat": handleHeartbeat,
             "exchangeResponse": handleExchangeRequest,
             "subscriptionResponse": handleSubscriptionResponse,
@@ -611,6 +626,8 @@ if __name__ == "__main__":
     of_client.on_error = lambda x: print("of-client: something went wrong:", x)
     of_client.on_disconnected = lambda x: print("of-client: disconnected")
     of_client.on_connected = lambda x: print("of-client: connected")
+    of_client.on_login = lambda x: print("of-client: login:", x)
+    of_client.on_logout = lambda x: print("of-client: logout:", x)
 
     # blocking mode
     of_client.start(blocking=False)
