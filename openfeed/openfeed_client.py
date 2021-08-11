@@ -375,9 +375,9 @@ class OpenfeedClient(object):
                 traceback.print_exc()
             self.__callback(self.on_error, error)
 
-        def on_close(ws):
+        def on_close(ws, close_status_code, close_msg):
             if self.debug:
-                print("WebSocket Close")
+                print("WebSocket Close.", "Close Status Code:", close_status_code, "Close Message:", close_msg)
 
             self.__reset()
             self.__callback(self.on_disconnected, ws)
