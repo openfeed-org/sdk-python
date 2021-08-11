@@ -417,8 +417,6 @@ class OpenfeedClient(object):
                     if self.debug:
                         print("Failed to notify `symbol` callback:", symbol_key, e)
                     self.__callback(self.on_error, e)
-        else:
-            print("got a message but have no handlers", instrument, msg)
 
     def __notify_exchange_listeners(self, exchange, msg):
         if exchange not in self.exchange_handlers:
