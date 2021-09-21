@@ -232,13 +232,13 @@ class OpenfeedClient(object):
 
             self.token = msg.loginResponse.token
 
-            self.__callback(self.on_login, msg)            
+            self.__callback(self.on_login, msg)
             self.__send_existing_interest()
 
             return msg
 
         def handleLogout(msg):
-            
+
             self.__callback(self.on_logout, msg)
 
             if msg.logoutResponse.status.result == 115:
@@ -304,6 +304,11 @@ class OpenfeedClient(object):
 
             for symbol in msg.instrumentDefinition.symbols:
                 self.instruments_by_symbol[symbol.symbol] = msg
+
+            for r in self.request_id_handlers.values():
+                if r.is_type("instrumentRequest"):
+                    if msg.instrumentDefinition.exchangeCode == r.request.instrumentRequest.exchange:
+                        r.callback(msg)
 
             self.__notify_exchange_listeners(
                 msg.instrumentDefinition.exchangeCode, msg)
@@ -377,7 +382,8 @@ class OpenfeedClient(object):
 
         def on_close(ws, close_status_code, close_msg):
             if self.debug:
-                print("WebSocket Close.", "Close Status Code:", close_status_code, "Close Message:", close_msg)
+                print("WebSocket Close.", "Close Status Code:",
+                      close_status_code, "Close Message:", close_msg)
 
             self.__reset()
             self.__callback(self.on_disconnected, ws)
@@ -605,6 +611,9 @@ class Request(object):
             self.request.instrumentRequest.token = of_client.token
 
         of_client._send_message(self.request)
+
+    def is_type(self, request_type):
+        return request_type == self.request.WhichOneof("data")
 
 
 if __name__ == "__main__":
