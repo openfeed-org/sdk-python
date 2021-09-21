@@ -3,13 +3,13 @@ import argparse
 
 if __name__ == "__main__":
 
-    #parser = argparse.ArgumentParser()
-    #parser.add_argument('-u', help='Username')
-    #parser.add_argument('-p', help='Password')
-    #args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-u', help='Username')
+    parser.add_argument('-p', help='Password')
+    args = parser.parse_args()
 
     # new client with credentials
-    of_client = openfeed.OpenfeedClient("mehb1", "mehb1new")
+    of_client = openfeed.OpenfeedClient(args.u, args.p)
 
     # app state handlers
     of_client.on_error = lambda x: print("OnError:", x)
@@ -22,9 +22,9 @@ if __name__ == "__main__":
     def on_message(msg):
         print("Market Data Message: ", msg)
 
-    # of_client.add_symbol_subscription("ADF.WS", callback=on_message, subscription_type=["OHLC"])
+    #of_client.add_symbol_subscription("ADF.WS", callback=on_message, subscription_type=["OHLC"])
 
-    of_client.request_instruments_for_exchange("AMEX", on_message)
+    of_client.request_instruments_for_exchange("AMEX", callback=on_message)
 
     # list exchanges
 
