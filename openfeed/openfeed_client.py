@@ -84,13 +84,10 @@ class OpenfeedClient(object):
             Your callback function for Market Data messages
         subscription_type: list, optional
             Default is ['QUOTE']. Can contain any of: 'ALL', 'QUOTE', 'QUOTE_PARTICIPANT', 'DEPTH_PRICE', 'DEPTH_ORDER', 'TRADES', 'OHLC'
-        instrument_type: list, optional
-            Spreads and Options must be explicitly requested. Can contain any of: 'SPREAD', 'OPTION', 'FUTURE', 'FOREX', 'EQUITY', 'INDEX', 'MUTUAL_FUND', 'MONEY_MARKET', 'MONEY_MARKET_FUND'
 
         [Market Data]: https://docs.barchart.com/openfeed/#/proto?id=marketupdate
         [SubscriptionTypes]: https://docs.barchart.com/openfeed/#/proto?id=subscriptiontype
         [Service]: https://docs.barchart.com/openfeed/#/proto?id=service
-        [InstrumentTypes]: https://docs.barchart.com/openfeed/#/proto?id=instrumentdefinitioninstrumenttype
         """
         symbols = []
 
@@ -119,9 +116,23 @@ class OpenfeedClient(object):
 
         Note: your credentials must have the correct service level (FEED) for this operation.
 
+        Parameters
+        ----------
+        exchange: str, list
+            Barchart Exchange code(s)
+        service: str, optional
+            Default is `REAL_TIME` for delayed market data, set it to `DELAYED`, or for snapshots set it as one of `REAL_TIME_SNAPSHOT` or `DELAYED_SNAPSHOT'
+        callback: Callable
+            Your callback function for Market Data messages
+        subscription_type: list, optional
+            Default is ['QUOTE']. Can contain any of: 'ALL', 'QUOTE', 'QUOTE_PARTICIPANT', 'DEPTH_PRICE', 'DEPTH_ORDER', 'TRADES', 'OHLC'    
+        instrument_type: list, optional
+            Spreads and Options must be explicitly requested. Can contain any of: 'SPREAD', 'OPTION', 'FUTURE', 'FOREX', 'EQUITY', 'INDEX', 'MUTUAL_FUND', 'MONEY_MARKET', 'MONEY_MARKET_FUND'
+
         [Market Data]: https://docs.barchart.com/openfeed/#/proto?id=marketupdate
         [SubscriptionTypes]: https://docs.barchart.com/openfeed/#/proto?id=subscriptiontype
         [Service]: https://docs.barchart.com/openfeed/#/proto?id=service
+        [InstrumentTypes]: https://docs.barchart.com/openfeed/#/proto?id=instrumentdefinitioninstrumenttype
         """
         exchanges = []
 
