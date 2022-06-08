@@ -47,9 +47,13 @@ of-client: Market Data:  marketUpdate
 of-client: Market Data:  marketUpdate
 ```
 
+### Openfeed Documentation
+
+* [https://docs.barchart.com/openfeed](https://docs.barchart.com/openfeed)
+
 ## Subscription Types
 
-Openfeed supports many levels of [subscription types](https://openfeed-org.github.io/documentation/Message%20Specification/#org.openfeed.SubscriptionType).
+Openfeed supports many levels of [subscription types](https://docs.barchart.com/openfeed/#/proto?id=subscriptiontype).
 
 ### OHLC
 
