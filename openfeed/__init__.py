@@ -7,5 +7,4 @@ sys.path.append(str(Path(__file__).parent))
 # FIXME
 
 from .openfeed_client import OpenfeedClient
-
-VERSION = '1.2.0'
+from .version import VERSION

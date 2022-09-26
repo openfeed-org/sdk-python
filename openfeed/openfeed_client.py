@@ -2,6 +2,9 @@ from typing import Union
 from generated import openfeed_api_pb2
 from generated import openfeed_pb2
 from generated import openfeed_instrument_pb2
+from struct import unpack
+from io import BytesIO
+import platform
 import time
 import traceback
 import sys
@@ -9,6 +12,7 @@ import inspect
 import collections
 import websocket
 import random
+from .version import VERSION
 try:
     import thread
 except ImportError:
@@ -109,7 +113,7 @@ class OpenfeedClient(object):
 
         return self
 
-    def add_exchange_subscription(self, exchange: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"], instrument_type=[], snapshot_interval_seconds=60):
+    def add_exchange_subscription(self, exchange: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"], instrument_type=[], snapshot_interval_seconds=60, bulk_subscription_filters=[]):
         """Subscribe to [Market Data] by Barchart Exchange code(s).
 
         Complete list of [SubscriptionTypes]. List of [Service] types.
@@ -121,18 +125,21 @@ class OpenfeedClient(object):
         exchange: str, list
             Barchart Exchange code(s)
         service: str, optional
-            Default is `REAL_TIME` for delayed market data, set it to `DELAYED`, or for snapshots set it as one of `REAL_TIME_SNAPSHOT` or `DELAYED_SNAPSHOT'
+            [ServiceType]. Default is `REAL_TIME` for delayed market data, set it to `DELAYED`, or for snapshots set it as one of `REAL_TIME_SNAPSHOT` or `DELAYED_SNAPSHOT'
         callback: Callable
             Your callback function for Market Data messages
         subscription_type: list, optional
-            Default is ['QUOTE']. Can contain any of: 'ALL', 'QUOTE', 'QUOTE_PARTICIPANT', 'DEPTH_PRICE', 'DEPTH_ORDER', 'TRADES', 'OHLC'    
+            [SubscriptionTypes]. Default is ['QUOTE']. Can contain any of: 'ALL', 'QUOTE', 'QUOTE_PARTICIPANT', 'DEPTH_PRICE', 'DEPTH_ORDER', 'TRADES', 'OHLC'
         instrument_type: list, optional
-            Spreads and Options must be explicitly requested. Can contain any of: 'SPREAD', 'OPTION', 'FUTURE', 'FOREX', 'EQUITY', 'INDEX', 'MUTUAL_FUND', 'MONEY_MARKET', 'MONEY_MARKET_FUND'
+            [InstrumentTypes]. Spreads and Options must be explicitly requested. Can contain any of: 'SPREAD', 'OPTION', 'FUTURE', 'FOREX', 'EQUITY', 'INDEX', 'MUTUAL_FUND', 'MONEY_MARKET', 'MONEY_MARKET_FUND'
+        bulk_subscription_filters: list of BulkSubscriptionFilter, optional
+            List of [BulkSubscriptionFilter]
 
         [Market Data]: https://docs.barchart.com/openfeed/#/proto?id=marketupdate
         [SubscriptionTypes]: https://docs.barchart.com/openfeed/#/proto?id=subscriptiontype
-        [Service]: https://docs.barchart.com/openfeed/#/proto?id=service
+        [ServiceType]: https://docs.barchart.com/openfeed/#/proto?id=service
         [InstrumentTypes]: https://docs.barchart.com/openfeed/#/proto?id=instrumentdefinitioninstrumenttype
+        [BulkSubscriptionFilter]: https://docs.barchart.com/openfeed/#/proto?id=bulksubscriptionfilter
         """
         exchanges = []
 
@@ -146,11 +153,11 @@ class OpenfeedClient(object):
                 self.exchange_handlers[exch] = []
 
             self.exchange_handlers[exch].append(Listener(
-                exchange=exch, callback=callback, service=service, subscription_type=subscription_type, instrument_type=instrument_type, snapshot_interval_seconds=snapshot_interval_seconds))
+                exchange=exch, callback=callback, service=service, subscription_type=subscription_type, instrument_type=instrument_type, snapshot_interval_seconds=snapshot_interval_seconds, bulk_subscription_filters=bulk_subscription_filters))
 
         if self.token is not None:
-            self._send_message(
-                self.__create_subscription_request(exchanges=exchanges, service=service, subscription_type=subscription_type, instrument_type=instrument_type, snapshot_interval_seconds=snapshot_interval_seconds))
+             self._send_message(
+                self.__create_subscription_request(exchanges=exchanges, service=service, subscription_type=subscription_type, instrument_type=instrument_type, snapshot_interval_seconds=snapshot_interval_seconds, bulk_subscription_filters=bulk_subscription_filters))
 
         return self
 
@@ -371,22 +378,34 @@ class OpenfeedClient(object):
         }
 
         def on_message(ws: websocket.WebSocketApp, message):
+            byte_buffer = BytesIO(message)
+            total = byte_buffer.getbuffer().nbytes
 
-            msg = openfeed_api_pb2.OpenfeedGatewayMessage()
-            msg.ParseFromString(message)
+            msg_count = 0
 
-            msg_type = msg.WhichOneof("data")
+            while byte_buffer.tell() != total:
+                msg_len = int.from_bytes(byte_buffer.read(
+                    2), byteorder='big', signed=True)
 
-            handler = handlers.get(
-                msg_type, lambda x: print("Unhandled Message:", x))
+                msg = openfeed_api_pb2.OpenfeedGatewayMessage()
+                msg.ParseFromString(byte_buffer.read(msg_len))
 
-            try:
-                handler(msg)
-            except Exception as e:
                 if self.debug:
-                    print("Failed handling incoming message:", msg_type, e)
-                    traceback.print_exc()
-                self.__callback(self.on_error, e)
+                    msg_count = msg_count+1
+                    print("msg len:", msg_len, "number of messages:", msg_count)
+
+                msg_type = msg.WhichOneof("data")
+
+                handler = handlers.get(
+                    msg_type, lambda x: print("Unhandled Message:", x))
+
+                try:
+                    handler(msg)
+                except Exception as e:
+                    if self.debug:
+                        print("Failed handling incoming message:", msg_type, e)
+                        traceback.print_exc()
+                    self.__callback(self.on_error, e)
 
         def on_error(ws, error):
             if self.debug:
@@ -473,7 +492,7 @@ class OpenfeedClient(object):
                 listeners_by_service = interest[l.service]
                 if l.key() not in listeners_by_service:
                     listeners_by_service[l.key()] = Listener(
-                        symbol=l.symbol, exchange=l.exchange, service=l.service, subscription_type=l.subscription_type, instrument_type=l.instrument_type, snapshot_interval_seconds=l.snapshot_interval_seconds)
+                        symbol=l.symbol, exchange=l.exchange, service=l.service, subscription_type=l.subscription_type, instrument_type=l.instrument_type, snapshot_interval_seconds=l.snapshot_interval_seconds, bulk_subscription_filters=l.bulk_subscription_filters)
                 else:
                     existing = listeners_by_service[l.key()]
                     existing.subscription_type = list(set(
@@ -483,13 +502,19 @@ class OpenfeedClient(object):
         for service in interest.keys():
             for i in interest[service].values():
                 self._send_message(
-                    self.__create_subscription_request(exchanges=i.exchanges(), symbols=i.symbols(), service=service, subscription_type=i.subscription_type, instrument_type=i.get_instrument_types(), snapshot_interval_seconds=i.snapshot_interval_seconds))
+                    self.__create_subscription_request(exchanges=i.exchanges(),
+                                                       symbols=i.symbols(),
+                                                       service=service,
+                                                       subscription_type=i.subscription_type,
+                                                       instrument_type=i.get_instrument_types(),
+                                                       snapshot_interval_seconds=i.snapshot_interval_seconds,
+                                                       bulk_subscription_filters=i.bulk_subscription_filters))
 
         # send other rpc requests
         for req in self.request_id_handlers.values():
             req.send(self)
 
-    def __create_subscription_request(self, exchanges=[], symbols=[], service="REAL_TIME", subscription_type=["QUOTE"], instrument_type=[], snapshot_interval_seconds=60):
+    def __create_subscription_request(self, exchanges=[], symbols=[], service="REAL_TIME", subscription_type=["QUOTE"], instrument_type=[], snapshot_interval_seconds=60, bulk_subscription_filters=[]):
         requests = []
 
         if len(exchanges) > 0:
@@ -500,7 +525,9 @@ class OpenfeedClient(object):
                         t) for t in subscription_type],
                     snapshotIntervalSeconds=snapshot_interval_seconds,
                     instrumentType=[openfeed_instrument_pb2.InstrumentDefinition.InstrumentType.Value(
-                        t) for t in instrument_type]
+                        t) for t in instrument_type],
+                    bulkSubscriptionFilter=[openfeed_api_pb2.BulkSubscriptionFilter(
+                        symbolType=f.symbolType, symbolPattern=f.symbolPattern) for f in bulk_subscription_filters]
                 ))
 
         if len(symbols) > 0:
@@ -568,8 +595,11 @@ class OpenfeedClient(object):
         )
 
     def __create_login_request(self):
+        client_version = "sdk_python_version={}:python_version={}:sys_version:{}".format(
+            VERSION, platform.python_version(), sys.version)
         return openfeed_api_pb2.OpenfeedGatewayRequest(
             loginRequest=openfeed_api_pb2.LoginRequest(
+                protocolVersion=1, clientVersion=client_version,
                 username=self.username, password=self.password))
 
     def __callback(self, callback, *args):
@@ -581,7 +611,7 @@ class OpenfeedClient(object):
 
 
 class Listener(object):
-    def __init__(self, symbol="", exchange="", callback=None, service="REAL_TIME", subscription_type=["QUOTE"], instrument_type=[], snapshot_interval_seconds=60):
+    def __init__(self, symbol="", exchange="", callback=None, service="REAL_TIME", subscription_type=["QUOTE"], instrument_type=[], snapshot_interval_seconds=60, bulk_subscription_filters=[]):
         self.symbol = symbol
         self.exchange = exchange
         self.callback = callback
@@ -589,6 +619,7 @@ class Listener(object):
         self.subscription_type = subscription_type
         self.instrument_type = instrument_type
         self.snapshot_interval_seconds = snapshot_interval_seconds
+        self.bulk_subscription_filters = bulk_subscription_filters
 
     def key(self):
         if len(self.exchange) > 0:
@@ -636,6 +667,12 @@ class Request(object):
 
     def is_type(self, request_type):
         return request_type == self.request.WhichOneof("data")
+
+
+class BulkSubscriptionFilter(object):
+    def __init__(self, symbolType, symbolPattern):
+        self.symbolType = symbolType
+        self.symbolPattern = symbolPattern
 
 
 if __name__ == "__main__":
