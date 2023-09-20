@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 
 install_requires = [
     'websocket-client>=0.40.0',
@@ -17,13 +17,13 @@ with open("README.md", "r") as fh:
 
 setup(
     name='openfeed',
-    version='1.3.0',
+    version='1.4.0',
     author='Barchart',
     author_email='mike@barchart.com',
     license='MIT',
     url='https://github.com/openfeed-org/sdk-python',
     include_package_data=True,
-    packages=find_packages(),
+    packages=find_namespace_packages(),
     install_requires=install_requires,
     tests_require=tests_require,
     extras_require={
