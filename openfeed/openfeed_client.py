@@ -21,11 +21,12 @@ except ImportError:
 
 class OpenfeedClient(object):
 
-    def __init__(self, username, password, server="openfeed.aws.barchart.com", debug=False):
+    def __init__(self, username, password, server="openfeed.aws.barchart.com", debug=False, jwt=""):
         self.server = server
         self.username = username
         self.password = password
         self.debug = debug
+        self.jwt = jwt
         self.ws = websocket.WebSocket()
         self.token = None
 
@@ -625,7 +626,7 @@ class OpenfeedClient(object):
         return openfeed_api_pb2.OpenfeedGatewayRequest(
             loginRequest=openfeed_api_pb2.LoginRequest(
                 protocolVersion=1, clientVersion=client_version,
-                username=self.username, password=self.password))
+                username=self.username, password=self.password, jwt=self.jwt))
 
     def __callback(self, callback, *args):
         try:
