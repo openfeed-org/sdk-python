@@ -9,7 +9,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # new client with credentials
-    of_client = openfeed.OpenfeedClient(args.u, args.p)
+    of_client = openfeed.OpenfeedClient(
+        args.u, args.p, debug=False, server="demo.openfeed.barchart.com")
 
     # app state handlers
     of_client.on_error = lambda x: print("OnError:", x)
@@ -18,13 +19,18 @@ if __name__ == "__main__":
     of_client.on_login = lambda x: print("OnLogin:", x)
     of_client.on_logout = lambda x: print("OnLogout:", x)
 
-    # sub to markets by symbol
+    # add a global message handler for all incoming OF messages
+    # of_client.on_message = lambda msg: print("Global Message:", msg)
+
+    # sub message handler
     def on_message(msg):
         print("Market Data Message: ", msg)
 
-    #of_client.add_symbol_subscription("ADF.WS", callback=on_message, subscription_type=["OHLC"])
+    # subscribe to UDS an filter by type (optional)
+    of_client.add_symbol_subscription(
+        "T8^UDS", callback=on_message, subscription_type=["QUOTE"], spread_type_filter=["RR", "JR"])
 
-    of_client.request_instruments_for_exchange("AMEX", callback=on_message)
+    # of_client.request_instruments_for_exchange("AMEX", callback=on_message)
 
     # list exchanges
 

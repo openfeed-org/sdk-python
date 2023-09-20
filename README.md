@@ -25,6 +25,9 @@ of_client.on_error = lambda x: print("Error:", x)
 of_client.on_connected = lambda x: print("Connected")
 of_client.on_disconnected = lambda x: print("Disconnected")
 
+# attach a global message handler
+of_client.on_message = lambda x: print("Global Message:", x)
+
 # sub to markets by symbol
 def on_message(msg):
     print("Market Data: ", msg)

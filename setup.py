@@ -19,7 +19,7 @@ setup(
     name='openfeed',
     version='1.4.0',
     author='Barchart',
-    author_email='mike@barchart.com',
+    author_email='openfeed@barchart.com',
     license='MIT',
     url='https://github.com/openfeed-org/sdk-python',
     include_package_data=True,
