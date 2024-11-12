@@ -77,7 +77,8 @@ class OpenfeedClient(object):
 
         return self
 
-    def add_symbol_subscription(self, symbol: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"], snapshot_interval_seconds=60, spread_type_filter=[]):
+    def add_symbol_subscription(self, symbol: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"], snapshot_interval_seconds=60, spread_type_filter=[],
+                                send_initial_snaphots=True, send_initial_instruments=True):
         """Subscribe to [Market Data] by Barchart Symbols
 
         Complete list of [SubscriptionTypes]. List of [Service] types. List of [InstrumentTypes].
@@ -87,14 +88,23 @@ class OpenfeedClient(object):
         service: str, optional
             Default is `REAL_TIME` for delayed market data, set it to `DELAYED`, or for snapshots set it as one of `REAL_TIME_SNAPSHOT` or `DELAYED_SNAPSHOT'
         callback: Callable
-            Your callback function for Market Data messages
+            Your callback function for [Market Data] messages
         subscription_type: list, optional
-            Default is ['QUOTE']. Can contain any of: 'ALL', 'QUOTE', 'QUOTE_PARTICIPANT', 'DEPTH_PRICE', 'DEPTH_ORDER', 'TRADES', 'OHLC'
-
-        [Market Data]: https://docs.barchart.com/openfeed/#/proto?id=marketupdate
-        #/proto?id=subscriptiontype
+            Default [SubscriptionType] is ['QUOTE']. Can contain any of: 'ALL', 'QUOTE', 'QUOTE_PARTICIPANT', 'DEPTH_PRICE', 'DEPTH_ORDER', 'TRADES', 'OHLC'
+        snapshot_interval_seconds: int
+            Interval in seconds to send [MarketSnapshots]. Only valid for `REAL_TIME_SNAPSHOT` & `DELAYED_SNAPSHOT` [Service] levels. Ignored otherwise.
+        send_initial_snaphots: bool
+            Defaults to True. Set to False to suppress the initial stream of [MarketSnapshots]
+        send_initial_instruments: bool
+            Defaults to True. Set to False to suppress the initial stream of [Instruments]
+            
+        [Market Data]: https://docs.barchart.com/openfeed/#/proto?id=marketupdate#/proto?id=subscriptiontype
         [SubscriptionTypes]: https://docs.barchart.com/openfeed/
         [Service]: https://docs.barchart.com/openfeed/#/proto?id=service
+        [InstrumentTypes]: https://docs.barchart.com/openfeed/#/proto?id=instrumentdefinitioninstrumenttype
+        [MarketSnapshots]: https://docs.barchart.com/openfeed/#/proto?id=marketsnapshot
+        [Instruments]: https://docs.barchart.com/openfeed/#/proto?id=instrumentdefinition
+        [SubscriptionType]: https://docs.barchart.com/openfeed/#/proto?id=subscriptiontype
         """
         symbols = []
 
@@ -108,15 +118,19 @@ class OpenfeedClient(object):
                 self.symbol_handlers[sym] = []
 
             self.symbol_handlers[sym].append(
-                Listener(symbol=sym, callback=callback, service=service, subscription_type=subscription_type, snapshot_interval_seconds=snapshot_interval_seconds, spread_types=spread_type_filter))
+                Listener(symbol=sym, callback=callback, service=service, subscription_type=subscription_type, 
+                            snapshot_interval_seconds=snapshot_interval_seconds, spread_types=spread_type_filter,
+                            send_initial_snaphots=send_initial_snaphots, send_initial_instruments=send_initial_snaphots))
 
         if self.token is not None:
             self._send_message(
-                self.__create_subscription_request(symbols=symbols, service=service, subscription_type=subscription_type, snapshot_interval_seconds=snapshot_interval_seconds, spread_types=spread_type_filter))
+                self.__create_subscription_request(symbols=symbols, service=service, subscription_type=subscription_type, snapshot_interval_seconds=snapshot_interval_seconds, 
+                                                   spread_types=spread_type_filter, send_initial_snaphots=send_initial_snaphots, send_initial_instruments=send_initial_instruments))
 
         return self
 
-    def add_exchange_subscription(self, exchange: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"], instrument_type=[], snapshot_interval_seconds=60, bulk_subscription_filters=[]):
+    def add_exchange_subscription(self, exchange: Union[str, list], callback, service="REAL_TIME", subscription_type=["QUOTE"], instrument_type=[], snapshot_interval_seconds=60, 
+                                  bulk_subscription_filters=[], send_initial_snaphots=True, send_initial_instruments=True):
         """Subscribe to [Market Data] by Barchart Exchange code(s).
 
         Complete list of [SubscriptionTypes]. List of [Service] types.
@@ -137,15 +151,18 @@ class OpenfeedClient(object):
             [InstrumentTypes]. Spreads and Options must be explicitly requested. Can contain any of: 'SPREAD', 'OPTION', 'FUTURE', 'FOREX', 'EQUITY', 'INDEX', 'MUTUAL_FUND', 'MONEY_MARKET', 'MONEY_MARKET_FUND'
         bulk_subscription_filters: list of BulkSubscriptionFilter, optional
             List of [BulkSubscriptionFilter]
-
-        [Market Data]: https://docs.barchart.com/openfeed/#/proto?id=marketupdate
-        #/proto?id=subscriptiontype
+        send_initial_snaphots: bool
+            Defaults to True. Set to False to suppress the initial stream of [MarketSnapshots]
+        send_initial_instruments: bool
+            Defaults to True. Set to False to suppress the initial stream of [Instruments]
+        
+        [Market Data]: https://docs.barchart.com/openfeed/#/proto?id=marketupdate#/proto?id=subscriptiontype
         [SubscriptionTypes]: https://docs.barchart.com/openfeed/
-        [ServiceType]: https://docs.barchart.com/openfeed/#/proto?id=service
-        #/proto?id=instrumentdefinitioninstrumenttype
-        [InstrumentTypes]: https://docs.barchart.com/openfeed/
-        #/proto?id=bulksubscriptionfilter
+        [ServiceType]: https://docs.barchart.com/openfeed/#/proto?id=service#/proto?id=instrumentdefinitioninstrumenttype
+        [InstrumentTypes]: https://docs.barchart.com/openfeed/#/proto?id=bulksubscriptionfilter
         [BulkSubscriptionFilter]: https://docs.barchart.com/openfeed/
+        [MarketSnapshots]: https://docs.barchart.com/openfeed/#/proto?id=marketsnapshot
+        [Instruments]: https://docs.barchart.com/openfeed/#/proto?id=instrumentdefinition
         """
         exchanges = []
 
@@ -159,19 +176,22 @@ class OpenfeedClient(object):
                 self.exchange_handlers[exch] = []
 
             self.exchange_handlers[exch].append(Listener(
-                exchange=exch, callback=callback, service=service, subscription_type=subscription_type, instrument_type=instrument_type, snapshot_interval_seconds=snapshot_interval_seconds, bulk_subscription_filters=bulk_subscription_filters))
+                exchange=exch, callback=callback, service=service, subscription_type=subscription_type, 
+                instrument_type=instrument_type, snapshot_interval_seconds=snapshot_interval_seconds, bulk_subscription_filters=bulk_subscription_filters,
+                send_initial_snaphots=send_initial_snaphots, send_initial_instruments=send_initial_instruments))
 
         if self.token is not None:
             self._send_message(
-                self.__create_subscription_request(exchanges=exchanges, service=service, subscription_type=subscription_type, instrument_type=instrument_type, snapshot_interval_seconds=snapshot_interval_seconds, bulk_subscription_filters=bulk_subscription_filters))
+                self.__create_subscription_request(exchanges=exchanges, service=service, subscription_type=subscription_type, 
+                    instrument_type=instrument_type, snapshot_interval_seconds=snapshot_interval_seconds, bulk_subscription_filters=bulk_subscription_filters,
+                    send_initial_snaphots=send_initial_snaphots, send_initial_instruments=send_initial_instruments))
 
         return self
 
     def request_available_exchanges(self, callback):
         """Request a list of available [Exchanges] for subscription.
 
-        #/openfeed_streaming?id=requesting-exchanges
-        [Exchanges]: https://docs.barchart.com/openfeed/
+        [Exchanges]: https://docs.barchart.com/openfeed/#/openfeed_streaming?id=requesting-exchanges
         """
         rid = random.getrandbits(32)
         req = self.__create_exchange_request(rid)
@@ -186,8 +206,7 @@ class OpenfeedClient(object):
     def request_instruments_for_exchange(self, exchange, callback):
         """Request a list of [Instrument Definitions] actively trading trading on an exchange.
 
-        #/proto?id=openfeed_instrumentproto
-        [Instrument Definitions]: https://docs.barchart.com/openfeed/
+       [Instrument Definitions]: https://docs.barchart.com/openfeed/#/proto?id=openfeed_instrumentproto
         """
 
         rid = random.getrandbits(32)
@@ -205,10 +224,8 @@ class OpenfeedClient(object):
 
         See [Instrument Request]
 
-        #/proto?id=openfeed_instrumentproto
-        [Instrument Definitions]: https://docs.barchart.com/openfeed/
-        #/proto?id=instrumentrequest
-        [Instrument Request]: https://docs.barchart.com/openfeed/
+        [Instrument Definitions]: https://docs.barchart.com/openfeed/#/proto?id=openfeed_instrumentproto
+        [Instrument Request]: https://docs.barchart.com/openfeed/#/proto?id=instrumentrequest
         """
 
         rid = random.getrandbits(32)
@@ -225,15 +242,13 @@ class OpenfeedClient(object):
     def get_instrument_definitions(self):
         """Returns a dict of Openfeed [Instrument Definitions] keyed by MarketID
 
-        #/proto?id=openfeed_instrumentproto
-        [Instrument Definitions]: https://docs.barchart.com/openfeed/
+        [Instrument Definitions]: https://docs.barchart.com/openfeed/#/proto?id=openfeed_instrumentproto
         """
         return self.instrument_definitions
 
     def get_instrument_definition(self, _id):
         """Returns an [Instrument Definition] for a Market ID
 
-        #/proto?id=openfeed_instrumentproto
         [Instrument Definition]: https://docs.barchart.com/openfeed/
         """
         return self.instrument_definitions[_id].instrumentDefinition
@@ -241,9 +256,7 @@ class OpenfeedClient(object):
     def get_instrument_definition_by_symbol(self, symbol):
         """Returns an [Instrument Definition] for a [Symbol] string
 
-        #/proto?id=openfeed_instrumentproto
-        [Instrument Definition]: https://docs.barchart.com/openfeed/
-        #/proto?id=instrumentdefinitionsymbol
+        [Instrument Definition]: https://docs.barchart.com/openfeed/#/proto?id=instrumentdefinitionsymbol
         [Symbol]: https://docs.barchart.com/openfeed/
         """
         return self.instruments_by_symbol[symbol].instrumentDefinition
@@ -516,7 +529,9 @@ class OpenfeedClient(object):
                 listeners_by_service = interest[l.service]
                 if l.key() not in listeners_by_service:
                     listeners_by_service[l.key()] = Listener(
-                        symbol=l.symbol, exchange=l.exchange, service=l.service, subscription_type=l.subscription_type, instrument_type=l.instrument_type, snapshot_interval_seconds=l.snapshot_interval_seconds, bulk_subscription_filters=l.bulk_subscription_filters, spread_types=l.spread_types)
+                        symbol=l.symbol, exchange=l.exchange, service=l.service, subscription_type=l.subscription_type, instrument_type=l.instrument_type, 
+                        snapshot_interval_seconds=l.snapshot_interval_seconds, bulk_subscription_filters=l.bulk_subscription_filters, spread_types=l.spread_types,
+                        send_initial_snaphots=l.send_initial_snaphots, send_initial_instruments=l.send_initial_instruments)
                 else:
                     existing = listeners_by_service[l.key()]
                     existing.subscription_type = list(set(
@@ -533,13 +548,17 @@ class OpenfeedClient(object):
                                                        instrument_type=i.get_instrument_types(),
                                                        snapshot_interval_seconds=i.snapshot_interval_seconds,
                                                        bulk_subscription_filters=i.bulk_subscription_filters,
-                                                       spread_types=i.spread_types))
+                                                       spread_types=i.spread_types,
+                                                       send_initial_snaphots=i.send_initial_snaphots,
+                                                       send_initial_instruments=i.send_initial_instruments))
 
         # send other rpc requests
         for req in self.request_id_handlers.values():
             req.send(self)
 
-    def __create_subscription_request(self, exchanges=[], symbols=[], service="REAL_TIME", subscription_type=["QUOTE"], instrument_type=[], snapshot_interval_seconds=60, bulk_subscription_filters=[], spread_types=[]):
+    def __create_subscription_request(self, exchanges=[], symbols=[], service="REAL_TIME", subscription_type=["QUOTE"], 
+        instrument_type=[], snapshot_interval_seconds=60, bulk_subscription_filters=[], spread_types=[], send_initial_snaphots=True, send_initial_instruments=True):
+
         requests = []
 
         if len(exchanges) > 0:
@@ -552,7 +571,9 @@ class OpenfeedClient(object):
                     instrumentType=[openfeed_instrument_pb2.InstrumentDefinition.InstrumentType.Value(
                         t) for t in instrument_type],
                     bulkSubscriptionFilter=[openfeed_api_pb2.BulkSubscriptionFilter(
-                        symbolType=f.symbolType, symbolPattern=f.symbolPattern) for f in bulk_subscription_filters]
+                        symbolType=f.symbolType, symbolPattern=f.symbolPattern) for f in bulk_subscription_filters],
+                    subscriptionDoNotSendInstruments = not send_initial_instruments,
+                    subscriptionDoNotSendSnapshots = not send_initial_snaphots
                 ))
 
         if len(symbols) > 0:
@@ -562,7 +583,9 @@ class OpenfeedClient(object):
                     subscriptionType=[openfeed_api_pb2.SubscriptionType.Value(
                         t) for t in subscription_type],
                     snapshotIntervalSeconds=snapshot_interval_seconds,
-                    spreadTypeFilter=spread_types
+                    spreadTypeFilter=spread_types,
+                    subscriptionDoNotSendInstruments = not send_initial_instruments,
+                    subscriptionDoNotSendSnapshots = not send_initial_snaphots
                 ))
 
         of_req = openfeed_api_pb2.OpenfeedGatewayRequest(
@@ -637,7 +660,8 @@ class OpenfeedClient(object):
 
 
 class Listener(object):
-    def __init__(self, symbol="", exchange="", callback=None, service="REAL_TIME", subscription_type=["QUOTE"], instrument_type=[], snapshot_interval_seconds=60, bulk_subscription_filters=[], spread_types=[]):
+    def __init__(self, symbol="", exchange="", callback=None, service="REAL_TIME", subscription_type=["QUOTE"], instrument_type=[], snapshot_interval_seconds=60, 
+                 bulk_subscription_filters=[], spread_types=[], send_initial_snaphots=True, send_initial_instruments=True):
         self.symbol = symbol
         self.exchange = exchange
         self.callback = callback
@@ -647,6 +671,8 @@ class Listener(object):
         self.snapshot_interval_seconds = snapshot_interval_seconds
         self.bulk_subscription_filters = bulk_subscription_filters
         self.spread_types = spread_types
+        self.send_initial_snaphots = send_initial_snaphots
+        self.send_initial_instruments = send_initial_instruments
 
     def key(self):
         if len(self.exchange) > 0:

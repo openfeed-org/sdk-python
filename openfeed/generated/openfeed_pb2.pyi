@@ -119,6 +119,7 @@ class ActionType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     LISTING: _ClassVar[ActionType]
     DELISTING: _ClassVar[ActionType]
     EXCHANGE_MOVE: _ClassVar[ActionType]
+    ALIAS_CHANGED: _ClassVar[ActionType]
 UNKNOWN_BOOK_SIDE: BookSide
 BID: BookSide
 OFFER: BookSide
@@ -199,6 +200,7 @@ UNKNOWN_ACTION: ActionType
 LISTING: ActionType
 DELISTING: ActionType
 EXCHANGE_MOVE: ActionType
+ALIAS_CHANGED: ActionType
 
 class OpenfeedMessage(_message.Message):
     __slots__ = ["sendingTime", "totalCount", "syncSequence", "context", "channelReset", "heartBeat", "adminMessage", "instrumentDefinition", "instrumentGroupStatus", "marketSnapshot", "marketUpdate", "marketStatus", "eodCommoditySummary", "instrumentAction"]
@@ -1379,20 +1381,22 @@ class Ohlc(_message.Message):
     def __init__(self, marketId: _Optional[int] = ..., symbol: _Optional[str] = ..., open: _Optional[_Union[Open, _Mapping]] = ..., high: _Optional[_Union[High, _Mapping]] = ..., low: _Optional[_Union[Low, _Mapping]] = ..., close: _Optional[_Union[Close, _Mapping]] = ..., volume: _Optional[int] = ..., priceVolume: _Optional[float] = ..., numberTrades: _Optional[int] = ..., tradeDate: _Optional[int] = ..., transactionTime: _Optional[int] = ..., tradeIds: _Optional[_Iterable[str]] = ..., openStartTime: _Optional[int] = ..., closeEndTime: _Optional[int] = ...) -> None: ...
 
 class InstrumentAction(_message.Message):
-    __slots__ = ["transactionTime", "tradeDate", "action", "message", "instrument", "newInstrument"]
+    __slots__ = ["transactionTime", "tradeDate", "action", "message", "oldAlias", "instrument", "newInstrument"]
     TRANSACTIONTIME_FIELD_NUMBER: _ClassVar[int]
     TRADEDATE_FIELD_NUMBER: _ClassVar[int]
     ACTION_FIELD_NUMBER: _ClassVar[int]
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    OLDALIAS_FIELD_NUMBER: _ClassVar[int]
     INSTRUMENT_FIELD_NUMBER: _ClassVar[int]
     NEWINSTRUMENT_FIELD_NUMBER: _ClassVar[int]
     transactionTime: int
     tradeDate: int
     action: ActionType
     message: str
+    oldAlias: str
     instrument: _openfeed_instrument_pb2.InstrumentDefinition
     newInstrument: _openfeed_instrument_pb2.InstrumentDefinition
-    def __init__(self, transactionTime: _Optional[int] = ..., tradeDate: _Optional[int] = ..., action: _Optional[_Union[ActionType, str]] = ..., message: _Optional[str] = ..., instrument: _Optional[_Union[_openfeed_instrument_pb2.InstrumentDefinition, _Mapping]] = ..., newInstrument: _Optional[_Union[_openfeed_instrument_pb2.InstrumentDefinition, _Mapping]] = ...) -> None: ...
+    def __init__(self, transactionTime: _Optional[int] = ..., tradeDate: _Optional[int] = ..., action: _Optional[_Union[ActionType, str]] = ..., message: _Optional[str] = ..., oldAlias: _Optional[str] = ..., instrument: _Optional[_Union[_openfeed_instrument_pb2.InstrumentDefinition, _Mapping]] = ..., newInstrument: _Optional[_Union[_openfeed_instrument_pb2.InstrumentDefinition, _Mapping]] = ...) -> None: ...
 
 class RequestForQuote(_message.Message):
     __slots__ = ["quoteRequestId", "symbol", "securityId", "orderQuantity", "quoteType", "side"]

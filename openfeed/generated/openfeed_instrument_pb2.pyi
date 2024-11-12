@@ -21,6 +21,7 @@ class InstrumentDefinition(_message.Message):
         MONEY_MARKET_FUND: _ClassVar[InstrumentDefinition.InstrumentType]
         USER_DEFINED_SPREAD: _ClassVar[InstrumentDefinition.InstrumentType]
         EQUITY_OPTION: _ClassVar[InstrumentDefinition.InstrumentType]
+        OTHER: _ClassVar[InstrumentDefinition.InstrumentType]
     UNKNOWN_INSTRUMENT_TYPE: InstrumentDefinition.InstrumentType
     FOREX: InstrumentDefinition.InstrumentType
     INDEX: InstrumentDefinition.InstrumentType
@@ -32,6 +33,7 @@ class InstrumentDefinition(_message.Message):
     MONEY_MARKET_FUND: InstrumentDefinition.InstrumentType
     USER_DEFINED_SPREAD: InstrumentDefinition.InstrumentType
     EQUITY_OPTION: InstrumentDefinition.InstrumentType
+    OTHER: InstrumentDefinition.InstrumentType
     class BookType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = []
         UNKNOWN_BOOK_TYPE: _ClassVar[InstrumentDefinition.BookType]
