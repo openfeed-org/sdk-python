@@ -120,7 +120,7 @@ class OpenfeedClient(object):
             self.symbol_handlers[sym].append(
                 Listener(symbol=sym, callback=callback, service=service, subscription_type=subscription_type, 
                             snapshot_interval_seconds=snapshot_interval_seconds, spread_types=spread_type_filter,
-                            send_initial_snaphots=send_initial_snaphots, send_initial_instruments=send_initial_snaphots))
+                            send_initial_snaphots=send_initial_snaphots, send_initial_instruments=send_initial_instruments))
 
         if self.token is not None:
             self._send_message(
@@ -459,7 +459,13 @@ class OpenfeedClient(object):
             self._send_message(self.__create_login_request())
             self.__callback(self.on_connected, ws)
 
-        self.ws = websocket.WebSocketApp("ws://" + self.server + "/ws",
+        # accept a full ws:// or wss:// URL, otherwise treat server as a host name
+        if self.server.startswith(("ws://", "wss://")):
+            url = self.server
+        else:
+            url = "ws://" + self.server + "/ws"
+
+        self.ws = websocket.WebSocketApp(url,
                                          on_message=on_message,
                                          on_error=on_error,
                                          on_close=on_close,

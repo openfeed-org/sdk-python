@@ -52,6 +52,15 @@ of-client: Market Data:  marketUpdate
 of-client: Market Data:  marketUpdate
 ```
 
+### Server
+
+By default the client connects to `openfeed.aws.barchart.com`. Pass a host name to connect to another server, or a full `ws://` or `wss://` URL to set the scheme and path (for example, for TLS or a proxy):
+
+```python
+of_client = openfeed.OpenfeedClient("username", "password", server="demo.openfeed.barchart.com")
+of_client = openfeed.OpenfeedClient("username", "password", server="wss://host:port/path")
+```
+
 ### Openfeed Documentation
 
 * [https://docs.barchart.com/openfeed](https://docs.barchart.com/openfeed)
