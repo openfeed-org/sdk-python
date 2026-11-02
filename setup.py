@@ -4,7 +4,7 @@ from setuptools import setup, find_namespace_packages
 
 install_requires = [
     'websocket-client>=0.40.0',
-    'protobuf'
+    'protobuf>=6.33.3'
 ]
 
 tests_require = [

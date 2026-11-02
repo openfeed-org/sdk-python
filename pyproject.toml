@@ -8,7 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "*"
 websocket-client = "^0.40.0"
-protobuf = "*"
+protobuf = ">=6.33.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.4"
