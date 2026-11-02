@@ -12,6 +12,8 @@ This SDK encapuslates the openfeed proto objects and faciliates client connectio
 pip install openfeed
 ```
 
+Requires Python 3.9 or newer.
+
 ## Example Usage
 
 ```python
@@ -88,4 +90,14 @@ of_client.add_exchange_subscription(["NYSE"], callback=on_message, subscription_
   openStartTime: 1605547885850000000
   closeEndTime: 1605547920964000000
 }
+```
+
+## Development
+
+Requires [uv](https://docs.astral.sh/uv/) and `protoc` (`brew install protobuf`).
+
+```sh
+uv sync                                          # create .venv and install deps
+uv run python example.py -u USER -p PASS         # run the example
+./build.sh                                       # regenerate protos and build dist/
 ```

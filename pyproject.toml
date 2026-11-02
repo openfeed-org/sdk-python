@@ -1,18 +1,36 @@
-[tool.poetry]
-name = "openfeed"
-version = "1.5.0"
-description = "Python SDK for Openfeed"
-authors = ["Barchart <mike@barchart.com>"]
-license = "MIT"
-
-[tool.poetry.dependencies]
-python = "*"
-websocket-client = "^0.40.0"
-protobuf = ">=6.33.3"
-
-[tool.poetry.dev-dependencies]
-pytest = "^3.4"
-
 [build-system]
-requires = ["setuptools>=41.0", "setuptools-scm", "wheel"]
+requires = ["setuptools>=77.0"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "openfeed"
+dynamic = ["version"]
+description = "Barchart Openfeed Example Client for Python"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Barchart", email = "openfeed@barchart.com" }]
+requires-python = ">=3.9"
+dependencies = [
+    "websocket-client>=0.40.0",
+    "protobuf>=6.33.3",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "python-dateutil>=2.7.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/openfeed-org/sdk-python"
+Download = "https://github.com/openfeed-org/sdk-python/archive/master.zip"
+
+[tool.setuptools.dynamic]
+version = { attr = "openfeed.version.VERSION" }
+
+[tool.setuptools.packages.find]
+include = ["openfeed*"]
+
+[tool.setuptools.package-data]
+"openfeed.generated" = ["*.pyi"]

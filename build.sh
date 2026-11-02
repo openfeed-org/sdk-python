@@ -15,4 +15,4 @@ sed -i.bak 's/^import.*_pb2/from . &/' *.py
 rm -f *.py.bak
 
 cd ../../
-python3 setup.py sdist bdist_wheel
+uv build
