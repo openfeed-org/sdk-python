@@ -11,8 +11,8 @@ cd openfeed/generated
 
 # https://github.com/protocolbuffers/protobuf/issues/1491#issuecomment-1648982084
 # `-i.bak` and `&` behave the same in GNU and BSD (macOS) sed.
-sed -i.bak 's/^import.*_pb2/from . &/' *.py
-rm -f *.py.bak
+sed -i.bak 's/^import.*_pb2/from . &/' *.py *.pyi
+rm -f *.bak
 
 cd ../../
 uv build

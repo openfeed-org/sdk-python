@@ -33,4 +33,5 @@ version = { attr = "openfeed.version.VERSION" }
 include = ["openfeed*"]
 
 [tool.setuptools.package-data]
+"openfeed" = ["py.typed"]
 "openfeed.generated" = ["*.pyi"]
