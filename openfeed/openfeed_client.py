@@ -29,6 +29,7 @@ class OpenfeedClient(object):
         self.jwt = jwt
         self.ws = websocket.WebSocket()
         self.token = None
+        self.started = False
 
         self.instrument_definitions = {}
         self.instruments_by_symbol = {}
@@ -54,7 +55,8 @@ class OpenfeedClient(object):
 
         Set blocking to False to disable blocking the calling thread.
         """
-        if self.token is None:
+        if self.token is None and not self.started:
+            self.started = True
             if blocking is not True:
                 thread.start_new_thread(self.__connect, ())
             else:
@@ -63,8 +65,14 @@ class OpenfeedClient(object):
         return self
 
     def stop(self):
-        if self.token is not None:
-            self.__reset()
+        """Closes the connection, whether or not it has logged in yet."""
+        self.__reset()
+
+        return self
+
+    def send(self, request):
+        """Sends an `OpenfeedGatewayRequest` on the current connection."""
+        self._send_message(request)
 
         return self
 
@@ -269,6 +277,7 @@ class OpenfeedClient(object):
     def __reset(self):
         self.ws.close()
         self.token = None
+        self.started = False
         self.ws = websocket.WebSocket()
 
     def __connect(self):
@@ -364,8 +373,18 @@ class OpenfeedClient(object):
 
             return msg
 
+        def findInstrument(market_id, msg_type):
+            definition = self.instrument_definitions.get(market_id)
+            if definition is None:
+                if self.debug:
+                    print("No instrument definition for market ID:", market_id, "type:", msg_type)
+                return None
+            return definition.instrumentDefinition
+
         def handleMarketUpdate(msg):
-            inst = self.instrument_definitions[msg.marketUpdate.marketId].instrumentDefinition
+            inst = findInstrument(msg.marketUpdate.marketId, "marketUpdate")
+            if inst is None:
+                return msg
 
             self.__notify_exchange_listeners(inst.exchangeCode, msg)
             self.__notify_symbol_listeners(inst, msg)
@@ -373,7 +392,9 @@ class OpenfeedClient(object):
             return msg
 
         def handleMarketSnapshot(msg):
-            inst = self.instrument_definitions[msg.marketSnapshot.marketId].instrumentDefinition
+            inst = findInstrument(msg.marketSnapshot.marketId, "marketSnapshot")
+            if inst is None:
+                return msg
 
             self.snapshots[inst.marketId] = msg
 
@@ -383,12 +404,18 @@ class OpenfeedClient(object):
             return msg
 
         def handleOHLC(msg):
-            inst = self.instrument_definitions[msg.ohlc.marketId].instrumentDefinition
+            inst = findInstrument(msg.ohlc.marketId, "ohlc")
+            if inst is None:
+                return msg
 
             self.__notify_exchange_listeners(inst.exchangeCode, msg)
             self.__notify_symbol_listeners(inst, msg)
 
             return msg
+
+        def handleUnknown(msg):
+            if self.debug:
+                print("Unhandled Message:", msg)
 
         handlers = {
             "loginResponse": handleLogin,
@@ -424,8 +451,7 @@ class OpenfeedClient(object):
                     print("msg len:", msg_len, "type:",
                           msg_type, "total messages:", msg_count)
 
-                handler = handlers.get(
-                    msg_type, lambda x: print("Unhandled Message:", x))
+                handler = handlers.get(msg_type, handleUnknown)
 
                 # global on_message callback
                 self.__callback(self.on_message, msg)
@@ -472,6 +498,7 @@ class OpenfeedClient(object):
                                          on_open=on_open)
 
         self.ws.run_forever()
+        self.started = False
 
     def __notify_symbol_listeners(self, instrument, msg):
 
@@ -489,7 +516,7 @@ class OpenfeedClient(object):
             symbol_key = s.symbol
 
         if symbol_key != "":
-            for cb in self.symbol_handlers[symbol_key]:
+            for cb in self.symbol_handlers.get(symbol_key, []):
                 try:
                     cb.callback(msg)
                 except Exception as e:
