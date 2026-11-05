@@ -1,7 +1,7 @@
 from typing import Union
-from generated import openfeed_api_pb2
-from generated import openfeed_pb2
-from generated import openfeed_instrument_pb2
+from .generated import openfeed_api_pb2
+from .generated import openfeed_pb2
+from .generated import openfeed_instrument_pb2
 from struct import unpack
 from io import BytesIO
 import platform
