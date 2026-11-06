@@ -5,6 +5,7 @@ from .generated import openfeed_instrument_pb2
 from struct import unpack
 from io import BytesIO
 import platform
+import socket
 import time
 import traceback
 import sys
@@ -30,6 +31,7 @@ class OpenfeedClient(object):
         self.ws = websocket.WebSocket()
         self.token = None
         self.started = False
+        self.stop_requested = False
 
         self.instrument_definitions = {}
         self.instruments_by_symbol = {}
@@ -57,6 +59,7 @@ class OpenfeedClient(object):
         """
         if self.token is None and not self.started:
             self.started = True
+            self.stop_requested = False
             if blocking is not True:
                 thread.start_new_thread(self.__connect, ())
             else:
@@ -65,8 +68,20 @@ class OpenfeedClient(object):
         return self
 
     def stop(self):
-        """Closes the connection, whether or not it has logged in yet."""
-        self.__reset()
+        """Closes the connection, whether or not it has logged in yet. Safe to call from any thread."""
+        self.stop_requested = True
+
+        sock = self.ws.sock
+        if sock is None:
+            # still connecting: on_open closes it if it connects
+            return self
+
+        if sock.connected:
+            self.__reset()
+        else:
+            # Mid-handshake, shutting down ends it. Resetting would replace the socket that the
+            # connecting thread needs.
+            self.__shut_down_socket()
 
         return self
 
@@ -274,7 +289,25 @@ class OpenfeedClient(object):
             print("Sending:", msg)
         self.ws.send(msg.SerializeToString(), websocket.ABNF.OPCODE_BINARY)
 
+    def __shut_down_socket(self):
+        """Wakes the thread reading from the socket. Without this, closing the socket can leave that
+        thread waiting forever, since the close itself can read the server's reply first.
+        """
+        sock = self.ws.sock
+        raw_socket = sock.sock if sock is not None else None
+        if raw_socket is None:
+            return
+
+        try:
+            sock.send_close()
+            raw_socket.shutdown(socket.SHUT_RDWR)
+        except (OSError, websocket.WebSocketException) as e:
+            # already closing, from either end
+            if self.debug:
+                print("Failed to shut the socket down:", e)
+
     def __reset(self):
+        self.__shut_down_socket()
         self.ws.close()
         self.token = None
         self.started = False
@@ -468,7 +501,9 @@ class OpenfeedClient(object):
             if self.debug:
                 print("WebSocket Error: ", error)
                 traceback.print_exc()
-            self.__callback(self.on_error, error)
+            # stopping shuts the socket down, which the thread reading from it reports as an error
+            if not self.stop_requested:
+                self.__callback(self.on_error, error)
 
         def on_close(ws, close_status_code, close_msg):
             if self.debug:
@@ -481,6 +516,10 @@ class OpenfeedClient(object):
         def on_open(ws):
             if self.debug:
                 print("WebSocket Open")
+
+            if self.stop_requested:
+                self.__reset()
+                return
 
             self._send_message(self.__create_login_request())
             self.__callback(self.on_connected, ws)
