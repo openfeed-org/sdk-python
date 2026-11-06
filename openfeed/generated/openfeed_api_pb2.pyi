@@ -1,15 +1,16 @@
-import openfeed_instrument_pb2 as _openfeed_instrument_pb2
-import openfeed_pb2 as _openfeed_pb2
+from . import openfeed_instrument_pb2 as _openfeed_instrument_pb2
+from . import openfeed_pb2 as _openfeed_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Mapping, Optional as _Optional, Union as _Union
+from collections.abc import Iterable as _Iterable, Mapping as _Mapping
+from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Result(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
+    __slots__ = ()
     UNKNOWN_RESULT: _ClassVar[Result]
     SUCCESS: _ClassVar[Result]
     INSTRUMENTS_NOT_FOUND: _ClassVar[Result]
@@ -31,7 +32,7 @@ class Result(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     INVALID_USERNAME: _ClassVar[Result]
 
 class SubscriptionType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
+    __slots__ = ()
     ALL: _ClassVar[SubscriptionType]
     QUOTE: _ClassVar[SubscriptionType]
     QUOTE_PARTICIPANT: _ClassVar[SubscriptionType]
@@ -44,7 +45,7 @@ class SubscriptionType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SETTLEMENT: _ClassVar[SubscriptionType]
 
 class SymbolType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
+    __slots__ = ()
     BARCHART: _ClassVar[SymbolType]
     EXCHANGE: _ClassVar[SymbolType]
 UNKNOWN_RESULT: Result
@@ -80,7 +81,7 @@ BARCHART: SymbolType
 EXCHANGE: SymbolType
 
 class OpenfeedGatewayRequest(_message.Message):
-    __slots__ = ["loginRequest", "logoutRequest", "subscriptionRequest", "instrumentRequest", "instrumentReferenceRequest", "exchangeRequest", "listSubscriptionsRequest"]
+    __slots__ = ("loginRequest", "logoutRequest", "subscriptionRequest", "instrumentRequest", "instrumentReferenceRequest", "exchangeRequest", "listSubscriptionsRequest")
     LOGINREQUEST_FIELD_NUMBER: _ClassVar[int]
     LOGOUTREQUEST_FIELD_NUMBER: _ClassVar[int]
     SUBSCRIPTIONREQUEST_FIELD_NUMBER: _ClassVar[int]
@@ -98,7 +99,7 @@ class OpenfeedGatewayRequest(_message.Message):
     def __init__(self, loginRequest: _Optional[_Union[LoginRequest, _Mapping]] = ..., logoutRequest: _Optional[_Union[LogoutRequest, _Mapping]] = ..., subscriptionRequest: _Optional[_Union[SubscriptionRequest, _Mapping]] = ..., instrumentRequest: _Optional[_Union[InstrumentRequest, _Mapping]] = ..., instrumentReferenceRequest: _Optional[_Union[InstrumentReferenceRequest, _Mapping]] = ..., exchangeRequest: _Optional[_Union[ExchangeRequest, _Mapping]] = ..., listSubscriptionsRequest: _Optional[_Union[ListSubscriptionsRequest, _Mapping]] = ...) -> None: ...
 
 class OpenfeedGatewayMessage(_message.Message):
-    __slots__ = ["loginResponse", "logoutResponse", "instrumentResponse", "instrumentReferenceResponse", "subscriptionResponse", "marketStatus", "heartBeat", "instrumentDefinition", "marketSnapshot", "marketUpdate", "volumeAtPrice", "ohlc", "exchangeResponse", "instrumentAction", "listSubscriptionsResponse"]
+    __slots__ = ("loginResponse", "logoutResponse", "instrumentResponse", "instrumentReferenceResponse", "subscriptionResponse", "marketStatus", "heartBeat", "instrumentDefinition", "marketSnapshot", "marketUpdate", "volumeAtPrice", "ohlc", "exchangeResponse", "instrumentAction", "listSubscriptionsResponse")
     LOGINRESPONSE_FIELD_NUMBER: _ClassVar[int]
     LOGOUTRESPONSE_FIELD_NUMBER: _ClassVar[int]
     INSTRUMENTRESPONSE_FIELD_NUMBER: _ClassVar[int]
@@ -132,7 +133,7 @@ class OpenfeedGatewayMessage(_message.Message):
     def __init__(self, loginResponse: _Optional[_Union[LoginResponse, _Mapping]] = ..., logoutResponse: _Optional[_Union[LogoutResponse, _Mapping]] = ..., instrumentResponse: _Optional[_Union[InstrumentResponse, _Mapping]] = ..., instrumentReferenceResponse: _Optional[_Union[InstrumentReferenceResponse, _Mapping]] = ..., subscriptionResponse: _Optional[_Union[SubscriptionResponse, _Mapping]] = ..., marketStatus: _Optional[_Union[_openfeed_pb2.MarketStatus, _Mapping]] = ..., heartBeat: _Optional[_Union[_openfeed_pb2.HeartBeat, _Mapping]] = ..., instrumentDefinition: _Optional[_Union[_openfeed_instrument_pb2.InstrumentDefinition, _Mapping]] = ..., marketSnapshot: _Optional[_Union[_openfeed_pb2.MarketSnapshot, _Mapping]] = ..., marketUpdate: _Optional[_Union[_openfeed_pb2.MarketUpdate, _Mapping]] = ..., volumeAtPrice: _Optional[_Union[_openfeed_pb2.VolumeAtPrice, _Mapping]] = ..., ohlc: _Optional[_Union[_openfeed_pb2.Ohlc, _Mapping]] = ..., exchangeResponse: _Optional[_Union[ExchangeResponse, _Mapping]] = ..., instrumentAction: _Optional[_Union[_openfeed_pb2.InstrumentAction, _Mapping]] = ..., listSubscriptionsResponse: _Optional[_Union[ListSubscriptionsResponse, _Mapping]] = ...) -> None: ...
 
 class Status(_message.Message):
-    __slots__ = ["result", "message", "service"]
+    __slots__ = ("result", "message", "service")
     RESULT_FIELD_NUMBER: _ClassVar[int]
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
     SERVICE_FIELD_NUMBER: _ClassVar[int]
@@ -142,7 +143,7 @@ class Status(_message.Message):
     def __init__(self, result: _Optional[_Union[Result, str]] = ..., message: _Optional[str] = ..., service: _Optional[_Union[_openfeed_pb2.Service, str]] = ...) -> None: ...
 
 class LoginRequest(_message.Message):
-    __slots__ = ["correlationId", "username", "password", "clientVersion", "protocolVersion", "jwt"]
+    __slots__ = ("correlationId", "username", "password", "clientVersion", "protocolVersion", "jwt")
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     USERNAME_FIELD_NUMBER: _ClassVar[int]
     PASSWORD_FIELD_NUMBER: _ClassVar[int]
@@ -158,7 +159,7 @@ class LoginRequest(_message.Message):
     def __init__(self, correlationId: _Optional[int] = ..., username: _Optional[str] = ..., password: _Optional[str] = ..., clientVersion: _Optional[str] = ..., protocolVersion: _Optional[int] = ..., jwt: _Optional[str] = ...) -> None: ...
 
 class LoginResponse(_message.Message):
-    __slots__ = ["correlationId", "status", "token"]
+    __slots__ = ("correlationId", "status", "token")
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
@@ -168,7 +169,7 @@ class LoginResponse(_message.Message):
     def __init__(self, correlationId: _Optional[int] = ..., status: _Optional[_Union[Status, _Mapping]] = ..., token: _Optional[str] = ...) -> None: ...
 
 class LogoutRequest(_message.Message):
-    __slots__ = ["correlationId", "token"]
+    __slots__ = ("correlationId", "token")
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
     correlationId: int
@@ -176,7 +177,7 @@ class LogoutRequest(_message.Message):
     def __init__(self, correlationId: _Optional[int] = ..., token: _Optional[str] = ...) -> None: ...
 
 class LogoutResponse(_message.Message):
-    __slots__ = ["correlationId", "status"]
+    __slots__ = ("correlationId", "status")
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     correlationId: int
@@ -184,7 +185,7 @@ class LogoutResponse(_message.Message):
     def __init__(self, correlationId: _Optional[int] = ..., status: _Optional[_Union[Status, _Mapping]] = ...) -> None: ...
 
 class InstrumentRequest(_message.Message):
-    __slots__ = ["correlationId", "token", "instrumentType", "spreadType", "version", "symbol", "marketId", "exchange", "channelId"]
+    __slots__ = ("correlationId", "token", "instrumentType", "spreadType", "version", "symbol", "marketId", "exchange", "channelId")
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
     INSTRUMENTTYPE_FIELD_NUMBER: _ClassVar[int]
@@ -206,7 +207,7 @@ class InstrumentRequest(_message.Message):
     def __init__(self, correlationId: _Optional[int] = ..., token: _Optional[str] = ..., instrumentType: _Optional[_Iterable[_Union[_openfeed_instrument_pb2.InstrumentDefinition.InstrumentType, str]]] = ..., spreadType: _Optional[_Iterable[str]] = ..., version: _Optional[int] = ..., symbol: _Optional[str] = ..., marketId: _Optional[int] = ..., exchange: _Optional[str] = ..., channelId: _Optional[int] = ...) -> None: ...
 
 class InstrumentResponse(_message.Message):
-    __slots__ = ["correlationId", "status", "numberOfDefinitions", "symbol", "marketId", "exchange", "channelId", "exchangeId", "instrumentDefinition"]
+    __slots__ = ("correlationId", "status", "numberOfDefinitions", "symbol", "marketId", "exchange", "channelId", "exchangeId", "instrumentDefinition")
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     NUMBEROFDEFINITIONS_FIELD_NUMBER: _ClassVar[int]
@@ -228,7 +229,7 @@ class InstrumentResponse(_message.Message):
     def __init__(self, correlationId: _Optional[int] = ..., status: _Optional[_Union[Status, _Mapping]] = ..., numberOfDefinitions: _Optional[int] = ..., symbol: _Optional[str] = ..., marketId: _Optional[int] = ..., exchange: _Optional[str] = ..., channelId: _Optional[int] = ..., exchangeId: _Optional[int] = ..., instrumentDefinition: _Optional[_Union[_openfeed_instrument_pb2.InstrumentDefinition, _Mapping]] = ...) -> None: ...
 
 class InstrumentReferenceRequest(_message.Message):
-    __slots__ = ["correlationId", "token", "symbol", "marketId", "exchange", "channelId"]
+    __slots__ = ("correlationId", "token", "symbol", "marketId", "exchange", "channelId")
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
     SYMBOL_FIELD_NUMBER: _ClassVar[int]
@@ -244,7 +245,7 @@ class InstrumentReferenceRequest(_message.Message):
     def __init__(self, correlationId: _Optional[int] = ..., token: _Optional[str] = ..., symbol: _Optional[str] = ..., marketId: _Optional[int] = ..., exchange: _Optional[str] = ..., channelId: _Optional[int] = ...) -> None: ...
 
 class InstrumentReferenceResponse(_message.Message):
-    __slots__ = ["correlationId", "status", "numberOfDefinitions", "channelId", "marketId", "symbol", "exchange", "ddfSymbol", "ddfExchange", "ddfBaseCode", "exchangeSymbol", "exchangeId"]
+    __slots__ = ("correlationId", "status", "numberOfDefinitions", "channelId", "marketId", "symbol", "exchange", "ddfSymbol", "ddfExchange", "ddfBaseCode", "exchangeSymbol", "exchangeId")
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     NUMBEROFDEFINITIONS_FIELD_NUMBER: _ClassVar[int]
@@ -272,7 +273,7 @@ class InstrumentReferenceResponse(_message.Message):
     def __init__(self, correlationId: _Optional[int] = ..., status: _Optional[_Union[Status, _Mapping]] = ..., numberOfDefinitions: _Optional[int] = ..., channelId: _Optional[int] = ..., marketId: _Optional[int] = ..., symbol: _Optional[str] = ..., exchange: _Optional[str] = ..., ddfSymbol: _Optional[str] = ..., ddfExchange: _Optional[str] = ..., ddfBaseCode: _Optional[str] = ..., exchangeSymbol: _Optional[str] = ..., exchangeId: _Optional[int] = ...) -> None: ...
 
 class ExchangeRequest(_message.Message):
-    __slots__ = ["correlationId", "token"]
+    __slots__ = ("correlationId", "token")
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
     correlationId: int
@@ -280,9 +281,9 @@ class ExchangeRequest(_message.Message):
     def __init__(self, correlationId: _Optional[int] = ..., token: _Optional[str] = ...) -> None: ...
 
 class ExchangeResponse(_message.Message):
-    __slots__ = ["correlationId", "status", "exchanges"]
+    __slots__ = ("correlationId", "status", "exchanges")
     class Exchange(_message.Message):
-        __slots__ = ["code", "description", "aliases", "exchangeId"]
+        __slots__ = ("code", "description", "aliases", "exchangeId")
         CODE_FIELD_NUMBER: _ClassVar[int]
         DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
         ALIASES_FIELD_NUMBER: _ClassVar[int]
@@ -301,7 +302,7 @@ class ExchangeResponse(_message.Message):
     def __init__(self, correlationId: _Optional[int] = ..., status: _Optional[_Union[Status, _Mapping]] = ..., exchanges: _Optional[_Iterable[_Union[ExchangeResponse.Exchange, _Mapping]]] = ...) -> None: ...
 
 class BulkSubscriptionFilter(_message.Message):
-    __slots__ = ["symbolType", "symbolPattern"]
+    __slots__ = ("symbolType", "symbolPattern")
     SYMBOLTYPE_FIELD_NUMBER: _ClassVar[int]
     SYMBOLPATTERN_FIELD_NUMBER: _ClassVar[int]
     symbolType: SymbolType
@@ -309,9 +310,9 @@ class BulkSubscriptionFilter(_message.Message):
     def __init__(self, symbolType: _Optional[_Union[SymbolType, str]] = ..., symbolPattern: _Optional[str] = ...) -> None: ...
 
 class SubscriptionRequest(_message.Message):
-    __slots__ = ["correlationId", "token", "service", "unsubscribe", "requests"]
+    __slots__ = ("correlationId", "token", "service", "unsubscribe", "requests")
     class Request(_message.Message):
-        __slots__ = ["symbol", "marketId", "exchange", "channelId", "subscriptionType", "snapshotIntervalSeconds", "instrumentType", "bulkSubscriptionFilter", "spreadTypeFilter", "subscriptionDoNotSendInstruments", "subscriptionDoNotSendSnapshots"]
+        __slots__ = ("symbol", "marketId", "exchange", "channelId", "subscriptionType", "snapshotIntervalSeconds", "instrumentType", "bulkSubscriptionFilter", "spreadTypeFilter", "subscriptionDoNotSendInstruments", "subscriptionDoNotSendSnapshots")
         SYMBOL_FIELD_NUMBER: _ClassVar[int]
         MARKETID_FIELD_NUMBER: _ClassVar[int]
         EXCHANGE_FIELD_NUMBER: _ClassVar[int]
@@ -334,7 +335,7 @@ class SubscriptionRequest(_message.Message):
         spreadTypeFilter: _containers.RepeatedScalarFieldContainer[str]
         subscriptionDoNotSendInstruments: bool
         subscriptionDoNotSendSnapshots: bool
-        def __init__(self, symbol: _Optional[str] = ..., marketId: _Optional[int] = ..., exchange: _Optional[str] = ..., channelId: _Optional[int] = ..., subscriptionType: _Optional[_Iterable[_Union[SubscriptionType, str]]] = ..., snapshotIntervalSeconds: _Optional[int] = ..., instrumentType: _Optional[_Iterable[_Union[_openfeed_instrument_pb2.InstrumentDefinition.InstrumentType, str]]] = ..., bulkSubscriptionFilter: _Optional[_Iterable[_Union[BulkSubscriptionFilter, _Mapping]]] = ..., spreadTypeFilter: _Optional[_Iterable[str]] = ..., subscriptionDoNotSendInstruments: bool = ..., subscriptionDoNotSendSnapshots: bool = ...) -> None: ...
+        def __init__(self, symbol: _Optional[str] = ..., marketId: _Optional[int] = ..., exchange: _Optional[str] = ..., channelId: _Optional[int] = ..., subscriptionType: _Optional[_Iterable[_Union[SubscriptionType, str]]] = ..., snapshotIntervalSeconds: _Optional[int] = ..., instrumentType: _Optional[_Iterable[_Union[_openfeed_instrument_pb2.InstrumentDefinition.InstrumentType, str]]] = ..., bulkSubscriptionFilter: _Optional[_Iterable[_Union[BulkSubscriptionFilter, _Mapping]]] = ..., spreadTypeFilter: _Optional[_Iterable[str]] = ..., subscriptionDoNotSendInstruments: _Optional[bool] = ..., subscriptionDoNotSendSnapshots: _Optional[bool] = ...) -> None: ...
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
     SERVICE_FIELD_NUMBER: _ClassVar[int]
@@ -345,10 +346,10 @@ class SubscriptionRequest(_message.Message):
     service: _openfeed_pb2.Service
     unsubscribe: bool
     requests: _containers.RepeatedCompositeFieldContainer[SubscriptionRequest.Request]
-    def __init__(self, correlationId: _Optional[int] = ..., token: _Optional[str] = ..., service: _Optional[_Union[_openfeed_pb2.Service, str]] = ..., unsubscribe: bool = ..., requests: _Optional[_Iterable[_Union[SubscriptionRequest.Request, _Mapping]]] = ...) -> None: ...
+    def __init__(self, correlationId: _Optional[int] = ..., token: _Optional[str] = ..., service: _Optional[_Union[_openfeed_pb2.Service, str]] = ..., unsubscribe: _Optional[bool] = ..., requests: _Optional[_Iterable[_Union[SubscriptionRequest.Request, _Mapping]]] = ...) -> None: ...
 
 class SubscriptionResponse(_message.Message):
-    __slots__ = ["correlationId", "status", "symbol", "marketId", "exchange", "channelId", "numberOfDefinitions", "subscriptionType", "unsubscribe", "snapshotIntervalSeconds"]
+    __slots__ = ("correlationId", "status", "symbol", "marketId", "exchange", "channelId", "numberOfDefinitions", "subscriptionType", "unsubscribe", "snapshotIntervalSeconds")
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     SYMBOL_FIELD_NUMBER: _ClassVar[int]
@@ -369,10 +370,10 @@ class SubscriptionResponse(_message.Message):
     subscriptionType: SubscriptionType
     unsubscribe: bool
     snapshotIntervalSeconds: int
-    def __init__(self, correlationId: _Optional[int] = ..., status: _Optional[_Union[Status, _Mapping]] = ..., symbol: _Optional[str] = ..., marketId: _Optional[int] = ..., exchange: _Optional[str] = ..., channelId: _Optional[int] = ..., numberOfDefinitions: _Optional[int] = ..., subscriptionType: _Optional[_Union[SubscriptionType, str]] = ..., unsubscribe: bool = ..., snapshotIntervalSeconds: _Optional[int] = ...) -> None: ...
+    def __init__(self, correlationId: _Optional[int] = ..., status: _Optional[_Union[Status, _Mapping]] = ..., symbol: _Optional[str] = ..., marketId: _Optional[int] = ..., exchange: _Optional[str] = ..., channelId: _Optional[int] = ..., numberOfDefinitions: _Optional[int] = ..., subscriptionType: _Optional[_Union[SubscriptionType, str]] = ..., unsubscribe: _Optional[bool] = ..., snapshotIntervalSeconds: _Optional[int] = ...) -> None: ...
 
 class ListSubscriptionsRequest(_message.Message):
-    __slots__ = ["correlationId", "token", "username"]
+    __slots__ = ("correlationId", "token", "username")
     CORRELATIONID_FIELD_NUMBER: _ClassVar[int]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
     USERNAME_FIELD_NUMBER: _ClassVar[int]
@@ -382,9 +383,9 @@ class ListSubscriptionsRequest(_message.Message):
     def __init__(self, correlationId: _Optional[int] = ..., token: _Optional[str] = ..., username: _Optional[str] = ...) -> None: ...
 
 class ListSubscriptionsResponse(_message.Message):
-    __slots__ = ["correlationId", "status", "username", "sessions"]
+    __slots__ = ("correlationId", "status", "username", "sessions")
     class Session(_message.Message):
-        __slots__ = ["loginTime", "token", "clientVersion", "marketSubscriptions", "exchangeSubscriptions"]
+        __slots__ = ("loginTime", "token", "clientVersion", "marketSubscriptions", "exchangeSubscriptions")
         LOGINTIME_FIELD_NUMBER: _ClassVar[int]
         TOKEN_FIELD_NUMBER: _ClassVar[int]
         CLIENTVERSION_FIELD_NUMBER: _ClassVar[int]
@@ -397,7 +398,7 @@ class ListSubscriptionsResponse(_message.Message):
         exchangeSubscriptions: _containers.RepeatedCompositeFieldContainer[ListSubscriptionsResponse.Subscription]
         def __init__(self, loginTime: _Optional[int] = ..., token: _Optional[str] = ..., clientVersion: _Optional[str] = ..., marketSubscriptions: _Optional[_Iterable[_Union[ListSubscriptionsResponse.Subscription, _Mapping]]] = ..., exchangeSubscriptions: _Optional[_Iterable[_Union[ListSubscriptionsResponse.Subscription, _Mapping]]] = ...) -> None: ...
     class Subscription(_message.Message):
-        __slots__ = ["subscriptionId", "symbolId", "marketId", "symbolCounts", "exchange", "root"]
+        __slots__ = ("subscriptionId", "symbolId", "marketId", "symbolCounts", "exchange", "root")
         SUBSCRIPTIONID_FIELD_NUMBER: _ClassVar[int]
         SYMBOLID_FIELD_NUMBER: _ClassVar[int]
         MARKETID_FIELD_NUMBER: _ClassVar[int]
@@ -412,7 +413,7 @@ class ListSubscriptionsResponse(_message.Message):
         root: str
         def __init__(self, subscriptionId: _Optional[str] = ..., symbolId: _Optional[str] = ..., marketId: _Optional[int] = ..., symbolCounts: _Optional[_Iterable[_Union[ListSubscriptionsResponse.SymbolCount, _Mapping]]] = ..., exchange: _Optional[str] = ..., root: _Optional[str] = ...) -> None: ...
     class SymbolCount(_message.Message):
-        __slots__ = ["symbol", "count"]
+        __slots__ = ("symbol", "count")
         SYMBOL_FIELD_NUMBER: _ClassVar[int]
         COUNT_FIELD_NUMBER: _ClassVar[int]
         symbol: str
