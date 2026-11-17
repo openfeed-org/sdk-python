@@ -1,10 +1,11 @@
 from typing import Union
-from generated import openfeed_api_pb2
-from generated import openfeed_pb2
-from generated import openfeed_instrument_pb2
+from .generated import openfeed_api_pb2
+from .generated import openfeed_pb2
+from .generated import openfeed_instrument_pb2
 from struct import unpack
 from io import BytesIO
 import platform
+import socket
 import time
 import traceback
 import sys
@@ -29,6 +30,8 @@ class OpenfeedClient(object):
         self.jwt = jwt
         self.ws = websocket.WebSocket()
         self.token = None
+        self.started = False
+        self.stop_requested = False
 
         self.instrument_definitions = {}
         self.instruments_by_symbol = {}
@@ -54,7 +57,9 @@ class OpenfeedClient(object):
 
         Set blocking to False to disable blocking the calling thread.
         """
-        if self.token is None:
+        if self.token is None and not self.started:
+            self.started = True
+            self.stop_requested = False
             if blocking is not True:
                 thread.start_new_thread(self.__connect, ())
             else:
@@ -63,8 +68,26 @@ class OpenfeedClient(object):
         return self
 
     def stop(self):
-        if self.token is not None:
+        """Closes the connection, whether or not it has logged in yet. Safe to call from any thread."""
+        self.stop_requested = True
+
+        sock = self.ws.sock
+        if sock is None:
+            # still connecting: on_open closes it if it connects
+            return self
+
+        if sock.connected:
             self.__reset()
+        else:
+            # Mid-handshake, shutting down ends it. Resetting would replace the socket that the
+            # connecting thread needs.
+            self.__shut_down_socket()
+
+        return self
+
+    def send(self, request):
+        """Sends an `OpenfeedGatewayRequest` on the current connection."""
+        self._send_message(request)
 
         return self
 
@@ -120,7 +143,7 @@ class OpenfeedClient(object):
             self.symbol_handlers[sym].append(
                 Listener(symbol=sym, callback=callback, service=service, subscription_type=subscription_type, 
                             snapshot_interval_seconds=snapshot_interval_seconds, spread_types=spread_type_filter,
-                            send_initial_snaphots=send_initial_snaphots, send_initial_instruments=send_initial_snaphots))
+                            send_initial_snaphots=send_initial_snaphots, send_initial_instruments=send_initial_instruments))
 
         if self.token is not None:
             self._send_message(
@@ -266,9 +289,28 @@ class OpenfeedClient(object):
             print("Sending:", msg)
         self.ws.send(msg.SerializeToString(), websocket.ABNF.OPCODE_BINARY)
 
+    def __shut_down_socket(self):
+        """Wakes the thread reading from the socket. Without this, closing the socket can leave that
+        thread waiting forever, since the close itself can read the server's reply first.
+        """
+        sock = self.ws.sock
+        raw_socket = sock.sock if sock is not None else None
+        if raw_socket is None:
+            return
+
+        try:
+            sock.send_close()
+            raw_socket.shutdown(socket.SHUT_RDWR)
+        except (OSError, websocket.WebSocketException) as e:
+            # already closing, from either end
+            if self.debug:
+                print("Failed to shut the socket down:", e)
+
     def __reset(self):
+        self.__shut_down_socket()
         self.ws.close()
         self.token = None
+        self.started = False
         self.ws = websocket.WebSocket()
 
     def __connect(self):
@@ -364,8 +406,18 @@ class OpenfeedClient(object):
 
             return msg
 
+        def findInstrument(market_id, msg_type):
+            definition = self.instrument_definitions.get(market_id)
+            if definition is None:
+                if self.debug:
+                    print("No instrument definition for market ID:", market_id, "type:", msg_type)
+                return None
+            return definition.instrumentDefinition
+
         def handleMarketUpdate(msg):
-            inst = self.instrument_definitions[msg.marketUpdate.marketId].instrumentDefinition
+            inst = findInstrument(msg.marketUpdate.marketId, "marketUpdate")
+            if inst is None:
+                return msg
 
             self.__notify_exchange_listeners(inst.exchangeCode, msg)
             self.__notify_symbol_listeners(inst, msg)
@@ -373,7 +425,9 @@ class OpenfeedClient(object):
             return msg
 
         def handleMarketSnapshot(msg):
-            inst = self.instrument_definitions[msg.marketSnapshot.marketId].instrumentDefinition
+            inst = findInstrument(msg.marketSnapshot.marketId, "marketSnapshot")
+            if inst is None:
+                return msg
 
             self.snapshots[inst.marketId] = msg
 
@@ -383,12 +437,18 @@ class OpenfeedClient(object):
             return msg
 
         def handleOHLC(msg):
-            inst = self.instrument_definitions[msg.ohlc.marketId].instrumentDefinition
+            inst = findInstrument(msg.ohlc.marketId, "ohlc")
+            if inst is None:
+                return msg
 
             self.__notify_exchange_listeners(inst.exchangeCode, msg)
             self.__notify_symbol_listeners(inst, msg)
 
             return msg
+
+        def handleUnknown(msg):
+            if self.debug:
+                print("Unhandled Message:", msg)
 
         handlers = {
             "loginResponse": handleLogin,
@@ -424,8 +484,7 @@ class OpenfeedClient(object):
                     print("msg len:", msg_len, "type:",
                           msg_type, "total messages:", msg_count)
 
-                handler = handlers.get(
-                    msg_type, lambda x: print("Unhandled Message:", x))
+                handler = handlers.get(msg_type, handleUnknown)
 
                 # global on_message callback
                 self.__callback(self.on_message, msg)
@@ -442,7 +501,9 @@ class OpenfeedClient(object):
             if self.debug:
                 print("WebSocket Error: ", error)
                 traceback.print_exc()
-            self.__callback(self.on_error, error)
+            # stopping shuts the socket down, which the thread reading from it reports as an error
+            if not self.stop_requested:
+                self.__callback(self.on_error, error)
 
         def on_close(ws, close_status_code, close_msg):
             if self.debug:
@@ -456,16 +517,27 @@ class OpenfeedClient(object):
             if self.debug:
                 print("WebSocket Open")
 
+            if self.stop_requested:
+                self.__reset()
+                return
+
             self._send_message(self.__create_login_request())
             self.__callback(self.on_connected, ws)
 
-        self.ws = websocket.WebSocketApp("ws://" + self.server + "/ws",
+        # accept a full ws:// or wss:// URL, otherwise treat server as a host name
+        if self.server.startswith(("ws://", "wss://")):
+            url = self.server
+        else:
+            url = "ws://" + self.server + "/ws"
+
+        self.ws = websocket.WebSocketApp(url,
                                          on_message=on_message,
                                          on_error=on_error,
                                          on_close=on_close,
                                          on_open=on_open)
 
         self.ws.run_forever()
+        self.started = False
 
     def __notify_symbol_listeners(self, instrument, msg):
 
@@ -483,7 +555,7 @@ class OpenfeedClient(object):
             symbol_key = s.symbol
 
         if symbol_key != "":
-            for cb in self.symbol_handlers[symbol_key]:
+            for cb in self.symbol_handlers.get(symbol_key, []):
                 try:
                     cb.callback(msg)
                 except Exception as e:
